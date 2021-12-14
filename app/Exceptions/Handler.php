@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler
                     } else {
                         if ($e instanceof ValidationException) {
                             return $this->jsonResponse($e->validator->getMessageBag()->first(),
-                                $e->getResponse()->getStatusCode(), $e->getResponse()->getStatusCode());
+                                $e->status, $e->status);
                         } else {
                             if ($e instanceof HttpExceptionInterface) {
                                 $statusCode = $this->isHttpException($e) ? $e->getStatusCode() : 500;

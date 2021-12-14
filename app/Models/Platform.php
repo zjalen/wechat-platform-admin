@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Platform extends Model
+class Platform extends BaseModel
 {
     use HasFactory;
 

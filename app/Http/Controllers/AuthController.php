@@ -27,11 +27,16 @@ class AuthController extends BaseController
 
     /**
      * @throws UnauthorizedException
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function login(): string
     {
-        $credentials = request()->only('email', 'password');
+        $this->validate(request(), [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
 
+        $credentials = request()->only('email', 'password');
         if (!auth()->validate($credentials)) {
             throw new UnauthorizedException('账号或密码错误');
         }
