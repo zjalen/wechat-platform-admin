@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,11 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ['json']], function (\Illuminate\Routing\Router $router) {
+Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);
 
-    $router->post('login', [\App\Http\Controllers\AuthController::class, 'login']);
-
-    Route::group(['middleware' => ['auth:api']], function (\Illuminate\Routing\Router $router) {
-        $router->apiResource('platforms', \App\Http\Controllers\PlatformController::class);
-    });
+Route::group(['middleware' => ['auth:api']], function (\Illuminate\Routing\Router $router) {
+    $router->apiResource('platforms', \App\Http\Controllers\PlatformController::class);
 });
