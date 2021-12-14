@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 
 
 use App\Exceptions\BusinessExceptions\UnauthorizedException;
-use App\Models\User;
-use App\Services\Auth\JwtAuthGuard;
 use App\Services\Auth\JwtService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * Notes:
@@ -35,7 +32,7 @@ class AuthController extends BaseController
     {
         $credentials = request()->only('email', 'password');
 
-        if (!Auth::validate($credentials)) {
+        if (!auth()->validate($credentials)) {
             throw new UnauthorizedException('账号或密码错误');
         }
         return $this->jwtService->generateJwtToken(Auth::id());

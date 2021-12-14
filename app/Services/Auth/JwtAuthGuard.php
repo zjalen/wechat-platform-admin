@@ -2,7 +2,6 @@
 
 namespace App\Services\Auth;
 
-use App\Exceptions\BusinessExceptions\UnauthorizedException;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
