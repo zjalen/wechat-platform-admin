@@ -1,29 +1,41 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
+  <q-layout view="hHh LpR lFf">
+    <q-header class="q-px-md" :height-hint=56 :elevated="true">
+      <q-toolbar class="q-px-lg">
         <q-btn
-          flat
           dense
           round
+          outline
+          size="sm"
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
 
         <q-toolbar-title>
-          Quasar App
+          <text class="text-primary text-weight-medium">微信</text>平台管理
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>V {{ version }}</div>
       </q-toolbar>
     </q-header>
 
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
-      bordered
+      class="q-pl-lg"
     >
+      <q-btn
+        dense
+        round
+        outline
+        size="sm"
+        v-if="$q.screen.lt.md"
+        icon="navigate_before"
+        aria-label="back"
+        class="q-ml-md q-mt-md"
+        @click="toggleLeftDrawer"
+      />
       <q-list>
         <q-item-label
           header
@@ -47,6 +59,7 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
+import pk from '../../package.json'
 
 const linksList = [
   {
@@ -112,6 +125,11 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
-  }
+  },
+
+  data: () => ({
+    title: '微信平台管理',
+    version: pk.version
+  })
 })
 </script>

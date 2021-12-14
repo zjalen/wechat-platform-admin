@@ -1,1 +1,63 @@
 // app global css in SCSS form
+@import "quasar.variables";
+
+$globalColor: #383838;
+$descColor: #7e8081;
+$focusColor: #4c4d4e;
+$subColor: #b1b2b3;
+$separateColor: #e3e4e5;
+$globalBgColor: #f6f7f8;
+$areaBgColor: #f6f7f8;
+$cardBgColor: #fff;
+
+$descColor_disabled: #E9E9E9;
+$descColor_hl: #777777;
+$lowShadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+$highShadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
+$askLightColor_hover: rgba(255, 255, 255, 0.02);
+
+$globalBorderRadius: 4px;
+$minBorderRadius: 2px;
+$cardBorderRadius: 8px;
+
+$mediumFontWeight: 500;
+
+body {
+  font-family: "mp-quote", -apple-system-font, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", Arial, sans-serif;
+
+  &.body--light {
+    background: $globalBgColor;
+    color: $globalColor;
+
+    .q-header {
+      background: $cardBgColor;
+      color: #383838;
+      height: 56px;
+      display: flex;
+    }
+
+    .q-layout__shadow:after {
+      box-shadow: $lowShadow;
+    }
+
+    .q-drawer {
+      background: $globalBgColor;
+    }
+
+    .desktop-panel {
+      margin-bottom: 24px;
+      box-shadow: 0 0 8px 0 rgb(0 0 0 / 2%);
+      padding: 24px 40px;
+      background-color: $cardBgColor;
+      border-radius: var($cardBorderRadius);
+    }
+
+    .desktop-panel_overview {
+      padding-bottom: 0;
+    }
+  }
+
+  &.body--dark {
+
+  }
+}

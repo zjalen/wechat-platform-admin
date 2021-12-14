@@ -9,6 +9,7 @@
 /* eslint-env node */
 const ESLintPlugin = require('eslint-webpack-plugin')
 const { configure } = require('quasar/wrappers');
+const { LocalStorage, Notify } = require('quasar')
 
 module.exports = configure(function (ctx) {
   return {
@@ -22,7 +23,7 @@ module.exports = configure(function (ctx) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
-      'axios',
+      'axios', 'notify-defaults'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -71,15 +72,21 @@ module.exports = configure(function (ctx) {
         chain.plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }])
       },
+      env: require('dotenv').config().parsed
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
-      server: {
-        type: 'http'
-      },
-      port: 8080,
-      open: true // opens browser window automatically
+      proxy: {
+        // proxy all requests starting with /api to jsonplaceholder
+        '/api': {
+          target: process.env.API_URL,
+          changeOrigin: true,
+          pathRewrite: {
+            '^/api': 'api'
+          }
+        }
+      }
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -97,7 +104,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [ 'Notify','Loading','Dialog' ]
     },
 
     // animations: 'all', // --- includes all animations
@@ -141,8 +148,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Quasar App`,
-        short_name: `Quasar App`,
+        name: `WeChat Platform Admin`,
+        short_name: `WPA`,
         description: `微信平台管理——支持微信公众平台、开放平台可视化管理`,
         display: 'standalone',
         orientation: 'portrait',

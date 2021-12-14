@@ -10,8 +10,22 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { getPlatforms } from 'src/api'
 
 export default defineComponent({
-  name: 'PageIndex'
+  name: 'PageIndex',
+  data: () => ({
+    platforms: []
+  }),
+  beforeMount () {
+    this.initData()
+  },
+  methods: {
+    initData () {
+      getPlatforms().then(res => {
+        this.platforms = res.data
+      })
+    }
+  }
 })
 </script>
