@@ -40,7 +40,7 @@ class JwtAuthGuard implements Guard
             return false;
         }
         $user = $this->jwtService->getJwtPayload($token);
-        if (!$user) {
+        if (!$user || $user->is_forbidden) {
             return false;
         }
         $this->setUser($user);

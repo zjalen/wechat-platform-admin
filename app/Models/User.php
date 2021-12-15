@@ -37,6 +37,8 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int $is_forbidden 禁止登录
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIsForbidden($value)
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {

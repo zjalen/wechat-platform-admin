@@ -15,14 +15,16 @@ class CreatePlatformsTable extends Migration
     {
         Schema::create('platforms', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->string('logo')->nullable(true);
-            $table->string('app_id')->unique();
-            $table->string('app_secret');
-            $table->string('description')->nullable(true);
-            $table->boolean('is_open')->default(true);
-            $table->tinyInteger('type')->default(0);
+            $table->string('name')->unique()->comment('名称');
+            $table->string('slug')->unique()->comment('标识');
+            $table->string('logo')->nullable(true)->comment('logo');
+            $table->string('app_id')->unique()->comment('app_id');
+            $table->string('app_secret')->comment('密钥');
+            $table->string('token')->comment('校验 token');
+            $table->string('aes_key')->comment('解密 key');
+            $table->string('description')->nullable(true)->comment('简介');
+            $table->boolean('is_open')->default(true)->comment('是否开放');
+            $table->tinyInteger('type')->default(0)->comment('类型');
             $table->timestamps();
         });
     }

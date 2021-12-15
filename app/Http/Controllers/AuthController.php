@@ -29,7 +29,7 @@ class AuthController extends BaseController
      * @throws UnauthorizedException
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function login(): string
+    public function login(): array
     {
         $this->validate(request(), [
             'email' => 'required',
@@ -40,6 +40,6 @@ class AuthController extends BaseController
         if (!auth()->validate($credentials)) {
             throw new UnauthorizedException('账号或密码错误');
         }
-        return $this->jwtService->generateJwtToken(Auth::id());
+        return ['data' => $this->jwtService->generateJwtToken(Auth::id())];
     }
 }

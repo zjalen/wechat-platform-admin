@@ -34,6 +34,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $token 校验 token
+ * @property string $aes_key 解密 key
+ * @method static \Illuminate\Database\Eloquent\Builder|Platform whereAesKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Platform whereToken($value)
  */
 class Platform extends BaseModel
 {
