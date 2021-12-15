@@ -15,14 +15,14 @@ class CreatePlatformsTable extends Migration
     {
         Schema::create('platforms', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable(false)->unique();
-            $table->string('slug')->nullable(false)->unique();
-            $table->string('logo');
-            $table->string('app_id')->nullable(false)->unique();
-            $table->string('app_secret')->nullable(false);
-            $table->string('description');
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
+            $table->string('logo')->nullable(true);
+            $table->string('app_id')->unique();
+            $table->string('app_secret');
+            $table->string('description')->nullable(true);
             $table->boolean('is_open')->default(true);
-            $table->tinyInteger('type')->nullable(false);
+            $table->tinyInteger('type')->default(0);
             $table->timestamps();
         });
     }
