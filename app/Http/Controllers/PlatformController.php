@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Platform;
+use Illuminate\Support\Str;
 
 class PlatformController extends BaseController
 {
@@ -18,9 +19,12 @@ class PlatformController extends BaseController
         $newPlatform->name = $params['name'];
         $newPlatform->app_id = $params['app_id'];
         $newPlatform->app_secret = $params['app_secret'];
+        $newPlatform->token = $params['token'];
+        $newPlatform->aes_key = $params['aes_key'];
         $newPlatform->description = $params['description'];
         $newPlatform->is_open = $params['is_open'];
         $newPlatform->type = $params['type'];
+        $newPlatform->slug = Str::random(16);
         $newPlatform->save();
         return $newPlatform;
     }
@@ -37,6 +41,8 @@ class PlatformController extends BaseController
         $platform->name = $params['name'];
         $platform->app_id = $params['app_id'];
         $platform->app_secret = $params['app_secret'];
+        $platform->token = $params['token'];
+        $platform->aes_key = $params['aes_key'];
         $platform->description = $params['description'];
         $platform->is_open = $params['is_open'];
         $platform->type = $params['type'];

@@ -9,7 +9,6 @@
 /* eslint-env node */
 const ESLintPlugin = require('eslint-webpack-plugin')
 const { configure } = require('quasar/wrappers');
-const { LocalStorage, Notify } = require('quasar')
 
 module.exports = configure(function (ctx) {
   return {
@@ -91,7 +90,11 @@ module.exports = configure(function (ctx) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
-      config: {},
+      config: {
+        loadingBar: {
+          color: 'primary'
+        }
+      },
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
@@ -104,7 +107,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: [ 'Notify','Loading','Dialog' ]
+      plugins: [ 'Notify','Loading','Dialog','LoadingBar' ]
     },
 
     // animations: 'all', // --- includes all animations

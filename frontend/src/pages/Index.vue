@@ -1,21 +1,48 @@
 <template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
+  <q-page class=" q-pa-lg">
+    <view class="flex justify-end">
+      <q-btn unelevated color="primary" class="q-px-lg" to="/platforms/create">添加新平台账号</q-btn>
+    </view>
+    <view class="row q-col-gutter-lg q-pt-lg">
+      <view class="col-lg-3 col-md-4 col-sm-6 col-xs-12" v-for="(item, index) in platforms" :key="index">
+        <q-card class="card-clickable">
+          <q-card-section class="flex justify-between items-center bg-green-2 text-primary">
+            <text class="text-subtitle1 text-bold">{{ item.name }}</text>
+            <q-btn flat round icon="close" size="sm" color="negative" @click="deletePlatform(item.id)"></q-btn>
+          </q-card-section>
+          <q-card-section class="panel-form">
+            <view class="q-pb-none panel-form-item">
+              <view class="panel-form-item-label">描述信息</view>
+              <view class="panel-form-item-value">{{ item.description }}</view>
+            </view>
+            <view class="q-pb-none panel-form-item">
+              <view class="panel-form-item-label">APPID</view>
+              <view class="panel-form-item-value">{{ item.app_id }}</view>
+            </view>
+            <view class="panel-form-item">
+              <view class="panel-form-item-label">平台类型</view>
+              <view class="panel-form-item-value text-primary">{{ item.type_name }}</view>
+            </view>
+          </q-card-section>
+          <q-card-actions>
+            <q-space />
+            <q-btn flat color="blue" :to="`/platforms/${item.id}/edit`">编辑</q-btn>
+            <q-btn unelevated color="primary">查看</q-btn>
+          </q-card-actions>
+        </q-card>
+      </view>
+    </view>
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
-import { getPlatforms } from 'src/api'
+import { defineComponent } from 'vue'
+import { deletePlatform, getPlatforms } from 'src/api'
 
 export default defineComponent({
   name: 'PageIndex',
   data: () => ({
-    platforms: []
+    platforms: [],
   }),
   beforeMount () {
     this.initData()
@@ -23,9 +50,29 @@ export default defineComponent({
   methods: {
     initData () {
       getPlatforms().then(res => {
-        this.platforms = res.data
+        this.platforms = res
       })
-    }
-  }
+    },
+    deletePlatform (id) {
+      this.$q.dialog({
+        title: '删除确认',
+        message: '一旦删除，将不可找回',
+        ok: {
+          label: '确认',
+          unelevated: true
+        },
+        cancel: {
+          color: 'grey',
+          flat: true,
+          label: '取消'
+        }
+      }).onOk(() => {
+        deletePlatform(id).then(() => {
+          this.$q.notify('删除成功')
+          this.initData()
+        })
+      })
+    },
+  },
 })
 </script>

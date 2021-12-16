@@ -40,7 +40,6 @@ export default boot(({ app, router, store }) => {
       return response.data
     },
     error => {
-      console.log(error)
       let message = Object.prototype.hasOwnProperty.call(error.response.data, 'errMsg')
         ? error.response.data.errMsg
         : error.response.statusText

@@ -54,4 +54,20 @@ class Platform extends BaseModel
         self::TYPE_MINI_PROGRAM  => '小程序'
     ];
 
+    /**
+     * 强制转换的属性
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_open' => 'boolean',
+    ];
+
+    protected $appends = ['type_name'];
+
+    public function getTypeNameAttribute(): string
+    {
+        return self::$typeMap[$this->type];
+    }
+
 }

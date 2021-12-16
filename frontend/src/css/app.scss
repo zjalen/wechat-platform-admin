@@ -12,8 +12,8 @@ $cardBgColor: #fff;
 
 $descColor_disabled: #E9E9E9;
 $descColor_hl: #777777;
-$lowShadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
-$highShadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
+$lowShadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
+$highShadow: 0 0 12px 0 rgba(0, 0, 0, 0.25);
 $askLightColor_hover: rgba(255, 255, 255, 0.02);
 
 $globalBorderRadius: 4px;
@@ -23,6 +23,7 @@ $cardBorderRadius: 8px;
 $mediumFontWeight: 500;
 
 body {
+  color: #353535;
   font-family: "mp-quote", -apple-system-font, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", Arial, sans-serif;
 
   &.body--light {
@@ -44,12 +45,25 @@ body {
       background: $globalBgColor;
     }
 
+    .q-card {
+      box-shadow: $lowShadow;
+      border-radius: $cardBorderRadius;
+    }
+
     .desktop-panel {
       margin-bottom: 24px;
       box-shadow: 0 0 8px 0 rgb(0 0 0 / 2%);
       padding: 24px 40px;
       background-color: $cardBgColor;
       border-radius: var($cardBorderRadius);
+    }
+
+    .light-btn {
+      background-color: rgba($primary, .1);
+      color: $primary;
+      padding: 0 20px;
+      font-size: 14px;
+      font-weight: 400;
     }
 
     .desktop-panel_overview {
@@ -60,4 +74,77 @@ body {
   &.body--dark {
 
   }
+}
+
+.panel-form {
+  &-item {
+    display: flex;
+    font-size: 14px;
+
+    &-label {
+      width: 100px;
+      font-weight: bold;
+      line-height: 34px;
+    }
+
+    &-value {
+      flex: 1;
+      line-height: 34px;
+    }
+
+    &-tip {
+      padding-top: 8px;
+      color: #9a9a9a;
+      line-height: 34px;
+    }
+  }
+}
+.edit-form {
+  &-item {
+    display: flex;
+    font-size: 14px;
+
+    &-label {
+      width: 100px;
+      font-weight: bold;
+      line-height: 34px;
+    }
+
+    &-value {
+      flex: 1;
+      line-height: 34px;
+    }
+
+    &-tip {
+      padding-top: 8px;
+      color: #9a9a9a;
+      line-height: 34px;
+    }
+  }
+}
+
+.card-clickable {
+  cursor: pointer;
+
+  &:hover {
+    background-color: $green-2;
+    box-shadow: $highShadow !important;
+  }
+}
+
+.q-field__bottom--animated {
+  transform: translateY(0%);
+  position: relative;
+
+  .q-field__messages {
+    line-height: 1.5;
+  }
+}
+
+.q-btn--unelevated {
+  padding: 0 24px;
+}
+
+.q-field--dense .q-field__control, .q-field--dense .q-field__marginal {
+  height: 34px;
 }
