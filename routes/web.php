@@ -14,5 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+//    return view('welcome');
+    return response()->json(['data' => '欢迎使用'])->setEncodingOptions(JSON_UNESCAPED_UNICODE);
 });

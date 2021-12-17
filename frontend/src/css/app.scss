@@ -76,29 +76,36 @@ body {
   }
 }
 
+a {
+  text-decoration: none;
+}
+
 .panel-form {
   &-item {
     display: flex;
     font-size: 14px;
+    margin-bottom: 16px;
 
     &-label {
       width: 100px;
-      font-weight: bold;
-      line-height: 34px;
+      color: #353535;
+      line-height: 1.6;
+      margin-right: 16px;
     }
 
     &-value {
       flex: 1;
-      line-height: 34px;
-    }
+      line-height: 1.6;
+      overflow: auto;
 
-    &-tip {
-      padding-top: 8px;
-      color: #9a9a9a;
-      line-height: 34px;
+      &-tip {
+        color: #9a9a9a;
+        padding-top: 6px;
+      }
     }
   }
 }
+
 .edit-form {
   &-item {
     display: flex;
@@ -107,18 +114,18 @@ body {
     &-label {
       width: 100px;
       font-weight: bold;
-      line-height: 34px;
+      line-height: 2.4;
+      margin-right: 16px;
     }
 
     &-value {
       flex: 1;
-      line-height: 34px;
-    }
+      line-height: 2;
 
-    &-tip {
-      padding-top: 8px;
-      color: #9a9a9a;
-      line-height: 34px;
+      &-tip {
+        color: #9a9a9a;
+        padding-top: 8px;
+      }
     }
   }
 }

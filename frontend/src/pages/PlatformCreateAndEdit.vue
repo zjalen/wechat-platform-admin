@@ -44,11 +44,20 @@
               dense
               :square="true"
               class="edit-form-item-value"
+              :type="isPwd ? 'password' : 'text'"
               v-model="formData.app_secret"
               hint="参照微信官方后台的 App Secret 填写，后续作为接口必要参数调用"
               lazy-rules
               :rules="[ val => val && val.length > 0 || '必填内容']"
-            />
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+                />
+              </template>
+            </q-input>
           </view>
           <view class="edit-form-item">
             <view class="edit-form-item-label">token</view>
@@ -56,6 +65,7 @@
               outlined
               dense
               :square="true"
+              :type="isPwd ? 'password' : 'text'"
               class="edit-form-item-value"
               v-model="formData.token"
               hint="参照微信官方后台的 token 填写，验证微信官方消息的必需项"
@@ -70,6 +80,7 @@
               dense
               :square="true"
               class="edit-form-item-value"
+              :type="isPwd ? 'password' : 'text'"
               v-model="formData.aes_key"
               hint="参照微信官方后台的 aes_key 填写，解析微信加密消息的必需项"
               lazy-rules
@@ -115,9 +126,15 @@
 
 <script>
 import { createPlatform, getPlatform, updatePlatform } from 'src/api'
+import { ref } from 'vue'
 
 export default {
   name: 'PlatformCreateAndEdit',
+  setup () {
+    return {
+      isPwd: ref(true)
+    }
+  },
   data: () => ({
     id: null,
     formData: {

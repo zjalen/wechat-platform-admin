@@ -7,6 +7,7 @@ const routes = [
       { path: 'platforms', component: () => import('pages/Index.vue') },
       { path: 'platforms/create', component: () => import('pages/PlatformCreateAndEdit.vue') },
       { path: 'platforms/:id/edit', component: () => import('pages/PlatformCreateAndEdit.vue') },
+      { path: 'open-platform/:id', component: () => import('pages/OpenPlatform.vue') },
     ],
   },
 
