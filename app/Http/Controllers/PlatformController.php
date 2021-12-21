@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Platform;
 use Illuminate\Support\Str;
 
-class PlatformController extends BaseController
+class PlatformController extends Controller
 {
     public function index()
     {
@@ -24,7 +24,7 @@ class PlatformController extends BaseController
         $newPlatform->description = $params['description'];
         $newPlatform->is_open = $params['is_open'];
         $newPlatform->type = $params['type'];
-        $newPlatform->slug = Str::random(16);
+        $newPlatform->slug = Str::random();
         $newPlatform->save();
         return $newPlatform;
     }

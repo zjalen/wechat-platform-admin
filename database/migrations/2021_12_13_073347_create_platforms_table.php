@@ -18,7 +18,7 @@ class CreatePlatformsTable extends Migration
             $table->string('name')->unique()->comment('名称');
             $table->string('slug')->unique()->index()->comment('索引标识');
             $table->string('logo')->nullable(true)->comment('logo');
-            $table->string('app_id')->unique()->comment('app_id');
+            $table->string('app_id')->unique()->index()->comment('app_id');
             $table->string('app_secret')->comment('密钥');
             $table->string('token')->comment('校验 token');
             $table->string('aes_key')->comment('解密 key');

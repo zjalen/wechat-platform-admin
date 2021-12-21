@@ -78,13 +78,14 @@ body {
 
 a {
   text-decoration: none;
+  color: $secondary;
 }
 
 .panel-form {
   &-item {
     display: flex;
     font-size: 14px;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 
     &-label {
       width: 100px;
@@ -100,7 +101,8 @@ a {
 
       &-tip {
         color: #9a9a9a;
-        padding-top: 6px;
+        padding-top: 4px;
+        padding-bottom: 6px;
       }
     }
   }

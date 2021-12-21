@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
  * User: jialinzhang
  * DateTime: 2021/12/16 13:43
  */
-class OpenPlatformServerController extends BaseController
+class OpenPlatformServerController extends Controller
 {
 
     /**

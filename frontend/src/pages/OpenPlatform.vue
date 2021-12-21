@@ -43,33 +43,91 @@
           </view>
         </view>
       </q-card-section>
+      <q-separator />
+      <q-card-actions class="q-pa-md">
+        <q-btn unelevated color="primary" @click="loadAuthorizers" label="远程获取已绑定账号">
+          <q-tooltip>从微信服务器的接口获取已绑定的账号</q-tooltip>
+        </q-btn>
+      </q-card-actions>
     </q-card>
 
-    <view class="row q-col-gutter-lg q-pt-lg">
-      <view class="col-lg-3 col-md-4 col-sm-6 col-xs-12" v-for="(item, index) in authorizers" :key="index">
-        <q-card class="cursor-pointer" @click="onSubPlatformClick(item.authorizer_appid)">
-          <q-card-section class="text-h6 text-primary">
-            {{ item.authorizer_appid }}
-          </q-card-section>
-        </q-card>
+    <view v-show="showRemoteList">
+      <q-separator class="q-mt-lg" />
+      <view class="row q-col-gutter-lg q-mt-none relative-position">
+        <view v-if="showRemoteLoading" class="q-py-lg">加载中...</view>
+        <view v-if="authorizers.length === 0" class="q-py-lg">没有已绑定的账号</view>
+        <view class="col-lg-3 col-md-4 col-sm-6 col-xs-12" v-for="(item, index) in authorizers" :key="index">
+          <q-card class="cursor-pointer">
+            <q-card-section class="flex items-center">
+              <view class="text-primary">{{ item.authorizer_appid }}</view>
+              <q-space />
+              <q-btn flat color="secondary" @click="loadAuthorizer(item.authorizer_appid)">查看详情</q-btn>
+            </q-card-section>
+          </q-card>
+        </view>
+        <q-inner-loading :showing="showRemoteLoading">
+          <q-spinner-gears size="50px" color="primary" />
+        </q-inner-loading>
+      </view>
+      <q-separator class="q-mt-lg" />
+    </view>
+
+    <view v-if="subPlatforms.length > 0">
+      <view class="row q-col-gutter-lg q-pt-lg">
+        <view class="col-lg-3 col-md-4 col-sm-6 col-xs-12" v-for="(item, index) in subPlatforms" :key="index">
+          <q-card>
+            <q-card-section>
+              <platform-card :info="item"></platform-card>
+            </q-card-section>
+            <q-card-actions align="right">
+              <q-btn flat color="negative" @click="deleteSubPlatform(item)">删除</q-btn>
+              <q-btn flat color="secondary" @click="loadAuthorizer(item.app_id)">查看详情</q-btn>
+              <q-btn unelevated color="primary" @click="onSubPlatformClick(item)">管理</q-btn>
+            </q-card-actions>
+          </q-card>
+        </view>
+      </view>
+      <view class="row q-mt-lg">
+        <q-space />
+        <q-pagination
+          v-model="currentPage"
+          :max="maxPage"
+          input
+        />
       </view>
     </view>
-    <view class="row q-mt-lg">
-      <q-space />
-      <q-pagination
-        v-model="currentPage"
-        :max="Math.ceil(totalCount / perPage)"
-        input
-      />
-    </view>
+
+    <q-dialog v-model="showAuthorizerDetail">
+      <q-card>
+        <q-card-section>
+          <platform-card :info="currentAuthorizer.authorizer_info"></platform-card>
+        </q-card-section>
+        <q-separator />
+        <q-card-actions align="right">
+          <q-btn flat color="grey" @click="showAuthorizerDetail = false">关闭</q-btn>
+          <q-btn unelevated color="primary" @click="syncSubPlatform" label="同步到数据库">
+            <q-tooltip>先同步到数据库才能管理该账号</q-tooltip>
+          </q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
-import { getAuthorizer, getAuthorizers, getSecretConfig } from 'src/api/open-platform'
+import {
+  deleteSubPlatform,
+  getAuthorizer,
+  getAuthorizers,
+  getSecretConfig,
+  getSubPlatforms,
+  saveSubPlatform,
+} from 'src/api/open-platform'
+import PlatformCard from 'components/SubPlatformCard'
 
 export default {
   name: 'ThirdPlatform',
+  components: { PlatformCard },
   data: () => ({
     id: null,
     visible: false,
@@ -79,10 +137,22 @@ export default {
     access_token: '',
     errMsg: null,
     authorizers: [],
+    authorizerDetails: [],
     currentPage: 1,
     perPage: 20,
     totalCount: 0,
+    subPlatforms: [],
+    tab: 'local',
+    showRemoteList: false,
+    showAuthorizerDetail: false,
+    showRemoteLoading: false,
+    currentAuthorizer: {},
   }),
+  computed: {
+    maxPage () {
+      return Math.ceil(this.totalCount / this.perPage)
+    },
+  },
   created () {
     this.id = this.$route.params.id
     this.initData()
@@ -96,16 +166,26 @@ export default {
         if (res.access_token) {
           this.errMsg = null
           this.access_token = res.access_token.component_access_token
-          this.loadAuthorizers()
         }
         else {
           this.access_token = '无效'
           this.errMsg = res.errMsg
         }
       })
+      this.loadSubPlatforms()
+    },
+    loadSubPlatforms () {
+      getSubPlatforms(this.id, { limit: this.perPage, skip: this.perPage * (this.currentPage - 1) }).then(res => {
+        this.totalCount = res.total_count
+        this.subPlatforms = res.list
+      })
     },
     loadAuthorizers () {
+      this.showRemoteList = true
+      this.showRemoteLoading = true
+      this.authorizers = []
       getAuthorizers(this.id).then(res => {
+        this.showRemoteLoading = false
         this.totalCount = res.total_count
         this.authorizers = res.list
       })
@@ -113,11 +193,59 @@ export default {
     visibleData (data) {
       return this.visible ? data : '******'
     },
-    onSubPlatformClick (appId) {
+    loadAuthorizer (appId) {
+      this.$q.loading.show()
+      const timer = setTimeout(() => {
+        this.$q.loading.hide()
+      }, 5000)
+      this.currentAuthorizer = {}
       getAuthorizer(this.id, appId).then(res => {
-        console.log(res)
+        clearTimeout(timer)
+        this.$q.loading.hide()
+        this.currentAuthorizer = res
+        this.showAuthorizerDetail = true
       })
-    }
+    },
+    syncSubPlatform () {
+      const params = {
+        'nick_name': this.currentAuthorizer.authorizer_info.nick_name,
+        'head_img': this.currentAuthorizer.authorizer_info.head_img,
+        'app_id': this.currentAuthorizer.authorization_info.authorizer_appid,
+        'principal_name': this.currentAuthorizer.authorizer_info.principal_name,
+        'qrcode_url': this.currentAuthorizer.authorizer_info.qrcode_url,
+        'user_name': this.currentAuthorizer.authorizer_info.user_name,
+        'service_type_info': this.currentAuthorizer.authorizer_info.service_type_info.id,
+        'is_mini_program': Object.hasOwnProperty.call(this.currentAuthorizer.authorizer_info, 'MiniProgramInfo'),
+      }
+      saveSubPlatform(this.id, params).then(() => {
+        this.$q.notify('同步成功')
+        this.showAuthorizerDetail = false
+        this.loadSubPlatforms()
+      })
+    },
+    deleteSubPlatform (item) {
+      this.$q.dialog({
+        title: '删除确认',
+        message: '删除后可通过远程获取重新绑定',
+        ok: {
+          label: '确认',
+          unelevated: true,
+        },
+        cancel: {
+          color: 'grey',
+          flat: true,
+          label: '取消',
+        },
+      }).onOk(() => {
+        deleteSubPlatform(this.id, item.id).then(res => {
+          this.$q.notify('删除成功')
+          this.loadSubPlatforms()
+        })
+      })
+    },
+    onSubPlatformClick (item) {
+
+    },
   },
 }
 </script>

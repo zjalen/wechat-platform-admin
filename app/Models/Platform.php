@@ -4,24 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 /**
  * App\Models\Platform
  *
  * @property int $id
- * @property string $name
- * @property string $slug
- * @property string $logo
- * @property string $app_id
- * @property string $app_secret
- * @property string $description
- * @property int $is_open
- * @property int $type
+ * @property string $name 名称
+ * @property string $slug 标识
+ * @property string|null $logo logo
+ * @property string $app_id app_id
+ * @property string $app_secret 密钥
+ * @property string $token 校验 token
+ * @property string $aes_key 解密 key
+ * @property string|null $description 简介
+ * @property bool $is_open 是否开放
+ * @property int $type 类型
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $type_name
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SubPlatform[] $subPlatforms
+ * @property-read int|null $sub_platforms_count
  * @method static \Illuminate\Database\Eloquent\Builder|Platform newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Platform newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Platform query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Platform whereAesKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereAppId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereAppSecret($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereCreatedAt($value)
@@ -31,19 +36,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereLogo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Platform whereToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property string $token 校验 token
- * @property string $aes_key 解密 key
- * @method static \Illuminate\Database\Eloquent\Builder|Platform whereAesKey($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Platform whereToken($value)
  */
 class Platform extends BaseModel
 {
     use HasFactory;
 
-    // 定义小区 2 种状态
     const TYPE_THIRD_PARTY = 0;
     const TYPE_OFFICIAL_ACCOUNT = 1;
     const TYPE_MINI_PROGRAM = 2;
@@ -70,4 +71,12 @@ class Platform extends BaseModel
         return self::$typeMap[$this->type];
     }
 
+    /**
+     * 开放平台第三方平台的关联绑定账号
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subPlatforms(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SubPlatform::class, 'platform_id', 'id');
+    }
 }

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
  * User: jialinzhang
  * DateTime: 2021/12/13 17:26
  */
-class AuthController extends BaseController
+class AuthController extends Controller
 {
     /**
      * @var JwtService

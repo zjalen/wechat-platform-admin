@@ -6,11 +6,12 @@
     <view class="row q-col-gutter-lg q-pt-lg">
       <view class="col-lg-3 col-md-4 col-sm-6 col-xs-12" v-for="(item, index) in platforms" :key="index">
         <q-card>
-          <q-card-section class="flex justify-between items-center bg-green-2 text-primary cursor-pointer"
+          <q-card-section class="flex justify-between items-center text-primary cursor-pointer"
                           @click="onShowClick(item)">
-            <text class="text-subtitle1 text-bold">{{ item.name }}</text>
+            <text class="text-h6">{{ item.name }}</text>
             <q-btn flat round icon="close" size="sm" color="negative" @click="deletePlatform(item.id)"></q-btn>
           </q-card-section>
+          <q-separator />
           <q-card-section class="panel-form">
             <view class="q-pb-none panel-form-item">
               <view class="panel-form-item-label">描述信息</view>
@@ -28,7 +29,7 @@
           <q-separator />
           <q-card-actions>
             <q-space />
-            <q-btn flat color="blue" :to="`/platforms/${item.id}/edit`">编辑</q-btn>
+            <q-btn flat color="secondary" :to="`/platforms/${item.id}/edit`">编辑</q-btn>
             <q-btn unelevated color="primary" @click="onShowClick(item)">查看</q-btn>
           </q-card-actions>
         </q-card>
