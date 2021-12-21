@@ -22,7 +22,7 @@
         <view class="panel-form-item-label">原始 ID</view>
         <view class="panel-form-item-value">
           <div>{{ info.user_name }}</div>
-          <div class="panel-form-item-value-tip">唯一标识，部分配置会用到，如第三方平台白名单</div>
+          <div class="panel-form-item-value-tip">唯一标识，用于如第三方平台白名单等</div>
         </view>
       </view>
       <view v-if="info.principal_name" class="q-pb-none panel-form-item">

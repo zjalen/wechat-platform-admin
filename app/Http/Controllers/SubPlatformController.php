@@ -31,13 +31,14 @@ class SubPlatformController extends Controller
     public function store(): SubPlatform
     {
         $params = request()->input();
-        $subPlatform = SubPlatform::whereAppId($params['app_id'])->first();
+        $subPlatform = SubPlatform::whereAppId($params['app_id'])->where('platform_id', $this->getOpenPlatformModel()->id)->first();
         if (!$subPlatform) {
             $subPlatform = new SubPlatform();
+            $subPlatform->slug = Str::random();
         }
         $subPlatform->fill($params);
-        $subPlatform->slug = Str::random();
         $subPlatform->platform_id = $this->getOpenPlatformModel()->id;
+        $subPlatform->status = 1;
         $subPlatform->save();
         return $subPlatform;
     }

@@ -22,9 +22,12 @@ Route::group([
 ], function (\Illuminate\Routing\Router $router) {
     // 开放平台接收微信官方消息
     $router->post('serve', [OpenPlatformServerController::class, 'serve'])->name('openPlatformServe');
-
     // 代公众平台接收用户消息
     $router->post('{appId}/notify', [OpenPlatformServerController::class, 'notify'])->name('platformNotify');
+    // 绑定开放平台页面
+    $router->get('bind', [OpenPlatformController::class, 'bind'])->name('bind');
+    // 绑定开放平台回调页面
+    $router->get('bind-callback', [OpenPlatformController::class, 'bindCallback'])->name('bindCallback');
 });
 
 Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);

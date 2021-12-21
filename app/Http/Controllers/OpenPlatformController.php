@@ -60,9 +60,37 @@ class OpenPlatformController extends Controller
             'name' => $this->openPlatformModel->name,
             'app_id' => $this->openPlatformModel->app_id,
             'serve_url' => route('openPlatformServe', ['opSlug' => $this->openPlatformModel->slug]),
+            'bind_url' => route('bind', ['opSlug' => $this->openPlatformModel->slug]),
             'access_token' => $token,
             'errMsg' => $error
         ];
+    }
+
+    /**
+     * 绑定公众平台|小程序到开放平台页面
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @throws RuntimeException
+     */
+    public function bind()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        $authUrl = $openPlatform->getPreAuthorizationUrl(route('bindCallback', ['opSlug' => $this->openPlatformModel->slug]));
+        return view('authorize', ['authUrl' => $authUrl]);
+    }
+
+    /**
+     * 开放平台绑定公众号|小程序回调页面
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function bindCallback()
+    {
+        $authCode = request()->input('auth_code');
+        $openPlatform = $this->getOpenPlatform();
+        // handle 触发绑定成功事件
+        $openPlatform->handleAuthorize($authCode);
+        return view('authorized');
     }
 
     /**

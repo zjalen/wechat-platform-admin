@@ -44,8 +44,9 @@
         </view>
       </q-card-section>
       <q-separator />
-      <q-card-actions class="q-pa-md">
-        <q-btn unelevated color="primary" @click="loadAuthorizers" label="远程获取已绑定账号">
+      <q-card-actions>
+        <q-btn type="a" :href="bind_url" target="__blank" unelevated color="primary" @click="bindNewPlatform" label="绑定新账号"></q-btn>
+        <q-btn flat color="secondary" @click="loadAuthorizers" label="远程获取已绑定账号">
           <q-tooltip>从微信服务器的接口获取已绑定的账号</q-tooltip>
         </q-btn>
       </q-card-actions>
@@ -134,6 +135,7 @@ export default {
     breadcrumbTitle: '第三方平台',
     app_id: null,
     serve_url: null,
+    bind_url: null,
     access_token: '',
     errMsg: null,
     authorizers: [],
@@ -163,6 +165,7 @@ export default {
         this.app_id = res.app_id
         this.breadcrumbTitle = res.name
         this.serve_url = res.serve_url
+        this.bind_url = res.bind_url
         if (res.access_token) {
           this.errMsg = null
           this.access_token = res.access_token.component_access_token

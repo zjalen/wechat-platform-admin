@@ -4,6 +4,9 @@
 namespace App\Http\Controllers;
 
 
+use App\Events\SubPlatformAuthorized;
+use App\Events\SubPlatformUnAuthorized;
+use App\Models\Platform;
 use App\Services\ThirdApi\OpenPlatformService;
 use EasyWeChat\Kernel\Exceptions\BadRequestException;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
@@ -25,13 +28,18 @@ class OpenPlatformServerController extends Controller
 {
 
     /**
+     * @var Platform
+     */
+    private $openPlatformModel;
+
+    /**
      * 初始化
      * @return OpenPlatformService
      */
     private function getOpenPlatform(): OpenPlatformService
     {
-        $openPlatformModel = request()->attributes->get('openPlatform');
-        return new OpenPlatformService($openPlatformModel);
+        $this->openPlatformModel = request()->attributes->get('openPlatform');
+        return new OpenPlatformService($this->openPlatformModel);
     }
 
     /**
@@ -48,16 +56,19 @@ class OpenPlatformServerController extends Controller
         // 处理事件
         $openPlatform = $this->getOpenPlatform();
         $server = $openPlatform->server;
+        $openPlatformModel = $this->openPlatformModel;
         // 处理授权成功事件，其他事件同理
-        $server->push(function ($message) {
+        $server->push(function ($message) use ($openPlatformModel) {
             Log::info($message);
             // $message 为微信推送的通知内容，不同事件不同内容，详看微信官方文档
-            // 获取授权公众号 AppId： $message['AuthorizerAppid']
-            // 获取 AuthCode：$message['AuthorizationCode']
-            // 然后进行业务处理，如存数据库等...
+            $appId = $message['AuthorizerAppid'];
+            event(new SubPlatformAuthorized($openPlatformModel, $appId));
         }, Guard::EVENT_AUTHORIZED);
         $server->push(function ($message) {
             Log::info($message);
+            $openPlatformModel = request()->attributes->get('openPlatform');
+            $appId = $message['AuthorizerAppid'];
+            event(new SubPlatformUnAuthorized($openPlatformModel, $appId));
         }, Guard::EVENT_UNAUTHORIZED);
         return $server->serve();
     }

@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $service_type_info 平台类型
  * @property int $is_mini_program 是否是小程序
  * @property int $platform_id 关联第三方平台 id
+ * @property int $status 绑定状态 1 绑定成功 0 未绑定
+ * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereStatus($value)
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read string $service_type_name
@@ -75,6 +77,7 @@ class SubPlatform extends Model
 
     protected $casts = [
         'is_mini_program' => 'boolean',
+        'status' => 'boolean',
     ];
 
     protected $appends = ['service_type_name'];
