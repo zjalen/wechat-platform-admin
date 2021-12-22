@@ -43,6 +43,8 @@ body {
 
     .q-drawer {
       background: $globalBgColor;
+      top: 80px !important;
+      bottom: 24px;
     }
 
     .q-card {
@@ -198,4 +200,8 @@ a {
 .menu-separator {
   background-color: #e7e7eb;
   margin: 0 14px 0 78px;
+}
+
+.drawer-right-bordered {
+  border-right: 1px solid #e7e7eb;
 }

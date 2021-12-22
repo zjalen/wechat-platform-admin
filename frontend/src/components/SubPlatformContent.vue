@@ -7,7 +7,9 @@
         <q-chip v-if="info.service_type_name" color="primary" dense square class="text-white">{{ info.service_type_name }}</q-chip>
       </view>
       <q-space />
-      <q-avatar size="40px"><img :src="info.head_img" /></q-avatar>
+      <q-avatar v-if="info.head_img" size="40px">
+        <img :src="info.head_img" />
+      </q-avatar>
     </view>
     <q-separator class="q-mb-md" />
     <view>

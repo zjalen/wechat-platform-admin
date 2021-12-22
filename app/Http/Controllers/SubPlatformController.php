@@ -43,6 +43,14 @@ class SubPlatformController extends Controller
         return $subPlatform;
     }
 
+    public function show()
+    {
+        $id = request()->route('sub_platform');
+        /** @var Platform $openPlatformModel */
+        $openPlatformModel = request()->attributes->get('openPlatform');
+        return $openPlatformModel->subPlatforms()->find($id);
+    }
+
     public function destroy(): int
     {
         $id = request()->route('sub_platform');

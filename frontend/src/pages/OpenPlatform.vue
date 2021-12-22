@@ -124,7 +124,7 @@ import {
   getSubPlatforms,
   saveSubPlatform,
 } from 'src/api/open-platform'
-import PlatformCard from 'components/SubPlatformCard'
+import PlatformCard from 'components/SubPlatformContent'
 
 export default {
   name: 'ThirdPlatform',

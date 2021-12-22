@@ -8,6 +8,10 @@ export function getSubPlatforms (platformId, params) {
   return api.get('open-platform/' + platformId + '/sub-platforms', params)
 }
 
+export function getSubPlatform (platformId, id) {
+  return api.get('open-platform/' + platformId + '/sub-platforms/' + id)
+}
+
 export function saveSubPlatform (platformId, params) {
   return api.post('open-platform/' + platformId + '/sub-platforms', params)
 }

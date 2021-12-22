@@ -24,7 +24,7 @@
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
-      class="q-mt-lg"
+      class="drawer-right-bordered"
     >
       <q-btn
         dense
@@ -37,7 +37,7 @@
         class="q-ml-md q-mt-md"
         @click="toggleLeftDrawer"
       />
-      <q-list class="q-mr-lg" dense>
+      <q-list dense>
         <view v-for="(menuItem,index) in menuList" :key="menuItem.title">
           <q-expansion-item v-if="menuItem.children" :label="menuItem.title" :icon="menuItem.icon" :model-value="true">
             <q-item :inset-level="1" v-for="subMenuItem in menuItem.children" :key="subMenuItem.title" :active="$route.name === subMenuItem.to" clickable v-ripple @click="$router.push({name: subMenuItem.to})">
