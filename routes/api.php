@@ -41,7 +41,7 @@ Route::group([
     'middleware' => ['auth:api', 'platform.op']
 ], function (\Illuminate\Routing\Router $router) {
     $router->get('secret-config', [OpenPlatformController::class, 'getSecretConfig']);
-    $router->apiResource('sub-platforms', SubPlatformController::class)->only(['index', 'store', 'destroy']);
+    $router->apiResource('sub-platforms', SubPlatformController::class)->only(['index', 'store', 'show', 'destroy']);
     $router->get('authorizers', [OpenPlatformController::class, 'getAuthorizerList']);
     $router->get('authorizers/{appId}', [OpenPlatformController::class, 'getAuthorizer']);
 });
