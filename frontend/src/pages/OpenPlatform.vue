@@ -252,7 +252,7 @@ export default {
           name: 'subMiniProgramIndex',
           params: {
             opId: this.id,
-            id: item.id
+            appId: item.app_id
           }
         })
       }

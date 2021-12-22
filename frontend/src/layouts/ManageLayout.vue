@@ -73,35 +73,16 @@ const menuList = [
     children: null,
   },
   {
-    title: '配置中心',
+    title: '基础设置',
     icon: 'r_settings',
     to: null,
     children: [
       {
-        title: '基本信息配置',
+        title: '基本信息设置',
         to: 'basicInformation',
       },
-    ],
-  },
-  {
-    title: '开发',
-    icon: 'r_code',
-    to: null,
-    children: [
       {
-        title: '信任域名设置',
-        to: 'trustDomain',
-      },
-      {
-        title: '测试人员',
-        to: 'trustTester',
-      },
-      {
-        title: '代码管理',
-        to: '',
-      },
-      {
-        title: '版本管理',
+        title: '分类配置',
         to: '',
       },
     ],
@@ -109,7 +90,7 @@ const menuList = [
 ]
 
 export default defineComponent({
-  name: 'SubManageLayout',
+  name: 'ManageLayout',
 
   components: {},
 
@@ -128,11 +109,6 @@ export default defineComponent({
   data: () => ({
     title: '微信平台管理',
     version: pk.version,
-  }),
-  beforeMount () {
-    const opId = this.$route.params.opId
-    const appId = this.$route.params.appId
-    this.$store.dispatch('loadAuthorizer', {opId, appId})
-  }
+  })
 })
 </script>

@@ -12,11 +12,13 @@ const routes = [
   },
 
   {
-    path: '/open-platform/:opId/mini-program/:id/',
-    component: () => import('layouts/ManageLayout.vue'),
+    path: '/open-platform/:opId/mini-program/:appId/',
+    component: () => import('layouts/SubManageLayout.vue'),
     children: [
       { path: '', component: () => import('pages/mini-program/Index.vue'), name: 'subMiniProgramIndex' },
-      { path: 'basic-information', component: () => import('pages/mini-program/BasicInformation.vue'), name: 'basicInformation' }
+      { path: 'basic-information', component: () => import('pages/mini-program/BasicInformation.vue'), name: 'basicInformation' },
+      { path: 'trust-domain', component: () => import('pages/mini-program/TrustDomain.vue'), name: 'trustDomain' },
+      { path: 'trust-tester', component: () => import('pages/mini-program/TrustTester.vue'), name: 'trustTester' },
     ],
   },
 

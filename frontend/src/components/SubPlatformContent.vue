@@ -34,7 +34,7 @@
         </view>
       </view>
       <view v-if="info.signature" class="q-pb-none panel-form-item">
-        <view class="panel-form-item-label">描述信息</view>
+        <view class="panel-form-item-label">简介</view>
         <view class="panel-form-item-value">
           <div>{{ info.signature }}</div>
         </view>
@@ -60,7 +60,7 @@
         <view class="panel-form-item-value">
           <view class="panel-form-item-value">
             <div v-for="(url, index) in info.MiniProgramInfo.network.RequestDomain" :key="index">{{ url }}</div>
-            <div class="panel-form-item-value-tip">网络请求信赖域名</div>
+            <div class="panel-form-item-value-tip">api 请求信赖域名</div>
           </view>
           <view class="panel-form-item-value">
             <div v-for="(url, index) in info.MiniProgramInfo.network.WsRequestDomain" :key="index">{{ url }}</div>

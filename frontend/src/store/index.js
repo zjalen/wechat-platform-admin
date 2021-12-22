@@ -2,7 +2,8 @@ import { store } from 'quasar/wrappers'
 import { createStore } from 'vuex'
 
 // import index from './module-index'
-import { LocalStorage } from 'quasar'
+import { Loading, LocalStorage, Notify } from 'quasar'
+import { getAuthorizer } from 'src/api/open-platform'
 
 const saveToken = LocalStorage.getItem('token')
 
@@ -27,8 +28,9 @@ export default store((/* { ssrContext } */) => {
     state: () => ({
       token: saveToken,
       userInfo: null,
-      currentOpenPlatformId: null,
-      currentSubPlatformId: null,
+      currentOpId: null,
+      currentSubAppId:null,
+      currentAuthorizerInfo: {},
     }),
     getters: {
       getToken (state) {
@@ -38,12 +40,32 @@ export default store((/* { ssrContext } */) => {
     mutations: {
       setToken (state, token) {
         state.token = token
+      },
+      setAuthorizerInfo (state, info) {
+        state.currentAuthorizerInfo = info
       }
     },
     actions: {
       setToken ({commit}, token) {
         commit('setToken', token)
         LocalStorage.set('token', token)
+      },
+      loadAuthorizer ({commit}, {opId, appId}) {
+        Loading.show()
+        const timer = setTimeout(() => {
+          Loading.hide()
+          Notify.create({
+            color: 'negative',
+            message: '加载平台基本信息失败'
+          })
+        }, 5000)
+        getAuthorizer(opId, appId).then(res => {
+          clearTimeout(timer)
+          Loading.hide()
+          commit('setAuthorizerInfo', res.authorizer_info)
+        }).catch(() => {
+          clearTimeout(timer)
+        })
       }
     }
   })
