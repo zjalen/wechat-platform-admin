@@ -5,7 +5,7 @@ export function getSecretConfig (id) {
 }
 
 export function getSubPlatforms (platformId, params) {
-  return api.get('open-platform/' + platformId + '/sub-platforms', params)
+  return api.get('open-platform/' + platformId + '/sub-platforms', { params })
 }
 
 export function getSubPlatform (platformId, id) {
@@ -24,6 +24,6 @@ export function getAuthorizers (id, params) {
   return api.get('open-platform/' + id + '/authorizers', params)
 }
 
-export function getAuthorizer (id, appId) {
-  return api.get('open-platform/' + id + '/authorizers/' + appId)
+export function getAuthorizer (id, appId, query = null) {
+  return api.get('open-platform/' + id + '/authorizers/' + appId, { params: query })
 }

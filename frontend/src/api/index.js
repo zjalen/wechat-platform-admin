@@ -5,7 +5,7 @@ export function login (params) {
 }
 
 export function getPlatforms (params) {
-  return api.get('platforms', params)
+  return api.get('platforms', { params })
 }
 export function getPlatform (id) {
   return api.get('platforms/' + id)

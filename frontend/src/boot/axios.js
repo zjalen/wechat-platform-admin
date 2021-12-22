@@ -58,6 +58,7 @@ export default boot(({ app, router, store }) => {
       Notify.create({
         color: 'negative',
         message: message,
+        timeout: 5000
       })
 
       return Promise.reject(error.response.data)

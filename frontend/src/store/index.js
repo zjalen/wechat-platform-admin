@@ -59,11 +59,12 @@ export default store((/* { ssrContext } */) => {
             message: '加载平台基本信息失败'
           })
         }, 5000)
-        getAuthorizer(opId, appId).then(res => {
+        getAuthorizer(opId, appId, {getCache: true}).then(res => {
           clearTimeout(timer)
           Loading.hide()
           commit('setAuthorizerInfo', res.authorizer_info)
         }).catch(() => {
+          Loading.hide()
           clearTimeout(timer)
         })
       }
