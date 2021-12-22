@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Exceptions\BusinessExceptions\UnavailableException;
 use App\Models\Platform;
 use App\Services\ThirdApi\OpenPlatformService;
 use EasyWeChat\Kernel\Exceptions\HttpException;
@@ -11,6 +12,8 @@ use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Notes:
@@ -52,7 +55,7 @@ class OpenPlatformController extends Controller
         $error = null;
         try {
             $token = $openPlatform->access_token->getToken();
-        } catch (HttpException | InvalidArgumentException | InvalidConfigException | RuntimeException | \Psr\SimpleCache\InvalidArgumentException $e) {
+        } catch (HttpException|InvalidArgumentException|InvalidConfigException|RuntimeException|\Psr\SimpleCache\InvalidArgumentException $e) {
             $token = null;
             $error = $e->getMessage();
         }
@@ -75,7 +78,8 @@ class OpenPlatformController extends Controller
     public function bind()
     {
         $openPlatform = $this->getOpenPlatform();
-        $authUrl = $openPlatform->getPreAuthorizationUrl(route('bindCallback', ['opSlug' => $this->openPlatformModel->slug]));
+        $authUrl = $openPlatform->getPreAuthorizationUrl(route('bindCallback',
+            ['opSlug' => $this->openPlatformModel->slug]));
         return view('authorize', ['authUrl' => $authUrl]);
     }
 
@@ -95,23 +99,41 @@ class OpenPlatformController extends Controller
 
     /**
      * 获取所有已绑定的公众号/小程序账号列表
+     * @throws UnavailableException
      */
     public function getAuthorizerList()
     {
         $limit = request('limit', 20);
         $skip = request('skip', 0);
         $openPlatform = $this->getOpenPlatform();
-        return $openPlatform->getAuthorizers($skip, $limit);
+        try {
+            $authorizers = $openPlatform->getAuthorizers($skip, $limit);
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            throw new UnavailableException($exception->getMessage());
+        }
+        return $authorizers;
     }
 
     /**
      * 获取已绑定的平台账号详情
      * @return mixed
+     * @throws UnavailableException|\Psr\SimpleCache\InvalidArgumentException
      */
     public function getAuthorizer()
     {
+        $getCache = request()->query('getCache');
+        if ($getCache) {
+            return Cache::store('file')->get('authorizer');
+        }
         $openPlatform = $this->getOpenPlatform();
         $appId = \request()->route('appId');
-        return $openPlatform->getAuthorizer($appId);
+        try {
+            $authorizer = $openPlatform->getAuthorizer($appId);
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            throw new UnavailableException($exception->getMessage());
+        }
+        return $authorizer;
     }
 }
