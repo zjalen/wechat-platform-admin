@@ -1,26 +1,22 @@
 <template>
   <q-page class="flex flex-center">
     <q-card class="login-frame" bordered>
-      <q-card-section class="text-subtitle1">登录</q-card-section>
+      <q-card-section class="text-h6">登录</q-card-section>
       <q-card-section>
         <q-form
           @submit="onSubmit"
-          class="q-gutter-md"
         >
           <q-input
-            filled
             v-model="formData.email"
             label="输入你的邮箱"
-            dense
             lazy-rules
             :rules="[ val => val && val.length > 0 || '邮箱不能为空']"
           />
 
           <q-input
-            filled
             v-model="formData.password"
             label="输入你的密码"
-            dense
+            type="password"
             lazy-rules
             :rules="[ val => val && val.length > 0 || '密码不能为空']"
           />
@@ -49,7 +45,7 @@ export default {
     onSubmit () {
       login(this.formData).then(res => {
         const token = res.data
-        this.$store.dispatch('index/setToken', token)
+        this.$store.dispatch('setToken', token)
         this.$router.replace('/')
       })
     },

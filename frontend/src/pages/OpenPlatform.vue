@@ -9,7 +9,7 @@
         <view class="row">
           <view class="text-bold">以下信息需与微信开放平台填写信息保持一致，注意保护隐私信息，防止泄露</view>
           <q-space />
-          <q-btn flat round :icon="visible ? 'visibility' : 'visibility_off'" :color="visible ? 'primary' : 'grey'"
+          <q-btn flat round :icon="visible ? 'r_visibility' : 'r_visibility_off'" :color="visible ? 'primary' : 'grey'"
                  @click="visible = !visible"></q-btn>
         </view>
         <view class="q-pb-none panel-form-item">
@@ -45,7 +45,7 @@
       </q-card-section>
       <q-separator />
       <q-card-actions>
-        <q-btn type="a" :href="bind_url" target="__blank" unelevated color="primary" @click="bindNewPlatform" label="绑定新账号"></q-btn>
+        <q-btn type="a" :href="bind_url" target="__blank" unelevated color="primary" label="绑定新账号"></q-btn>
         <q-btn flat color="secondary" @click="loadAuthorizers" label="远程获取已绑定账号">
           <q-tooltip>从微信服务器的接口获取已绑定的账号</q-tooltip>
         </q-btn>
@@ -247,7 +247,15 @@ export default {
       })
     },
     onSubPlatformClick (item) {
-
+      if (item.is_mini_program) {
+        this.$router.push({
+          name: 'subMiniProgramIndex',
+          params: {
+            opId: this.id,
+            id: item.id
+          }
+        })
+      }
     },
   },
 }

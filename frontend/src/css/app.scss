@@ -24,7 +24,7 @@ $mediumFontWeight: 500;
 
 body {
   color: #353535;
-  font-family: "mp-quote", -apple-system-font, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", Arial, sans-serif;
+  font-family: -apple-system-font, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", Arial, sans-serif;
 
   &.body--light {
     background: $globalBgColor;
@@ -156,4 +156,46 @@ a {
 
 .q-field--dense .q-field__control, .q-field--dense .q-field__marginal {
   height: 34px;
+}
+
+.q-item {
+  line-height: 20px;
+  font-size: 18px;
+  color: #353535;
+  padding: 18px 0 18px 24px;
+
+  .q-item__section--avatar {
+    min-width: 20px;
+  }
+
+  .q-item__section--side {
+    padding: 0 14px;
+
+    .q-icon {
+      font-size: 26px;
+      color: #999;
+    }
+  }
+}
+
+.q-item--active {
+  .q-icon {
+    color: $primary !important;
+  }
+}
+
+.q-expansion-item__content {
+  .q-item {
+    margin-left: 82px;
+    font-size: 14px;
+    padding: 10px 8px !important;
+    font-weight: normal;
+    line-height: 15px;
+    min-height: 40px;
+  }
+}
+
+.menu-separator {
+  background-color: #e7e7eb;
+  margin: 0 14px 0 78px;
 }

@@ -9,6 +9,6 @@ export default boot(async (/* { app, router, ... } */) => {
     timeout: 2500,
     textColor: 'white',
     color: 'positive',
-    actions: [{ icon: 'close', color: 'white' }]
+    actions: [{ icon: 'r_close', color: 'white' }]
   })
 })

@@ -7,13 +7,14 @@
           round
           outline
           size="sm"
-          icon="menu"
+          icon="r_menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
-          <text class="text-primary text-weight-medium">微信</text>平台管理
+        <q-toolbar-title class="cursor-pointer" @click="$router.push('/')">
+          <text class="text-primary text-weight-medium">微信</text>
+          平台管理
         </q-toolbar-title>
 
         <div>V {{ version }}</div>
@@ -23,7 +24,7 @@
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
-      class="q-pl-lg"
+      class="q-mt-lg"
     >
       <q-btn
         dense
@@ -36,18 +37,21 @@
         class="q-ml-md q-mt-md"
         @click="toggleLeftDrawer"
       />
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+      <q-list class="q-mr-lg" dense>
+        <view v-for="(menuItem,index) in menuList" :key="menuItem.title">
+          <q-expansion-item v-if="menuItem.children" :label="menuItem.title" :icon="menuItem.icon" :model-value="true">
+            <q-item :inset-level="1" v-for="subMenuItem in menuItem.children" :key="subMenuItem.title" :active="$route.name === subMenuItem.to" clickable v-ripple @click="$router.push({name: subMenuItem.to})">
+              <q-item-section>{{ subMenuItem.title }}</q-item-section>
+            </q-item>
+          </q-expansion-item>
+          <q-item v-else :active="$route.name === menuItem.to" clickable v-ripple @click="$router.push({name: menuItem.to})">
+            <q-item-section avatar>
+              <q-icon :name="menuItem.icon" />
+            </q-item-section>
+            <q-item-section>{{ menuItem.title }}</q-item-section>
+          </q-item>
+          <q-separator v-if="index !== menuList.length - 1" class="menu-separator" />
+        </view>
       </q-list>
     </q-drawer>
 
@@ -58,78 +62,55 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
 import pk from '../../package.json'
-
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
-
 import { defineComponent, ref } from 'vue'
 
+const menuList = [
+  {
+    title: '首页',
+    icon: 'r_home',
+    to: 'subMiniProgramIndex',
+    children: null,
+  },
+  {
+    title: '基础设置',
+    icon: 'r_settings',
+    to: null,
+    children: [
+      {
+        title: '基本信息设置',
+        to: 'basicInformation',
+      },
+      {
+        title: '分类配置',
+        to: '',
+      },
+    ],
+  },
+]
+
 export default defineComponent({
-  name: 'MainLayout',
+  name: 'ManageLayout',
 
   components: {
-    EssentialLink
+    // EssentialLink,
   },
 
   setup () {
     const leftDrawerOpen = ref(false)
 
     return {
-      essentialLinks: linksList,
+      menuList: menuList,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      },
     }
   },
 
   data: () => ({
     title: '微信平台管理',
-    version: pk.version
-  })
+    version: pk.version,
+  }),
 })
 </script>

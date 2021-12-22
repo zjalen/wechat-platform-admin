@@ -9,7 +9,7 @@
           <q-card-section class="flex justify-between items-center text-primary cursor-pointer"
                           @click="onShowClick(item)">
             <text class="text-h6">{{ item.name }}</text>
-            <q-btn flat round icon="close" size="sm" color="negative" @click="deletePlatform(item.id)"></q-btn>
+            <q-btn flat round icon="r_close" size="sm" color="negative" @click="deletePlatform(item.id)"></q-btn>
           </q-card-section>
           <q-separator />
           <q-card-section class="panel-form">

@@ -22,8 +22,8 @@ export default boot(({ app, router, store }) => {
   api.interceptors.request.use(
     config => {
       // do something before request is sent
-      if (store.getters['index/getToken']) {
-        config.headers['Authorization'] = 'Bearer ' + store.getters['index/getToken']
+      if (store.getters['getToken']) {
+        config.headers['Authorization'] = 'Bearer ' + store.getters['getToken']
       }
       return config
     },
@@ -51,7 +51,7 @@ export default boot(({ app, router, store }) => {
           message: message,
           persistent: true,
         }).onOk(() => {
-          store.dispatch('index/setToken', null)
+          store.dispatch('setToken', null)
           router.replace({ path: '/login' })
         })
       }
