@@ -67,6 +67,9 @@ class Handler extends ExceptionHandler
                             if ($e instanceof HttpExceptionInterface) {
                                 $statusCode = $this->isHttpException($e) ? $e->getStatusCode() : 500;
                                 $code = $e->getCode() ?: $statusCode;
+                            } else if ( $e instanceof \EasyWeChat\Kernel\Exceptions\HttpException) {
+                                return $this->jsonResponse($e->getMessage(),
+                                    $e->getCode(), 400);
                             } else {
                                 $statusCode = 500;
                                 $code = 500;

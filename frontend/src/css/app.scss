@@ -75,6 +75,7 @@ body {
 .text-h4 {
   font-weight: 400;
   font-size: 20px;
+  line-height: 1.3;
 }
 
 a {
@@ -155,30 +156,26 @@ a {
   padding: 0 24px;
 }
 
-.q-field--dense .q-field__control, .q-field--dense .q-field__marginal {
-  height: 34px;
-}
-
 .q-item__section--thumbnail {
-  width: 140px;
+  width: 120px;
 }
 
 .q-drawer {
   background: $globalBgColor;
-  padding-top: 24px;
-  padding-bottom: 24px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+
   .q-item {
     line-height: 20px;
     font-size: 18px;
     color: #353535;
-    padding: 18px 0 18px 24px;
+    padding: 18px 18px 18px 24px;
 
     .q-item__section--avatar {
       min-width: 20px;
     }
 
     .q-item__section--side {
-      padding: 0 14px;
 
       .q-icon {
         font-size: 26px;
@@ -210,7 +207,7 @@ a {
 
   .menu-separator {
     background-color: #e7e7eb;
-    margin: 0 14px 0 78px;
+    margin: 0 18px 0 78px;
   }
 
   .drawer-right-bordered {

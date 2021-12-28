@@ -1,11 +1,12 @@
-import { store } from 'quasar/wrappers'
-import { createStore } from 'vuex'
+import { store } from "quasar/wrappers";
+import { createStore } from "vuex";
 
 // import index from './module-index'
-import { Loading, LocalStorage, Notify } from 'quasar'
-import { getAuthorizer } from 'src/api/open-platform'
+import { Loading, LocalStorage, Notify } from "quasar";
+import { getAuthorizer } from "src/api/open-platform";
+import { getBasicInfo } from "src/api/sub-mini-program";
 
-const saveToken = LocalStorage.getItem('token')
+const saveToken = LocalStorage.getItem("token");
 
 /*
  * If not building with SSR mode, you can
@@ -29,46 +30,98 @@ export default store((/* { ssrContext } */) => {
       token: saveToken,
       userInfo: null,
       currentOpId: null,
-      currentSubAppId:null,
+      currentSubAppId: null,
       currentAuthorizerInfo: {},
+      basicInfo: {
+        appid: "",
+        account_type: 0,
+        principal_type: 0,
+        principal_name: "",
+        realname_status: 0,
+        wx_verify_info: {
+          qualification_verify: false,
+          naming_verify: false,
+        },
+        signature_info: {
+          signature: "",
+          modify_used_count: 0,
+          modify_quota: 0,
+        },
+        head_image_info: {
+          head_image_url: null,
+        },
+        nickname: "",
+        registered_country: 0,
+        nickname_info: {
+          nickname: "",
+          modify_used_count: 0,
+          modify_quota: 0,
+        },
+        credential: "",
+      },
     }),
     getters: {
-      getToken (state) {
-        return state.token
-      }
+      getToken(state) {
+        return state.token;
+      },
     },
     mutations: {
-      setToken (state, token) {
-        state.token = token
+      setToken(state, token) {
+        state.token = token;
       },
-      setAuthorizerInfo (state, info) {
-        state.currentAuthorizerInfo = info
-      }
+      setAuthorizerInfo(state, info) {
+        state.currentAuthorizerInfo = info;
+      },
+      setBasicInfo(state, info) {
+        state.basicInfo = info;
+      },
     },
     actions: {
-      setToken ({commit}, token) {
-        commit('setToken', token)
-        LocalStorage.set('token', token)
+      setToken({ commit }, token) {
+        commit("setToken", token);
+        LocalStorage.set("token", token);
       },
-      loadAuthorizer ({commit}, {opId, appId}) {
-        Loading.show()
+      loadAuthorizer({ commit }, { opId, appId }) {
+        Loading.show();
         const timer = setTimeout(() => {
-          Loading.hide()
+          Loading.hide();
           Notify.create({
-            color: 'negative',
-            message: '加载平台基本信息失败'
+            color: "negative",
+            message: "加载平台基本信息失败",
+          });
+        }, 5000);
+        getAuthorizer(opId, appId)
+          .then((res) => {
+            // getAuthorizer(opId, appId, {getCache: true}).then(res => {
+            clearTimeout(timer);
+            Loading.hide();
+            commit("setAuthorizerInfo", res.authorizer_info);
           })
-        }, 5000)
-        getAuthorizer(opId, appId).then(res => {
-        // getAuthorizer(opId, appId, {getCache: true}).then(res => {
-          clearTimeout(timer)
-          Loading.hide()
-          commit('setAuthorizerInfo', res.authorizer_info)
-        }).catch(() => {
-          Loading.hide()
-          clearTimeout(timer)
-        })
-      }
-    }
-  })
-})
+          .catch(() => {
+            Loading.hide();
+            clearTimeout(timer);
+          });
+      },
+      getSubBasicInfo({ commit }, { opId, appId }) {
+        Loading.show();
+        const timer = setTimeout(() => {
+          Loading.hide();
+          Notify.create({
+            color: "negative",
+            message: "加载平台基本信息失败",
+          });
+        }, 5000);
+        getBasicInfo(opId, appId)
+          .then((res) => {
+            clearTimeout(timer);
+            Loading.hide();
+            commit("setBasicInfo", res);
+          })
+          .catch(() => {
+            Loading.hide();
+            clearTimeout(timer);
+          });
+      },
+    },
+  });
+});

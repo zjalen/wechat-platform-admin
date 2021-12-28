@@ -53,7 +53,7 @@ class SubPlatform extends Model
     ];
     public static $serviceMpType = [
         0 => '普通小程序',
-        1 => '试用小程序',
+        12 => '试用小程序',
         2 => '门店小程序',
         3 => '门店小程序',
         4 => '小游戏',

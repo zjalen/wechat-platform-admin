@@ -3,14 +3,12 @@
     <q-card class="login-frame" bordered>
       <q-card-section class="text-h6">登录</q-card-section>
       <q-card-section>
-        <q-form
-          @submit="onSubmit"
-        >
+        <q-form @submit="onSubmit">
           <q-input
             v-model="formData.email"
             label="输入你的邮箱"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || '邮箱不能为空']"
+            :rules="[(val) => (val && val.length > 0) || '邮箱不能为空']"
           />
 
           <q-input
@@ -18,11 +16,17 @@
             label="输入你的密码"
             type="password"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || '密码不能为空']"
+            :rules="[(val) => (val && val.length > 0) || '密码不能为空']"
           />
 
           <div>
-            <q-btn class="btn-login" label="登录" type="submit" unelevated color="primary" />
+            <q-btn
+              class="btn-login"
+              label="登录"
+              type="submit"
+              unelevated
+              color="primary"
+            />
           </div>
         </q-form>
       </q-card-section>
@@ -31,26 +35,26 @@
 </template>
 
 <script>
-import { login } from 'src/api'
+import { login } from "src/api";
 
 export default {
-  name: 'Login',
+  name: "PageLogin",
   data: () => ({
     formData: {
-      email: '',
-      password: '',
-    }
+      email: "",
+      password: "",
+    },
   }),
   methods: {
-    onSubmit () {
-      login(this.formData).then(res => {
-        const token = res.data
-        this.$store.dispatch('setToken', token)
-        this.$router.replace('/')
-      })
+    onSubmit() {
+      login(this.formData).then((res) => {
+        const token = res.data;
+        this.$store.dispatch("setToken", token);
+        this.$router.replace("/");
+      });
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

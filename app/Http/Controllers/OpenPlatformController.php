@@ -7,10 +7,13 @@ namespace App\Http\Controllers;
 use App\Exceptions\BusinessExceptions\UnavailableException;
 use App\Models\Platform;
 use App\Services\ThirdApi\OpenPlatformService;
+use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Exceptions\HttpException;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use EasyWeChat\Kernel\Exceptions\RuntimeException;
+use EasyWeChat\OpenPlatform\Application;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -37,9 +40,9 @@ class OpenPlatformController extends Controller
 
     /**
      * 初始化
-     * @return OpenPlatformService
+     * @return Application
      */
-    private function getOpenPlatform(): OpenPlatformService
+    private function getOpenPlatform(): Application
     {
         $this->openPlatformModel = request()->attributes->get('openPlatform');
         return new OpenPlatformService($this->openPlatformModel);
@@ -135,5 +138,19 @@ class OpenPlatformController extends Controller
             throw new UnavailableException($exception->getMessage());
         }
         return $authorizer;
+    }
+
+    /**
+     * 创建试用小程序
+     *
+     * @throws \Throwable
+     */
+    public function createBetaMiniProgram()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        $name = request()->input('name');
+        $openid = request()->input('openid');
+        return $openPlatform->component->httpPostJson('wxa/component/fastregisterbetaweapp',
+            ['name' => $name, 'openid' => $openid]);
     }
 }

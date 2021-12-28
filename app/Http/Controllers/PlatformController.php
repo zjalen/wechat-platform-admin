@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Platform;
+use App\Services\MediaService;
 use Illuminate\Support\Str;
 
 class PlatformController extends Controller
@@ -53,5 +54,12 @@ class PlatformController extends Controller
     public function destroy($id): int
     {
         return Platform::destroy($id);
+    }
+
+
+    public function getLocalMedia($appId, $type, $fileName): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $mediaService = new MediaService();
+        return $mediaService->getFileResponse($appId, $fileName, $type);
     }
 }

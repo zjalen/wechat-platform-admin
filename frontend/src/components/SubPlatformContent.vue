@@ -3,12 +3,26 @@
     <view class="flex items-center q-pb-md">
       <view class="flex items-center">
         <view class="text-h6">{{ info.nick_name }}</view>
-        <q-chip v-if="info.service_type_info" color="primary" dense square class="text-white">{{ getServiceTypeName() }}</q-chip>
-        <q-chip v-if="info.service_type_name" color="primary" dense square class="text-white">{{ info.service_type_name }}</q-chip>
+        <q-chip
+          v-if="info.service_type_info"
+          color="primary"
+          dense
+          square
+          class="text-white"
+          >{{ getServiceTypeName() }}
+        </q-chip>
+        <q-chip
+          v-if="info.service_type_name"
+          color="primary"
+          dense
+          square
+          class="text-white"
+          >{{ info.service_type_name }}
+        </q-chip>
       </view>
       <q-space />
       <q-avatar v-if="info.head_img" size="40px">
-        <img :src="info.head_img" />
+        <q-img alt="avatar" :src="info.head_img" />
       </q-avatar>
     </view>
     <q-separator class="q-mb-md" />
@@ -24,7 +38,9 @@
         <view class="panel-form-item-label">原始 ID</view>
         <view class="panel-form-item-value">
           <div>{{ info.user_name }}</div>
-          <div class="panel-form-item-value-tip">唯一标识，用于如第三方平台白名单等</div>
+          <div class="panel-form-item-value-tip">
+            唯一标识，用于如第三方平台白名单等
+          </div>
         </view>
       </view>
       <view v-if="info.principal_name" class="q-pb-none panel-form-item">
@@ -48,9 +64,15 @@
       <view v-if="info.business_info" class="q-pb-none panel-form-item">
         <view class="panel-form-item-label">业务信息</view>
         <view class="panel-form-item-value">
-          <q-chip v-for="(item, key) in businessTags" :key="key" square dense class="q-ml-none"
-                  :color="item.value === 1 ? 'primary' : 'grey-5'"
-                  text-color="white">
+          <q-chip
+            v-for="(item, key) in businessTags"
+            :key="key"
+            square
+            dense
+            class="q-ml-none"
+            :color="item.value === 1 ? 'primary' : 'grey-5'"
+            text-color="white"
+          >
             {{ item.title }}
           </q-chip>
         </view>
@@ -59,23 +81,50 @@
         <view class="panel-form-item-label">小程序信息</view>
         <view class="panel-form-item-value">
           <view class="panel-form-item-value">
-            <div v-for="(url, index) in info.MiniProgramInfo.network.RequestDomain" :key="index">{{ url }}</div>
+            <div
+              v-for="(url, index) in info.MiniProgramInfo.network.RequestDomain"
+              :key="index"
+            >
+              {{ url }}
+            </div>
             <div class="panel-form-item-value-tip">api 请求信赖域名</div>
           </view>
           <view class="panel-form-item-value">
-            <div v-for="(url, index) in info.MiniProgramInfo.network.WsRequestDomain" :key="index">{{ url }}</div>
+            <div
+              v-for="(url, index) in info.MiniProgramInfo.network
+                .WsRequestDomain"
+              :key="index"
+            >
+              {{ url }}
+            </div>
             <div class="panel-form-item-value-tip">ws 信赖域名</div>
           </view>
           <view class="panel-form-item-value">
-            <div v-for="(url, index) in info.MiniProgramInfo.network.UploadDomain" :key="index">{{ url }}</div>
+            <div
+              v-for="(url, index) in info.MiniProgramInfo.network.UploadDomain"
+              :key="index"
+            >
+              {{ url }}
+            </div>
             <div class="panel-form-item-value-tip">上传信赖域名</div>
           </view>
           <view class="panel-form-item-value">
-            <div v-for="(url, index) in info.MiniProgramInfo.network.DownloadDomain" :key="index">{{ url }}</div>
+            <div
+              v-for="(url, index) in info.MiniProgramInfo.network
+                .DownloadDomain"
+              :key="index"
+            >
+              {{ url }}
+            </div>
             <div class="panel-form-item-value-tip">下载信赖域名</div>
           </view>
           <view class="panel-form-item-value">
-            <div v-for="(url, index) in info.MiniProgramInfo.network.BizDomain" :key="index">{{ url }}</div>
+            <div
+              v-for="(url, index) in info.MiniProgramInfo.network.BizDomain"
+              :key="index"
+            >
+              {{ url }}
+            </div>
             <div class="panel-form-item-value-tip">业务信赖域名</div>
           </view>
           <view class="panel-form-item-value">
@@ -84,7 +133,7 @@
           </view>
         </view>
       </view>
-      <view  v-if="info.qrcode_url" class="q-pb-none panel-form-item">
+      <view v-if="info.qrcode_url" class="q-pb-none panel-form-item">
         <view class="panel-form-item-label">二维码</view>
         <view class="panel-form-item-value">
           <a target="_blank" :href="info.qrcode_url">查看</a>
@@ -101,63 +150,63 @@ import {
   getMiniProgramVerifyTypeInfo,
   getOfficialAccountServiceTypeInfo,
   getOfficialAccountVerifyTypeInfo,
-} from 'src/utils/platform'
+} from "src/utils/platform";
 
 export default {
-  name: 'SubPlatformCard',
+  name: "SubPlatformCard",
   props: {
     info: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       },
     },
   },
   data: () => ({}),
   computed: {
-    isMiniProgram () {
-      return Object.hasOwnProperty.call(this.info, 'MiniProgramInfo')
+    isMiniProgram() {
+      return Object.hasOwnProperty.call(this.info, "MiniProgramInfo");
     },
-    businessTags () {
-      const businessTags = []
-      if (Object.hasOwnProperty.call(this.info, 'service_type_info')) {
-        Object.keys(this.info.business_info).forEach(value => {
+    businessTags() {
+      const businessTags = [];
+      if (Object.hasOwnProperty.call(this.info, "service_type_info")) {
+        Object.keys(this.info.business_info).forEach((value) => {
           businessTags.push({
             title: getBusinessTypeInfo(value),
             value: this.info.business_info[value],
-          })
-        })
+          });
+        });
       }
-      return businessTags
+      return businessTags;
     },
   },
   methods: {
-    getServiceTypeName () {
-      if (Object.hasOwnProperty.call(this.info, 'service_type_info')) {
+    getServiceTypeName() {
+      if (Object.hasOwnProperty.call(this.info, "service_type_info")) {
         if (this.isMiniProgram) {
-          return getMiniProgramServiceTypeInfo(this.info.service_type_info.id)
-        }
-        else {
-          return getOfficialAccountServiceTypeInfo(this.info.service_type_info.id)
+          return getMiniProgramServiceTypeInfo(this.info.service_type_info.id);
+        } else {
+          return getOfficialAccountServiceTypeInfo(
+            this.info.service_type_info.id
+          );
         }
       }
-      return ''
+      return "";
     },
-    getVerifyTypeName () {
-      if (Object.hasOwnProperty.call(this.info, 'verify_type_info')) {
+    getVerifyTypeName() {
+      if (Object.hasOwnProperty.call(this.info, "verify_type_info")) {
         if (this.isMiniProgram) {
-          return getMiniProgramVerifyTypeInfo(this.info.service_type_info.id)
-        }
-        else {
-          return getOfficialAccountVerifyTypeInfo(this.info.service_type_info.id)
+          return getMiniProgramVerifyTypeInfo(this.info.service_type_info.id);
+        } else {
+          return getOfficialAccountVerifyTypeInfo(
+            this.info.service_type_info.id
+          );
         }
       }
-      return ''
+      return "";
     },
   },
-}
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
