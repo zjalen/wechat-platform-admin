@@ -2,12 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\JsonExceptionResponse;
-use App\Models\OperationLog;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class FormatJsonResponse
 {
@@ -33,17 +30,19 @@ class FormatJsonResponse
                 }
                 $content['errMsg'] = $data['errmsg'];
                 $content['errCode'] = $data['errcode'];
+                $content['data'] = $data;
             } else if (array_key_exists('exceptionCode', $data)) {
                 /** 异常格式化结果 */
                 $content = [
                     'errCode' => $data['exceptionCode'],
                     'errMsg' => $data['exceptionMsg']
                 ];
+                $statusCode = $response->getStatusCode();
             } else {
                 /** 后台方法直接处理结果 */
                 $content['errCode'] = 0;
+                $content['data'] = $data;
             }
-            $content['data'] = $data;
         } else {
             $content = [
                 'errCode' => 0,

@@ -31,6 +31,9 @@ class SaveApiOptionLog
         if (!in_array($request->method(), config('custom.option_log_method'))) {
             return;
         }
+        if ($request->path() == 'api/operation-logs') {
+            return;
+        }
         $wxResponse = [];
         if ($response instanceof JsonResponse) {
             $data = $response->getData();
@@ -49,8 +52,8 @@ class SaveApiOptionLog
         $log->path = $request->path();
         $log->method = $request->method();
         $log->ip = $request->ip();
-        $log->params = json_encode($input, JSON_UNESCAPED_UNICODE);
-        $log->wx_result = json_encode($wxResponse, JSON_UNESCAPED_UNICODE);
+        $log->params = $input;
+        $log->wx_result = $wxResponse;
         $log->save();
     }
 }

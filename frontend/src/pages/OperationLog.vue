@@ -18,6 +18,16 @@
           @request="initData"
           bordered
         >
+          <template v-slot:body-cell-params="props">
+            <q-td>
+              <json-viewer :value="props.value"></json-viewer>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-wx_result="props">
+            <q-td>
+              <json-viewer :value="props.value"></json-viewer>
+            </q-td>
+          </template>
         </q-table>
       </q-card-section>
     </q-card>
@@ -26,9 +36,11 @@
 
 <script>
 import { getOperationLogs } from "src/api";
+import JsonViewer from "vue-json-viewer";
 
 export default {
   name: "OperationLog",
+  components: { JsonViewer },
   data: () => ({
     breadcrumbTitle: "操作日志",
     columns: [
@@ -37,42 +49,49 @@ export default {
         field: "id",
         label: "id",
         sortable: true,
+        align: "left",
       },
       {
         name: "ip",
         field: "ip",
         label: "ip",
         sortable: true,
+        align: "left",
       },
       {
         name: "method",
         field: "method",
         label: "请求方法",
         sortable: true,
+        align: "left",
       },
       {
         name: "path",
         field: "path",
         label: "请求路径",
         sortable: true,
+        align: "left",
       },
       {
         name: "params",
         field: "params",
         label: "参数",
         style: "width: 200px",
+        align: "left",
       },
       {
         name: "wx_result",
         field: "wx_result",
         label: "微信返回结果",
         style: "width: 500px",
+        align: "left",
       },
       {
         name: "created_at",
         field: "created_at",
         label: "请求时间",
         sortable: true,
+        align: "left",
       },
     ],
     rows: [],

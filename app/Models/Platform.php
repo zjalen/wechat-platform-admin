@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Platform
  *
@@ -41,7 +40,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Platform extends BaseModel
+class Platform extends Model
 {
     use HasFactory;
 

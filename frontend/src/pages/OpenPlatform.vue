@@ -296,19 +296,24 @@ export default {
   },
   methods: {
     initData() {
-      getSecretConfig(this.id).then((res) => {
-        this.app_id = res.app_id;
-        this.breadcrumbTitle = res.name;
-        this.serve_url = res.serve_url;
-        this.bind_url = res.bind_url;
-        if (res.access_token) {
-          this.errMsg = null;
-          this.access_token = res.access_token.component_access_token;
-        } else {
+      getSecretConfig(this.id)
+        .then((res) => {
+          this.app_id = res.app_id;
+          this.breadcrumbTitle = res.name;
+          this.serve_url = res.serve_url;
+          this.bind_url = res.bind_url;
+          if (res.access_token) {
+            this.errMsg = null;
+            this.access_token = res.access_token.component_access_token;
+          } else {
+            this.access_token = "无效";
+            this.errMsg = res.errMsg;
+          }
+        })
+        .catch((err) => {
           this.access_token = "无效";
-          this.errMsg = res.errMsg;
-        }
-      });
+          this.errMsg = err.errMsg;
+        });
       this.loadSubPlatforms();
     },
     loadSubPlatforms() {

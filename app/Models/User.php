@@ -37,7 +37,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
+class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use HasFactory, Notifiable, Authenticatable, Authorizable;
 

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Models\OperationLog
@@ -34,4 +33,9 @@ use Illuminate\Database\Eloquent\Model;
 class OperationLog extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'wx_result' => 'array',
+        'params' => 'array',
+    ];
 }
