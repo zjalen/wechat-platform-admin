@@ -4,11 +4,11 @@
 namespace App\Exceptions\BusinessExceptions;
 
 /**
- * 未知异常
+ * 微信官方异常
  * Class UnknownException
  * @package App\Exceptions\BusinessExceptions
  */
-class UnknownException extends BaseBusinessException
+class WeChatException extends BaseBusinessException
 {
     /**
      * 未知异常

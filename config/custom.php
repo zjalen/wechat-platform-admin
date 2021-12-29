@@ -7,4 +7,6 @@ return [
     ],
     'media_token_cache_ttl' => env('MEDIA_TOKEN_CACHE_TTL', 60), // 图片可访问 token 时间，单位分钟
     'media_token_cache_prefix' => env('MEDIA_TOKEN_CACHE_PREFIX', 'media-token:'),
+    'enable_option_log' => env('ENABLE_OPERATION_LOG', false),
+    'option_log_method' => explode('|', env('OPERATION_LOG_METHOD', '')),
 ];

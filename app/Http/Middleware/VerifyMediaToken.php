@@ -6,7 +6,7 @@ use App\Exceptions\BusinessExceptions\NotAllowedException;
 use Closure;
 use Illuminate\Http\Request;
 
-class MediaTokenMiddleware
+class VerifyMediaToken
 {
     /**
      * Handle an incoming request.

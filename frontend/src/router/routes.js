@@ -21,6 +21,11 @@ const routes = [
         path: "open-platform/:id",
         component: () => import("pages/OpenPlatform.vue"),
       },
+      {
+        path: "operation-logs",
+        component: () => import("pages/OperationLog.vue"),
+        name: "operationLogs",
+      },
     ],
   },
 

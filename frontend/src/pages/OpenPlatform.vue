@@ -22,14 +22,14 @@
         <view class="q-pb-none panel-form-item">
           <view class="panel-form-item-label">AppID</view>
           <view class="panel-form-item-value">
-            <div>{{ app_id }}</div>
+            <div>{{ app_id || "加载中" }}</div>
             <div class="panel-form-item-value-tip">平台唯一标识</div>
           </view>
         </view>
         <view class="q-pb-none panel-form-item">
           <view class="panel-form-item-label">授权事件接收URL</view>
           <view class="panel-form-item-value">
-            <div>{{ serve_url }}</div>
+            <div>{{ serve_url || "加载中" }}</div>
             <div class="panel-form-item-value-tip">
               <a
                 href="https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/2.0/operation/thirdparty/prepare.html#_3%E3%80%81%E6%8E%88%E6%9D%83%E4%BA%8B%E4%BB%B6%E6%8E%A5%E6%94%B6-URL"
@@ -282,9 +282,8 @@ export default {
     showCreateBetaDialog: false,
     betaName: "",
     betaOpenId: "",
-    showBetaMpAuthDialog: true,
-    betaMpAuthUrl:
-      "https://mp.weixin.qq.com/wxawap/fastregistertpbeta?action=create&create_token=1Acw7gRUZAXe-uG1-g4c1_EcdE0G4DnyXpYowu6vM1w4bgVhTnbehvYzPxM625z4#wechat_redirect",
+    showBetaMpAuthDialog: false,
+    betaMpAuthUrl: "",
   }),
   computed: {
     maxPage() {

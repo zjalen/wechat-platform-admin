@@ -27,5 +27,5 @@ export function getAuthorizer(id, appId, query = null) {
 }
 
 export function createBetaMiniProgram(id, data) {
-  return api.post("open-platform/" + id + "/createBetaMiniProgram", data);
+  return api.post("open-platform/" + id + "/beta-mini-program", data);
 }

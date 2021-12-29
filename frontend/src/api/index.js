@@ -1,21 +1,29 @@
-import { api } from 'boot/axios'
+import { api } from "boot/axios";
 
-export function login (params) {
-  return api.post('login', params)
+export function login(params) {
+  return api.post("login", params);
 }
 
-export function getPlatforms (params) {
-  return api.get('platforms', { params })
+export function getPlatforms(params) {
+  return api.get("platforms", { params });
 }
-export function getPlatform (id) {
-  return api.get('platforms/' + id)
+
+export function getOperationLogs(params) {
+  return api.get("operation-logs", { params });
 }
-export function createPlatform (params) {
-  return api.post('platforms', params)
+
+export function getPlatform(id) {
+  return api.get("platforms/" + id);
 }
-export function updatePlatform (id, params) {
-  return api.put('platforms/' + id, params)
+
+export function createPlatform(params) {
+  return api.post("platforms", params);
 }
-export function deletePlatform (id) {
-  return api.delete('platforms/' + id)
+
+export function updatePlatform(id, params) {
+  return api.put("platforms/" + id, params);
+}
+
+export function deletePlatform(id) {
+  return api.delete("platforms/" + id);
 }

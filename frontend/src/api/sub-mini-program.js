@@ -41,32 +41,30 @@ export function deleteLocalMedia(id, appId, data) {
 
 export function checkNickName(id, appId, data) {
   return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/checkNickName",
+    "open-platform/" + id + "/mp/" + appId + "/check-nick-name",
     data
   );
 }
 
-export function getNicknameAuditStatus(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/getNicknameAuditStatus",
-    data
+export function getNicknameAuditStatus(id, appId, auditId) {
+  return api.get(
+    "open-platform/" +
+      id +
+      "/mp/" +
+      appId +
+      "/nick-name-audit-status/" +
+      auditId
   );
 }
 
 export function setNickName(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/setNickName",
-    data
-  );
+  return api.put("open-platform/" + id + "/mp/" + appId + "/nick-name", data);
 }
 
 export function setAvatar(id, appId, data) {
-  return api.post("open-platform/" + id + "/mp/" + appId + "/setAvatar", data);
+  return api.put("open-platform/" + id + "/mp/" + appId + "/avatar", data);
 }
 
 export function setSignature(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/setSignature",
-    data
-  );
+  return api.put("open-platform/" + id + "/mp/" + appId + "/signature", data);
 }

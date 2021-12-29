@@ -335,9 +335,7 @@ export default {
           persistent: true,
         })
         .onOk((data) => {
-          getNicknameAuditStatus(this.opId, this.appId, {
-            audit_id: data,
-          }).then((res) => {
+          getNicknameAuditStatus(this.opId, this.appId, data).then((res) => {
             if (res.errcode === 0) {
               this.$q.dialog({
                 title: "名称可用",

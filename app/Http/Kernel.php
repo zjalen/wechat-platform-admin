@@ -2,9 +2,10 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\MediaTokenMiddleware;
-use App\Http\Middleware\OfficialAccountMiddleware;
-use App\Http\Middleware\OpenPlatformMiddleware;
+use App\Http\Middleware\FormatJsonResponse;
+use App\Http\Middleware\SaveApiOptionLog;
+use App\Http\Middleware\VerifyMediaToken;
+use App\Http\Middleware\VerifyOpenPlatform;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -66,8 +67,9 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'platform.op' => OpenPlatformMiddleware::class,
-        'platform.oa' => OfficialAccountMiddleware::class,
-        'media.token' => MediaTokenMiddleware::class
+        'platform.op' => VerifyOpenPlatform::class,
+        'media.token' => VerifyMediaToken::class,
+        'format.json' => FormatJsonResponse::class,
+        'operation-log' => SaveApiOptionLog::class
     ];
 }

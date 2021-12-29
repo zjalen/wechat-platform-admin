@@ -88,9 +88,9 @@ class Handler extends ExceptionHandler
     public function jsonResponse(string $errMsg, int $code = 400, int $httpCode = 400): \Illuminate\Http\JsonResponse
     {
         $content = [
-            'code' => $code,
-            'errMsg' => $errMsg
+            'exceptionCode' => $code,
+            'exceptionMsg' => $errMsg
         ];
-        return response()->json($content, $httpCode)->setEncodingOptions(JSON_UNESCAPED_UNICODE);
+        return response()->json($content, $httpCode);
     }
 }

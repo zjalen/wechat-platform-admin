@@ -1,8 +1,5 @@
 <?php
 
-use App\Http\Controllers\OpenPlatformController;
-use App\Http\Controllers\OpenPlatformServerController;
-use App\Http\Controllers\SubPlatformController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,67 +14,77 @@ use Illuminate\Support\Facades\Route;
 */
 /** 开放平台对微信官方接口，无需认证身份 */
 Route::group([
-    'prefix' => 'op/{opSlug}',
+    'prefix' => 'open-platform-server/{openPlatformSlug}',
     'middleware' => ['platform.op']
 ], function (\Illuminate\Routing\Router $router) {
     // 开放平台接收微信官方消息
-    $router->post('serve', [OpenPlatformServerController::class, 'serve'])->name('openPlatformServe');
+    $router->post('serve',
+        [\App\Http\Controllers\OpenPlatformServerController::class, 'serve'])->name('openPlatformServe');
     // 代公众平台接收用户消息
-    $router->post('{appId}/notify', [OpenPlatformServerController::class, 'notify'])->name('platformNotify');
-    // 绑定开放平台页面
-    $router->get('bind', [OpenPlatformController::class, 'bind'])->name('bind');
-    // 绑定开放平台回调页面
-    $router->get('bind-callback', [OpenPlatformController::class, 'bindCallback'])->name('bindCallback');
+    $router->post('sub/{appId}/notify',
+        [\App\Http\Controllers\OpenPlatformServerController::class, 'subPlatformNotify'])->name('subPlatformNotify');
 });
 
-/** 登录 */
-Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);
-
-Route::get('platform-media/{appId}/{type}/{fileName}', [\App\Http\Controllers\PlatformController::class, 'getLocalMedia'])->middleware('media.token')->name('platform-media');
-
-/** 首页平台列表相关 */
-Route::group(['middleware' => ['auth:api']], function (\Illuminate\Routing\Router $router) {
-    $router->apiResource('platforms', \App\Http\Controllers\PlatformController::class);
-});
-
-/** 开放平台代授权方实现业务 */
 Route::group([
-    'prefix' => 'open-platform/{opId}',
-    'middleware' => ['auth:api', 'platform.op']
-], function (\Illuminate\Routing\Router $router) {
-    $router->get('secret-config', [OpenPlatformController::class, 'getSecretConfig']);
-    $router->get('authorizers', [OpenPlatformController::class, 'getAuthorizerList']);
-    $router->get('authorizers/{appId}', [OpenPlatformController::class, 'getAuthorizer']);
-    $router->post('createBetaMiniProgram', [OpenPlatformController::class, 'createBetaMiniProgram']);
+    /** 统一格式化结果 */
+    'middleware' => ['format.json', 'operation-log'],
+], function () {
+    /** 登录 */
+    Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);
 
-    /** 存储已授权的子平台详细信息在数据库方便后续查看 */
-    $router->apiResource('sub-platforms', SubPlatformController::class)->only(['index', 'store', 'show', 'destroy']);
-
-    /** 开放平台代小程序实现功能 */
-    Route::group([
-        'prefix' => 'mp/{appId}',
-    ], function (\Illuminate\Routing\Router $router) {
-        $router->get('basic-info', [\App\Http\Controllers\SubMiniProgramController::class, 'basicInfo']);
-        $router->post('delete-local-media', [\App\Http\Controllers\SubMiniProgramController::class, 'deleteLocalMedia']);
-        $router->post('local-media', [\App\Http\Controllers\SubMiniProgramController::class, 'uploadLocalMedia']);
-        $router->get('local-media', [\App\Http\Controllers\SubMiniProgramController::class, 'getLocalMediaList']);
-        $router->get('local-media/{fileName}', [\App\Http\Controllers\SubMiniProgramController::class, 'getLocalMedia']);
-        $router->post('upload-template-media', [\App\Http\Controllers\SubMiniProgramController::class, 'uploadTemplateMedia']);
-        $router->get('testers', [\App\Http\Controllers\SubMiniProgramController::class, 'testers']);
-        $router->post('testers', [\App\Http\Controllers\SubMiniProgramController::class, 'bindTester']);
-        $router->delete('testers/{userSlug}', [\App\Http\Controllers\SubMiniProgramController::class, 'unBindTester']);
-
-        $router->post('checkNickName', [\App\Http\Controllers\SubMiniProgramController::class, 'checkNickName']);
-        $router->post('getNicknameAuditStatus', [\App\Http\Controllers\SubMiniProgramController::class, 'getNicknameAuditStatus']);
-        $router->post('setNickName', [\App\Http\Controllers\SubMiniProgramController::class, 'setNickName']);
-        $router->post('setAvatar', [\App\Http\Controllers\SubMiniProgramController::class, 'setAvatar']);
-        $router->post('setSignature', [\App\Http\Controllers\SubMiniProgramController::class, 'setSignature']);
+    /** 首页平台列表相关操作 */
+    Route::group(['middleware' => ['auth:api']], function (\Illuminate\Routing\Router $router) {
+        $router->apiResource('platforms', \App\Http\Controllers\PlatformController::class);
+        $router->apiResource('operation-logs', \App\Http\Controllers\OperationLogController::class)->only('index');
     });
 
-    /** 开放平台代公众号实现功能 */
+    /** 开放平台相关 */
     Route::group([
-        'prefix' => 'oa/{appId}',
+        'prefix' => 'open-platform/{openPlatformId}',
+        'middleware' => ['auth:api', 'platform.op']
     ], function (\Illuminate\Routing\Router $router) {
+        $router->get('secret-config', [\App\Http\Controllers\OpenPlatformController::class, 'getSecretConfig']);
+        $router->get('authorizers', [\App\Http\Controllers\OpenPlatformController::class, 'getAuthorizerList']);
+        $router->get('authorizers/{appId}', [\App\Http\Controllers\OpenPlatformController::class, 'getAuthorizer']);
+        $router->post('beta-mini-program',
+            [\App\Http\Controllers\OpenPlatformController::class, 'createBetaMiniProgram']);
 
+        /** 存储已授权的子平台详细信息在数据库方便后续查看 */
+        $router->apiResource('sub-platforms', \App\Http\Controllers\SubPlatformController::class)->only([
+            'index', 'store', 'show', 'destroy'
+        ]);
+
+        /** 开放平台代小程序实现功能 */
+        Route::group([
+            'prefix' => 'mp/{appId}',
+        ], function (\Illuminate\Routing\Router $router) {
+            $router->get('basic-info', [\App\Http\Controllers\SubMiniProgramController::class, 'basicInfo']);
+            $router->post('delete-local-media',
+                [\App\Http\Controllers\SubMiniProgramController::class, 'deleteLocalMedia']);
+            $router->post('local-media', [\App\Http\Controllers\SubMiniProgramController::class, 'uploadLocalMedia']);
+            $router->get('local-media', [\App\Http\Controllers\SubMiniProgramController::class, 'getLocalMediaList']);
+            $router->get('local-media/{fileName}',
+                [\App\Http\Controllers\SubMiniProgramController::class, 'getLocalMedia']);
+            $router->post('upload-template-media',
+                [\App\Http\Controllers\SubMiniProgramController::class, 'uploadTemplateMedia']);
+            $router->get('testers', [\App\Http\Controllers\SubMiniProgramController::class, 'testers']);
+            $router->post('testers', [\App\Http\Controllers\SubMiniProgramController::class, 'bindTester']);
+            $router->delete('testers/{userSlug}',
+                [\App\Http\Controllers\SubMiniProgramController::class, 'unBindTester']);
+
+            $router->post('check-nick-name', [\App\Http\Controllers\SubMiniProgramController::class, 'checkNickName']);
+            $router->get('nick-name-audit-status/{auditId}',
+                [\App\Http\Controllers\SubMiniProgramController::class, 'getNicknameAuditStatus']);
+            $router->put('nick-name', [\App\Http\Controllers\SubMiniProgramController::class, 'setNickName']);
+            $router->put('avatar', [\App\Http\Controllers\SubMiniProgramController::class, 'setAvatar']);
+            $router->put('signature', [\App\Http\Controllers\SubMiniProgramController::class, 'setSignature']);
+        });
+
+        /** 开放平台代公众号实现功能 */
+        Route::group([
+            'prefix' => 'oa/{appId}',
+        ], function (\Illuminate\Routing\Router $router) {
+
+        });
     });
 });

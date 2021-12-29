@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\BusinessExceptions\ParamsErrorException;
 use App\Exceptions\BusinessExceptions\UnavailableException;
-use App\Exceptions\BusinessExceptions\UnknownException;
+use App\Exceptions\BusinessExceptions\WeChatException;
 use App\Models\Tester;
 use App\Services\MediaService;
 use App\Services\ThirdApi\OpenPlatformService;
@@ -14,36 +14,34 @@ use Illuminate\Support\Str;
 
 class SubMiniProgramController extends Controller
 {
-    /**
-     * 获取小程序实例
-     * @return \EasyWeChat\OpenPlatform\Authorizer\MiniProgram\Application
-     * @throws UnknownException
-     */
-    private function getMiniProgramApplication(): \EasyWeChat\OpenPlatform\Authorizer\MiniProgram\Application
-    {
-        $appId = $this->getAppId();
-        $openPlatformModel = request()->attributes->get('openPlatform');
-        $openPlatform = new OpenPlatformService($openPlatformModel);
-        $result = $openPlatform->getAuthorizer($appId);
-        if (!array_key_exists('authorization_info', $result)) {
-            if ($result['errcode'] != 0) {
-                throw new UnknownException($result['errmsg']);
-            }
-        }
-        $refreshToken = $result['authorization_info']['authorizer_refresh_token'];
-        // 生成实例，代小程序实现业务
-        return $openPlatform->miniProgram($appId, $refreshToken);
-    }
 
+    /**
+     * 获取 appId
+     * @return \Illuminate\Routing\Route|object|string|null
+     */
     private function getAppId()
     {
         return request()->route('appId');
     }
 
     /**
+     * 获取小程序实例
+     * @return \EasyWeChat\OpenPlatform\Authorizer\MiniProgram\Application
+     * @throws \App\Exceptions\BusinessExceptions\WeChatException
+     */
+    private function getMiniProgramApplication(): \EasyWeChat\OpenPlatform\Authorizer\MiniProgram\Application
+    {
+        $appId = $this->getAppId();
+        $openPlatformModel = request()->attributes->get('openPlatform');
+        $openPlatformService = new OpenPlatformService($openPlatformModel);
+        // 生成实例，代小程序实现业务
+        return $openPlatformService->getMiniProgramApplication($appId);
+    }
+
+    /**
      * 获取账户基本信息
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     * @throws UnknownException
+     * @throws \App\Exceptions\BusinessExceptions\WeChatException
      */
     public function basicInfo()
     {
@@ -165,7 +163,7 @@ class SubMiniProgramController extends Controller
      */
     public function getNicknameAuditStatus()
     {
-        $auditId = request()->input('audit_id');
+        $auditId = request()->route('auditId');
         $miniProgram = $this->getMiniProgramApplication();
         return $miniProgram->setting->getNicknameAuditStatus($auditId);
     }
@@ -215,8 +213,8 @@ class SubMiniProgramController extends Controller
      * 设置头像
      *
      * @throws InvalidConfigException
+     * @throws \App\Exceptions\BusinessExceptions\WeChatException
      * @throws GuzzleException
-     * @throws UnknownException
      */
     public function setAvatar()
     {
@@ -237,7 +235,7 @@ class SubMiniProgramController extends Controller
      *
      * @throws InvalidConfigException
      * @throws GuzzleException
-     * @throws UnknownException
+     * @throws WeChatException
      */
     public function setSignature()
     {
@@ -250,7 +248,7 @@ class SubMiniProgramController extends Controller
      * 获取所有小程序体验者
      *
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     * @throws GuzzleException|InvalidConfigException|UnknownException
+     * @throws GuzzleException|InvalidConfigException|WeChatException
      */
     public function testers()
     {
@@ -279,7 +277,7 @@ class SubMiniProgramController extends Controller
      *
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      * @throws GuzzleException
-     * @throws InvalidConfigException|UnknownException
+     * @throws InvalidConfigException|WeChatException
      */
     public function bindTester()
     {
@@ -308,7 +306,7 @@ class SubMiniProgramController extends Controller
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      * @throws GuzzleException
      * @throws InvalidConfigException
-     * @throws UnknownException
+     * @throws WeChatException
      */
     public function unBindTester()
     {

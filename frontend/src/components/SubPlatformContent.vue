@@ -191,7 +191,7 @@ export default {
           );
         }
       }
-      return "";
+      return "空";
     },
     getVerifyTypeName() {
       if (Object.hasOwnProperty.call(this.info, "verify_type_info")) {
@@ -203,7 +203,7 @@ export default {
           );
         }
       }
-      return "";
+      return "空";
     },
   },
 };

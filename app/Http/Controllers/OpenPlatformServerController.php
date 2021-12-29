@@ -33,13 +33,12 @@ class OpenPlatformServerController extends Controller
     private $openPlatformModel;
 
     /**
-     * 初始化
-     * @return OpenPlatformService
+     * @return \EasyWeChat\OpenPlatform\Application
      */
-    private function getOpenPlatform(): OpenPlatformService
+    private function getOpenPlatform(): \EasyWeChat\OpenPlatform\Application
     {
         $this->openPlatformModel = request()->attributes->get('openPlatform');
-        return new OpenPlatformService($this->openPlatformModel);
+        return (new OpenPlatformService($this->openPlatformModel))->getApplication();
     }
 
     /**
@@ -78,7 +77,7 @@ class OpenPlatformServerController extends Controller
      * @param string $appId
      * @return string|Response
      */
-    public function notify(string $appId)
+    public function subPlatformNotify(string $appId)
     {
         try {
             $officialAccount = $this->getOpenPlatform()->officialAccount($appId);

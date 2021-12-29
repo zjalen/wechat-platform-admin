@@ -44,10 +44,10 @@ export default boot(({ app, router, store }) => {
             message: response.data.errmsg,
             timeout: 5000,
           });
-          return Promise.reject(response.data);
+          return Promise.reject(response.data.data);
         }
       }
-      return response.data;
+      return response.data.data;
     },
     (error) => {
       let message = Object.prototype.hasOwnProperty.call(
