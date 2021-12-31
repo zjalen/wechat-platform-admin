@@ -65,3 +65,19 @@ export function setWebDomain(id, data) {
 export function getWebDomainCheckFile(id) {
   return api.post("open-platform/" + id + "/get-domain-confirm-file");
 }
+
+export function getCodeDrafts(id) {
+  return api.get("open-platform/" + id + "/code-drafts");
+}
+
+export function getCodeTemplate(id, params) {
+  return api.get("open-platform/" + id + "/code-template", { params });
+}
+
+export function addCodeTemplate(id, data) {
+  return api.post("open-platform/" + id + "/add-template", data);
+}
+
+export function deleteCodeTemplate(id, data) {
+  return api.post("open-platform/" + id + "/delete-template", data);
+}

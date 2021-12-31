@@ -17,7 +17,7 @@
           平台管理
         </q-toolbar-title>
 
-        <div>V {{ version }}</div>
+        <div>{{ $store.state.basicInfo.nickname_info.nickname }}</div>
       </q-toolbar>
     </q-header>
 

@@ -80,12 +80,19 @@
           @click="showCreateBetaDialog = true"
         ></q-btn>
         <q-btn
-          flat
-          color="secondary"
+          unelevated
+          color="grey"
           @click="loadAuthorizers"
           label="远程获取已绑定账号"
         >
           <q-tooltip>从微信服务器的接口获取已绑定的账号</q-tooltip>
+        </q-btn>
+        <q-btn
+          unelevated
+          color="negative"
+          :to="`/open-platform/${id}/code-manage`"
+          label="代码管理"
+        >
         </q-btn>
       </q-card-actions>
     </q-card>

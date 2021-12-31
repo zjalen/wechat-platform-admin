@@ -58,6 +58,11 @@ Route::group([
         $router->post('beta-mini-program',
             [\App\Http\Controllers\OpenPlatformController::class, 'createBetaMiniProgram']);
 
+        $router->get('code-drafts', [\App\Http\Controllers\OpenPlatformController::class, 'codeDrafts']);
+        $router->get('code-template', [\App\Http\Controllers\OpenPlatformController::class, 'codeTemplate']);
+        $router->post('add-template', [\App\Http\Controllers\OpenPlatformController::class, 'addCodeDraftToTemplate']);
+        $router->post('delete-template', [\App\Http\Controllers\OpenPlatformController::class, 'deleteCodeTemplate']);
+
         /** 存储已授权的子平台详细信息在数据库方便后续查看 */
         $router->apiResource('sub-platforms', \App\Http\Controllers\SubPlatformController::class)->only([
             'index', 'store', 'show', 'destroy'

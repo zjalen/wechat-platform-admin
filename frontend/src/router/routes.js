@@ -14,6 +14,10 @@ const routes = [
         component: () => import("pages/PlatformCreateAndEdit.vue"),
       },
       {
+        path: "platforms/:id/edit",
+        component: () => import("pages/PlatformCreateAndEdit.vue"),
+      },
+      {
         path: "operation-logs",
         component: () => import("pages/OperationLog.vue"),
         name: "operationLogs",
@@ -21,20 +25,20 @@ const routes = [
     ],
   },
   {
-    path: "/",
+    path: "/open-platform",
     component: () => import("layouts/ManageLayout.vue"),
     children: [
       {
-        path: "platforms/:id/edit",
-        component: () => import("pages/PlatformCreateAndEdit.vue"),
+        path: ":id",
+        component: () => import("pages/op/Show.vue"),
       },
       {
-        path: "open-platform/:id",
-        component: () => import("pages/OpenPlatform.vue"),
+        path: ":id/domain",
+        component: () => import("pages/op/Domain.vue"),
       },
       {
-        path: "open-platform/:id/domain",
-        component: () => import("pages/OpenPlatformDomain.vue"),
+        path: ":id/code-manage",
+        component: () => import("pages/op/CodeManage.vue"),
       },
     ],
   },

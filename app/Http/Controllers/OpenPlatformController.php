@@ -250,4 +250,60 @@ class OpenPlatformController extends Controller
         return $openPlatform->component->httpPostJson('cgi-bin/component/modify_wxa_jump_domain',
             ['action' => 'set', 'wxa_jump_h5_domain' => $domainList, 'is_modify_published_together' => $isPublishedTogether]);
     }
+
+    /**
+     * 获取代码草稿
+     *
+     * @return mixed
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function codeDrafts()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        return $openPlatform->code_template->getDrafts();
+    }
+
+    /**
+     * 将草稿添加为模板
+     *
+     * @return mixed
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function addCodeDraftToTemplate()
+    {
+        $type = request('type');
+        $draftId = request('draftId');
+        $openPlatform = $this->getOpenPlatform();
+        return $openPlatform->code_template->createFromDraft($draftId, $type);
+    }
+
+    /**
+     * 获取代码模板
+     *
+     * @return mixed
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function codeTemplate()
+    {
+        $type = request('type');
+        $openPlatform = $this->getOpenPlatform();
+        return $openPlatform->code_template->list($type);
+    }
+
+    /**
+     * 删除代码模板
+     *
+     * @return mixed
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function deleteCodeTemplate()
+    {
+        $templateId = request('templateId');
+        $openPlatform = $this->getOpenPlatform();
+        return $openPlatform->code_template->delete($templateId);
+    }
 }
