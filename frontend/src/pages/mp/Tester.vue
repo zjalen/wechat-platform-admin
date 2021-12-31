@@ -1,11 +1,15 @@
 <template>
   <q-page class="q-pa-lg">
     <q-card>
-      <q-card-section class="text-h4 row items-center">
+      <q-card-section class="text-h4">
         小程序体验者
+        <div class="text-caption text-grey q-mt-sm">
+          体验者可以在未发布前测试、使用小程序
+        </div>
       </q-card-section>
-      <q-card-section>
-        <q-form @submit="bindTester">
+      <q-separator />
+      <q-card-section class="q-pb-none">
+        <q-form @submit="bindTester" class="row">
           <q-input
             style="width: 200px"
             clearable
@@ -17,12 +21,19 @@
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || '不能为空']"
           />
-          <q-btn unelevated dense color="primary" type="submit">绑定</q-btn>
+          <q-btn
+            class="q-ml-lg"
+            style="height: 40px"
+            unelevated
+            color="primary"
+            type="submit"
+            >绑定
+          </q-btn>
           <q-btn
             flat
-            dense
             color="grey"
-            class="q-ml-lg"
+            class="q-ml-sm"
+            style="height: 40px"
             @click="unBindTester(wechatId, true)"
             >用微信号解绑
           </q-btn>
