@@ -44,6 +44,15 @@ Route::group([
         'middleware' => ['auth:api', 'platform.op']
     ], function (\Illuminate\Routing\Router $router) {
         $router->get('secret-config', [\App\Http\Controllers\OpenPlatformController::class, 'getSecretConfig']);
+        $router->get('get-server-domain', [\App\Http\Controllers\OpenPlatformController::class, 'getServerDomain']);
+        $router->post('delete-server-domain', [\App\Http\Controllers\OpenPlatformController::class, 'deleteServerDomain']);
+        $router->post('add-server-domain', [\App\Http\Controllers\OpenPlatformController::class, 'addServerDomain']);
+        $router->post('set-server-domain', [\App\Http\Controllers\OpenPlatformController::class, 'setServerDomain']);
+        $router->post('get-domain-confirm-file', [\App\Http\Controllers\OpenPlatformController::class, 'getDomainConfirmFile']);
+        $router->get('get-web-domain', [\App\Http\Controllers\OpenPlatformController::class, 'getWebDomain']);
+        $router->post('delete-web-domain', [\App\Http\Controllers\OpenPlatformController::class, 'deleteWebDomain']);
+        $router->post('add-web-domain', [\App\Http\Controllers\OpenPlatformController::class, 'addWebDomain']);
+        $router->post('set-web-domain', [\App\Http\Controllers\OpenPlatformController::class, 'setWebDomain']);
         $router->get('authorizers', [\App\Http\Controllers\OpenPlatformController::class, 'getAuthorizerList']);
         $router->get('authorizers/{appId}', [\App\Http\Controllers\OpenPlatformController::class, 'getAuthorizer']);
         $router->post('beta-mini-program',
@@ -78,6 +87,17 @@ Route::group([
             $router->put('nick-name', [\App\Http\Controllers\SubMiniProgramController::class, 'setNickName']);
             $router->put('avatar', [\App\Http\Controllers\SubMiniProgramController::class, 'setAvatar']);
             $router->put('signature', [\App\Http\Controllers\SubMiniProgramController::class, 'setSignature']);
+
+            $router->get('get-server-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'getServerDomain']);
+            $router->post('add-server-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'addServerDomain']);
+            $router->post('set-server-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'setServerDomain']);
+            $router->post('delete-server-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'deleteServerDomain']);
+
+            $router->get('get-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'getWebDomain']);
+            $router->post('sync-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'syncWebDomain']);
+            $router->post('add-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'addWebDomain']);
+            $router->post('set-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'setWebDomain']);
+            $router->post('delete-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'deleteWebDomain']);
         });
 
         /** 开放平台代公众号实现功能 */

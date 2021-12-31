@@ -4,7 +4,7 @@
       <q-card-section>
         <view class="flex items-center q-pb-md">
           <view class="flex items-center">
-            <view class="text-h6">{{ basicInfo.nickname }}</view>
+            <view class="text-h4">{{ basicInfo.nickname }}</view>
             <q-chip
               v-if="basicInfo.account_type"
               color="primary"

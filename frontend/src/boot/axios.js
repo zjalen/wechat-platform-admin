@@ -37,43 +37,48 @@ export default boot(({ app, router, store }) => {
   // response interceptor
   api.interceptors.response.use(
     (response) => {
-      if (Object.prototype.hasOwnProperty.call(response.data, "errcode")) {
-        if (response.data.errcode !== 0) {
-          Notify.create({
-            color: "negative",
-            message: response.data.errmsg,
-            timeout: 5000,
-          });
-          return Promise.reject(response.data.data);
-        }
-      }
       return response.data.data;
     },
     (error) => {
-      let message = Object.prototype.hasOwnProperty.call(
-        error.response.data,
-        "errMsg"
-      )
-        ? error.response.data.errMsg
-        : error.response.statusText;
-      if (error.response.status === 401) {
-        message = "身份验证失败，请重新登录";
-        Dialog.create({
-          title: "提示",
-          class: "negative",
+      if (Object.prototype.hasOwnProperty.call(error.response.data, "data")) {
+        if (
+          Object.prototype.hasOwnProperty.call(
+            error.response.data.data,
+            "errcode"
+          )
+        ) {
+          if (error.response.data.data.errcode !== 0) {
+            Dialog.create({
+              title: "请求错误",
+              message: error.response.data.data.errmsg,
+            });
+          }
+        }
+      } else {
+        let message = Object.prototype.hasOwnProperty.call(
+          error.response.data,
+          "errMsg"
+        )
+          ? error.response.data.errMsg
+          : error.response.statusText;
+        if (error.response.status === 401) {
+          message = "身份验证失败，请重新登录";
+          Dialog.create({
+            title: "提示",
+            class: "negative",
+            message: message,
+            persistent: true,
+          }).onOk(() => {
+            store.dispatch("setToken", null);
+            router.replace({ path: "/login" });
+          });
+        }
+        Notify.create({
+          color: "negative",
           message: message,
-          persistent: true,
-        }).onOk(() => {
-          store.dispatch("setToken", null);
-          router.replace({ path: "/login" });
+          timeout: 5000,
         });
       }
-      Notify.create({
-        color: "negative",
-        message: message,
-        timeout: 5000,
-      });
-
       return Promise.reject(error.response.data);
     }
   );

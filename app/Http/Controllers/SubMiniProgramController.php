@@ -332,4 +332,148 @@ class SubMiniProgramController extends Controller
         }
         return $result;
     }
+
+    /**
+     * 获取服务器域名
+     *
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function getServerDomain()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->domain->modify(['action' => 'get']);
+    }
+
+    /**
+     * 添加服务器域名
+     *
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function addServerDomain()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        $params['requestdomain'] = request('request', []);
+        $params['wsrequestdomain'] = request('ws', []);
+        $params['uploaddomain'] = request('upload', []);
+        $params['downloaddomain'] = request('download', []);
+        $params['udpdomain'] = request('udp', []);
+        $params['tcpdomain'] = request('tcp', []);
+
+        $params['action'] = 'add';
+        return $miniProgram->domain->modify($params);
+    }
+
+    /**
+     * 修改服务器域名
+     *
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function setServerDomain()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        $params['requestdomain'] = request('request', []);
+        $params['wsrequestdomain'] = request('ws', []);
+        $params['uploaddomain'] = request('upload', []);
+        $params['downloaddomain'] = request('download', []);
+        $params['udpdomain'] = request('udp', []);
+        $params['tcpdomain'] = request('tcp', []);
+
+        $params['action'] = 'set';
+        return $miniProgram->domain->modify($params);
+    }
+
+    /**
+     * 删除服务器域名
+     *
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function deleteServerDomain()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        $params['requestdomain'] = request('request', []);
+        $params['wsrequestdomain'] = request('ws', []);
+        $params['uploaddomain'] = request('upload', []);
+        $params['downloaddomain'] = request('download', []);
+        $params['udpdomain'] = request('udp', []);
+        $params['tcpdomain'] = request('tcp', []);
+
+        $params['action'] = 'delete';
+        return $miniProgram->domain->modify($params);
+    }
+
+    /**
+     * 查询业务域名
+     *
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function getWebDomain()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->domain->setWebviewDomain([], 'get');
+    }
+
+    /**
+     * 同步第三方平台所有业务域名
+     *
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function syncWebDomain()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->domain->setWebviewDomain([], null);
+    }
+
+    /**
+     * 添加业务域名
+     *
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function addWebDomain()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        $domainArray = request('webDomain', []);
+        return $miniProgram->domain->setWebviewDomain($domainArray, 'add');
+    }
+
+    /**
+     * 设置业务域名
+     *
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function setWebDomain()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        $domainArray = request('webDomain', []);
+        return $miniProgram->domain->setWebviewDomain($domainArray, 'set');
+    }
+
+    /**
+     * 删除业务域名
+     *
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function deleteWebDomain()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        $domainArray = request('webDomain', []);
+        return $miniProgram->domain->setWebviewDomain($domainArray, 'delete');
+    }
 }

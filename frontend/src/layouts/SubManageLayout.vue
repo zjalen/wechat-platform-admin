@@ -104,6 +104,10 @@ const menuList = [
         to: "basicInformation",
       },
       {
+        title: "信任域名设置",
+        to: "trustDomain",
+      },
+      {
         title: "类目管理",
         to: "category",
       },
@@ -114,10 +118,6 @@ const menuList = [
     icon: "r_code",
     to: null,
     children: [
-      {
-        title: "信任域名设置",
-        to: "trustDomain",
-      },
       {
         title: "测试人员",
         to: "tester",
@@ -166,7 +166,7 @@ export default defineComponent({
     version: pk.version,
   }),
   beforeMount() {
-    this.$store.dispatch("getSubBasicInfo", {
+    this.$store.dispatch("loadSubBasicInfo", {
       opId: this.opId,
       appId: this.appId,
     });

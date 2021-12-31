@@ -4,12 +4,15 @@
 namespace App\Http\Controllers;
 
 
+use App\Exceptions\BusinessExceptions\UnavailableException;
 use App\Models\Platform;
 use App\Services\ThirdApi\OpenPlatformService;
 use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use EasyWeChat\OpenPlatform\Application;
+use Illuminate\Http\File;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Notes:
@@ -128,5 +131,123 @@ class OpenPlatformController extends Controller
         $openid = request()->input('openid');
         return $openPlatform->component->httpPostJson('wxa/component/fastregisterbetaweapp',
             ['name' => $name, 'openid' => $openid]);
+    }
+
+    /**
+     * 获取可信任域名
+     *
+     * @throws \Throwable
+     */
+    public function getServerDomain()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        return $openPlatform->component->httpPostJson('cgi-bin/component/modify_wxa_server_domain',
+            ['action' => 'get']);
+    }
+
+    /**
+     * 删除可信任域名
+     *
+     * @throws \Throwable
+     */
+    public function deleteServerDomain()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        $domainList = request()->input('domainList');
+        $isPublishedTogether = request()->input('isPublishedTogether', false);
+        return $openPlatform->component->httpPostJson('cgi-bin/component/modify_wxa_server_domain',
+            ['action' => 'delete', 'wxa_server_domain' => $domainList, 'is_modify_published_together' => $isPublishedTogether]);
+    }
+
+    /**
+     * 添加可信任域名
+     *
+     * @throws \Throwable
+     */
+    public function addServerDomain()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        $domainList = request()->input('domainList');
+        $isPublishedTogether = request()->input('isPublishedTogether', false);
+        return $openPlatform->component->httpPostJson('cgi-bin/component/modify_wxa_server_domain',
+            ['action' => 'add', 'wxa_server_domain' => $domainList, 'is_modify_published_together' => $isPublishedTogether]);
+    }
+
+    /**
+     * 修改可信任域名
+     *
+     * @throws \Throwable
+     */
+    public function setServerDomain()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        $domainList = request()->input('domainList');
+        $isPublishedTogether = request()->input('isPublishedTogether', false);
+        return $openPlatform->component->httpPostJson('cgi-bin/component/modify_wxa_server_domain',
+            ['action' => 'set', 'wxa_server_domain' => $domainList, 'is_modify_published_together' => $isPublishedTogether]);
+    }
+    /**
+     * 下载域名校验文件
+     *
+     * @throws \Throwable
+     */
+    public function getDomainConfirmFile()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        return $openPlatform->component->httpPostJson('cgi-bin/component/get_domain_confirmfile');
+    }
+
+    /**
+     * 获取可信任业务域名
+     *
+     * @throws \Throwable
+     */
+    public function getWebDomain()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        return $openPlatform->component->httpPostJson('cgi-bin/component/modify_wxa_jump_domain',
+            ['action' => 'get']);
+    }
+
+    /**
+     * 删除可信任域名
+     *
+     * @throws \Throwable
+     */
+    public function deleteWebDomain()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        $domainList = request()->input('domainList');
+        $isPublishedTogether = request()->input('isPublishedTogether', false);
+        return $openPlatform->component->httpPostJson('cgi-bin/component/modify_wxa_jump_domain',
+            ['action' => 'delete', 'wxa_jump_h5_domain' => $domainList, 'is_modify_published_together' => $isPublishedTogether]);
+    }
+
+    /**
+     * 添加可信任域名
+     *
+     * @throws \Throwable
+     */
+    public function addWebDomain()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        $domainList = request()->input('domainList');
+        $isPublishedTogether = request()->input('isPublishedTogether', false);
+        return $openPlatform->component->httpPostJson('cgi-bin/component/modify_wxa_jump_domain',
+            ['action' => 'add', 'wxa_jump_h5_domain' => $domainList, 'is_modify_published_together' => $isPublishedTogether]);
+    }
+
+    /**
+     * 修改可信任域名
+     *
+     * @throws \Throwable
+     */
+    public function setWebDomain()
+    {
+        $openPlatform = $this->getOpenPlatform();
+        $domainList = request()->input('domainList');
+        $isPublishedTogether = request()->input('isPublishedTogether', false);
+        return $openPlatform->component->httpPostJson('cgi-bin/component/modify_wxa_jump_domain',
+            ['action' => 'set', 'wxa_jump_h5_domain' => $domainList, 'is_modify_published_together' => $isPublishedTogether]);
     }
 }

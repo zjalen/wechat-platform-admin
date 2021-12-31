@@ -29,3 +29,39 @@ export function getAuthorizer(id, appId, query = null) {
 export function createBetaMiniProgram(id, data) {
   return api.post("open-platform/" + id + "/beta-mini-program", data);
 }
+
+export function getServerDomain(id) {
+  return api.get("open-platform/" + id + "/get-server-domain");
+}
+
+export function deleteServerDomain(id, data) {
+  return api.post("open-platform/" + id + "/delete-server-domain", data);
+}
+
+export function addServerDomain(id, data) {
+  return api.post("open-platform/" + id + "/add-server-domain", data);
+}
+
+export function setServerDomain(id, data) {
+  return api.post("open-platform/" + id + "/set-server-domain", data);
+}
+
+export function getWebDomain(id) {
+  return api.get("open-platform/" + id + "/get-web-domain");
+}
+
+export function deleteWebDomain(id, data) {
+  return api.post("open-platform/" + id + "/delete-web-domain", data);
+}
+
+export function addWebDomain(id, data) {
+  return api.post("open-platform/" + id + "/add-web-domain", data);
+}
+
+export function setWebDomain(id, data) {
+  return api.post("open-platform/" + id + "/set-web-domain", data);
+}
+
+export function getWebDomainCheckFile(id) {
+  return api.post("open-platform/" + id + "/get-domain-confirm-file");
+}

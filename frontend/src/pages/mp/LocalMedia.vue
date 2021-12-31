@@ -3,7 +3,7 @@
     <q-card>
       <q-card-section>
         <div class="text-h4">服务器素材中心</div>
-        <div class="text-body2 text-grey-6">
+        <div class="text-caption text-grey q-mt-sm">
           点击素材上传到微信获得素材 id 以供审核等使用
         </div>
       </q-card-section>

@@ -5,6 +5,7 @@ import { createStore } from "vuex";
 import { Loading, LocalStorage, Notify } from "quasar";
 import { getAuthorizer } from "src/api/open-platform";
 import { getBasicInfo } from "src/api/sub-mini-program";
+import { getPlatform } from "src/api";
 
 const saveToken = LocalStorage.getItem("token");
 
@@ -32,6 +33,7 @@ export default store((/* { ssrContext } */) => {
       currentOpId: null,
       currentSubAppId: null,
       currentAuthorizerInfo: {},
+      currentPlatformInfo: {},
       basicInfo: {
         appid: "",
         account_type: 0,
@@ -75,11 +77,19 @@ export default store((/* { ssrContext } */) => {
       setBasicInfo(state, info) {
         state.basicInfo = info;
       },
+      setCurrentPlatformInfo(state, info) {
+        state.currentPlatformInfo = info;
+      },
     },
     actions: {
       setToken({ commit }, token) {
         commit("setToken", token);
         LocalStorage.set("token", token);
+      },
+      loadCurrentPlatformInfo({ commit }, id) {
+        getPlatform(id).then((res) => {
+          commit("setCurrentPlatformInfo", res);
+        });
       },
       loadAuthorizer({ commit }, { opId, appId }) {
         Loading.show();
@@ -102,7 +112,7 @@ export default store((/* { ssrContext } */) => {
             clearTimeout(timer);
           });
       },
-      getSubBasicInfo({ commit }, { opId, appId }) {
+      loadSubBasicInfo({ commit }, { opId, appId }) {
         Loading.show();
         const timer = setTimeout(() => {
           Loading.hide();

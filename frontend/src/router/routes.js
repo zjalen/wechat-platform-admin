@@ -14,6 +14,17 @@ const routes = [
         component: () => import("pages/PlatformCreateAndEdit.vue"),
       },
       {
+        path: "operation-logs",
+        component: () => import("pages/OperationLog.vue"),
+        name: "operationLogs",
+      },
+    ],
+  },
+  {
+    path: "/",
+    component: () => import("layouts/ManageLayout.vue"),
+    children: [
+      {
         path: "platforms/:id/edit",
         component: () => import("pages/PlatformCreateAndEdit.vue"),
       },
@@ -22,9 +33,8 @@ const routes = [
         component: () => import("pages/OpenPlatform.vue"),
       },
       {
-        path: "operation-logs",
-        component: () => import("pages/OperationLog.vue"),
-        name: "operationLogs",
+        path: "open-platform/:id/domain",
+        component: () => import("pages/OpenPlatformDomain.vue"),
       },
     ],
   },
@@ -50,7 +60,7 @@ const routes = [
       },
       {
         path: "trust-domain",
-        component: () => import("pages/mp/TrustDomain.vue"),
+        component: () => import("pages/mp/DomainSettings.vue"),
         name: "trustDomain",
       },
       {

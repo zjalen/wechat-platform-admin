@@ -7,7 +7,7 @@
           平台管理
         </q-toolbar-title>
 
-        <q-btn flat :label="version">
+        <q-btn flat :label="$store.state.currentPlatformInfo.name || version">
           <q-menu>
             <q-list style="min-width: 100px">
               <q-item clickable v-close-popup to="/operation-logs">

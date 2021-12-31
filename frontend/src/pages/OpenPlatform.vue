@@ -41,6 +41,12 @@
           </view>
         </view>
         <view class="panel-form-item">
+          <view class="panel-form-item-label">可信任域名</view>
+          <view class="panel-form-item-value">
+            <a :href="`/#/open-platform/${id}/domain`">点击查看</a>
+          </view>
+        </view>
+        <view class="panel-form-item">
           <view class="panel-form-item-label">AccessToken</view>
           <view class="panel-form-item-value">
             <div>{{ visibleData(access_token) }}</div>

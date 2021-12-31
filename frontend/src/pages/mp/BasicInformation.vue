@@ -56,7 +56,7 @@
           </q-item>
           <q-item>
             <q-item-section thumbnail>
-              <q-item-label>头像</q-item-label>
+              <q-item-label>头像信息</q-item-label>
             </q-item-section>
 
             <q-item-section>
@@ -86,7 +86,7 @@
           </q-item>
           <q-item>
             <q-item-section thumbnail>
-              <q-item-label>简介</q-item-label>
+              <q-item-label>账号简介</q-item-label>
             </q-item-section>
             <q-item-section>
               <q-item-label

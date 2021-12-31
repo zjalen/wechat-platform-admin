@@ -68,3 +68,60 @@ export function setAvatar(id, appId, data) {
 export function setSignature(id, appId, data) {
   return api.put("open-platform/" + id + "/mp/" + appId + "/signature", data);
 }
+
+export function getServerDomain(id, appId) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/get-server-domain");
+}
+
+export function addServerDomain(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/add-server-domain",
+    data
+  );
+}
+
+export function setServerDomain(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/set-server-domain",
+    data
+  );
+}
+
+export function deleteServerDomain(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/delete-server-domain",
+    data
+  );
+}
+
+export function getWebDomain(id, appId) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/get-web-domain");
+}
+
+export function addWebDomain(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/add-web-domain",
+    data
+  );
+}
+
+export function syncWebDomain(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/sync-web-domain",
+    data
+  );
+}
+
+export function setWebDomain(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/set-web-domain",
+    data
+  );
+}
+
+export function deleteWebDomain(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/delete-web-domain",
+    data
+  );
+}
