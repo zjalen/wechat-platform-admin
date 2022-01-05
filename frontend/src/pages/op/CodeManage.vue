@@ -231,7 +231,7 @@ export default {
     ],
     standardColumns: [
       {
-        name: "templateId",
+        name: "template_id",
         label: "模板 id",
         field: "template_id",
         align: "center",

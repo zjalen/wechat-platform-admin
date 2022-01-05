@@ -125,3 +125,71 @@ export function deleteWebDomain(id, appId, data) {
     data
   );
 }
+
+export function codeCommit(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/code-commit",
+    data
+  );
+}
+
+export function getCodePages(id, appId) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/code-pages");
+}
+
+export function getCodeTestQr(id, appId) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/code-test-qr", {
+    responseType: "blob",
+  });
+}
+
+export function codeAudit(id, appId, data) {
+  return api.post("open-platform/" + id + "/mp/" + appId + "/code-audit", data);
+}
+
+export function uploadCodeAuditMedia(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/upload-code-audit-media",
+    data
+  );
+}
+
+export function withdrawCodeAudit(id, appId) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/code-audit-withdraw"
+  );
+}
+
+export function getCodeAuditLatestStatus(id, appId) {
+  return api.get(
+    "open-platform/" + id + "/mp/" + appId + "/code-audit-latest-status"
+  );
+}
+
+export function getCodeAuditStatus(id, appId, params) {
+  return api.get(
+    "open-platform/" + id + "/mp/" + appId + "/code-audit-status",
+    { params }
+  );
+}
+
+export function codeRelease(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/code-release",
+    data
+  );
+}
+
+export function codeRollbackRelease(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/code-rollback-release",
+    data
+  );
+}
+
+export function getCodeReleaseHistories(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/code-release-histories",
+    data
+  );
+}

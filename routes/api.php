@@ -25,6 +25,9 @@ Route::group([
         [\App\Http\Controllers\OpenPlatformServerController::class, 'subPlatformNotify'])->name('subPlatformNotify');
 });
 
+/** 无需 json 格式化的文件下载 */
+Route::get('open-platform/{openPlatformId}/mp/{appId}/code-test-qr', [\App\Http\Controllers\SubMiniProgramController::class, 'getTestQRCode'])->middleware(['auth:api', 'platform.op']);
+
 Route::group([
     /** 统一格式化结果 */
     'middleware' => ['format.json', 'operation-log'],
@@ -103,6 +106,17 @@ Route::group([
             $router->post('add-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'addWebDomain']);
             $router->post('set-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'setWebDomain']);
             $router->post('delete-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'deleteWebDomain']);
+
+            $router->post('code-commit', [\App\Http\Controllers\SubMiniProgramController::class, 'codeCommit']);
+            $router->get('code-pages', [\App\Http\Controllers\SubMiniProgramController::class, 'getCodePage']);
+            $router->post('code-audit', [\App\Http\Controllers\SubMiniProgramController::class, 'codeAudit']);
+            $router->post('upload-code-audit-media', [\App\Http\Controllers\SubMiniProgramController::class, 'uploadCodeAuditMedia']);
+            $router->get('code-audit-latest-status', [\App\Http\Controllers\SubMiniProgramController::class, 'getLatestAuditStatus']);
+            $router->get('code-audit-status', [\App\Http\Controllers\SubMiniProgramController::class, 'getAuditStatus']);
+            $router->post('code-audit-withdraw', [\App\Http\Controllers\SubMiniProgramController::class, 'withdrawAudit']);
+            $router->post('code-release', [\App\Http\Controllers\SubMiniProgramController::class, 'codeRelease']);
+            $router->post('code-rollback-release', [\App\Http\Controllers\SubMiniProgramController::class, 'codeRollbackRelease']);
+            $router->post('code-release-histories', [\App\Http\Controllers\SubMiniProgramController::class, 'getCodeReleaseHistories']);
         });
 
         /** 开放平台代公众号实现功能 */

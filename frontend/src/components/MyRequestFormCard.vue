@@ -8,6 +8,7 @@
         <q-form @submit="onSubmit" class="q-gutter-sm q-ml-none">
           <view v-for="(item, index) in formParams" :key="index">
             <q-input
+              :ref="`form[${index}]`"
               outlined
               hide-bottom-space
               dense
@@ -15,6 +16,7 @@
               :hint="item.hint"
               v-model="item.value"
               :model-value="item.value"
+              :type="item.type || 'text'"
               lazy-rules
               :rules="
                 item.required
@@ -27,6 +29,13 @@
                   name="r_image"
                   class="cursor-pointer"
                   @click="loadMediaList(item.media, index)"
+                ></q-icon>
+              </template>
+              <template v-else-if="item.append" v-slot:append>
+                <q-icon
+                  :name="item.append.icon"
+                  class="cursor-pointer"
+                  @click="onAppendClick(item.append.slug)"
                 ></q-icon>
               </template>
             </q-input>
@@ -156,7 +165,6 @@ export default {
     },
   },
   data: () => ({
-    formParams: [],
     currentFormKey: null,
     currentMediaType: null,
     currentMedia: {},
@@ -165,6 +173,7 @@ export default {
     uploading: false,
     showUploader: false,
     disableUpload: true,
+    formParams: [],
   }),
   computed: {
     acceptType() {
@@ -199,6 +208,9 @@ export default {
         }
       });
       this.$emit("submit", data);
+    },
+    onAppendClick(slug) {
+      this.$emit("append-click", slug);
     },
     loadMediaList(type, formKey) {
       this.currentFormKey = formKey;

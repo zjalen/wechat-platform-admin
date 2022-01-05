@@ -77,6 +77,16 @@ const routes = [
         component: () => import("pages/mp/LocalMedia.vue"),
         name: "localMedia",
       },
+      {
+        path: "code-manage",
+        component: () => import("pages/mp/CodeManage.vue"),
+        name: "codeManage",
+      },
+      {
+        path: "code-manage-audit",
+        component: () => import("pages/mp/CodeManageAudit.vue"),
+        name: "codeManageAudit",
+      },
     ],
   },
 

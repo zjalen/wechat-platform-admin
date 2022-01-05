@@ -110,7 +110,6 @@ export default {
   },
   methods: {
     initData(props) {
-      console.log(props);
       if (!props) {
         props = { pagination: this.pagination };
       } else {

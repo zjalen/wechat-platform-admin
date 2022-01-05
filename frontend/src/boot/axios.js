@@ -37,6 +37,9 @@ export default boot(({ app, router, store }) => {
   // response interceptor
   api.interceptors.response.use(
     (response) => {
+      if (response.data instanceof Blob) {
+        return response.data;
+      }
       return response.data.data;
     },
     (error) => {
@@ -49,7 +52,8 @@ export default boot(({ app, router, store }) => {
         ) {
           if (error.response.data.data.errcode !== 0) {
             Dialog.create({
-              title: "请求错误",
+              title: "请求出现错误",
+              class: "text-negative",
               message: error.response.data.data.errmsg,
             });
           }
@@ -65,7 +69,7 @@ export default boot(({ app, router, store }) => {
           message = "身份验证失败，请重新登录";
           Dialog.create({
             title: "提示",
-            class: "negative",
+            class: "text-negative",
             message: message,
             persistent: true,
           }).onOk(() => {

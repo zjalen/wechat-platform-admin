@@ -124,7 +124,7 @@ const menuList = [
       },
       {
         title: "代码管理",
-        to: "",
+        to: "codeManage",
       },
       {
         title: "版本管理",

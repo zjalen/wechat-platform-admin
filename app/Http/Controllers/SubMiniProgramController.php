@@ -10,6 +10,7 @@ use App\Services\MediaService;
 use App\Services\ThirdApi\OpenPlatformService;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class SubMiniProgramController extends Controller
@@ -17,6 +18,7 @@ class SubMiniProgramController extends Controller
 
     /**
      * 获取 appId
+     *
      * @return \Illuminate\Routing\Route|object|string|null
      */
     private function getAppId()
@@ -26,6 +28,7 @@ class SubMiniProgramController extends Controller
 
     /**
      * 获取小程序实例
+     *
      * @return \EasyWeChat\OpenPlatform\Authorizer\MiniProgram\Application
      * @throws \App\Exceptions\BusinessExceptions\WeChatException
      */
@@ -40,6 +43,7 @@ class SubMiniProgramController extends Controller
 
     /**
      * 获取账户基本信息
+     *
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      * @throws \App\Exceptions\BusinessExceptions\WeChatException
      */
@@ -96,7 +100,13 @@ class SubMiniProgramController extends Controller
 
 
     /**
-     * @throws \Throwable
+     * 获取本地多媒体文件列表
+     *
+     * @return array|array[]
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Exception
      */
     public function getLocalMediaList(): array
     {
@@ -129,7 +139,11 @@ class SubMiniProgramController extends Controller
      * 上传临时文件素材
      *
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     * @throws \Throwable
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws ParamsErrorException
+     * @throws WeChatException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      */
     public function uploadTemplateMedia()
     {
@@ -147,7 +161,10 @@ class SubMiniProgramController extends Controller
     /**
      * 检测名称是否可用
      *
-     * @throws \Throwable
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
      */
     public function checkNickName()
     {
@@ -159,7 +176,10 @@ class SubMiniProgramController extends Controller
     /**
      * 获取改名结果
      *
-     * @throws \Throwable
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
      */
     public function getNicknameAuditStatus()
     {
@@ -172,7 +192,9 @@ class SubMiniProgramController extends Controller
      * 设置名称
      *
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     * @throws \Throwable
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
      */
     public function setNickName()
     {
@@ -446,7 +468,7 @@ class SubMiniProgramController extends Controller
     {
         $miniProgram = $this->getMiniProgramApplication();
         $domainArray = request('webDomain', []);
-        return $miniProgram->domain->setWebviewDomain($domainArray, 'add');
+        return $miniProgram->domain->setWebviewDomain($domainArray);
     }
 
     /**
@@ -475,5 +497,173 @@ class SubMiniProgramController extends Controller
         $miniProgram = $this->getMiniProgramApplication();
         $domainArray = request('webDomain', []);
         return $miniProgram->domain->setWebviewDomain($domainArray, 'delete');
+    }
+
+    /**
+     * 设为体验版代码
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function codeCommit()
+    {
+        $templateId = request()->input('template_id');
+        $extJson = request()->input('ext_json');
+        $userVersion = request()->input('user_version');
+        $userDesc = request()->input('user_desc');
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->commit($templateId, $extJson, $userVersion, $userDesc);
+    }
+
+    /**
+     * 获取已上传代码的页面列表
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function getCodePage()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->getPage();
+    }
+
+    /**
+     * 获取体验版二维码
+     *
+     * @return \EasyWeChat\Kernel\Http\Response
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function getTestQRCode(): \EasyWeChat\Kernel\Http\Response
+    {
+        $path = request()->input('path');
+        $miniProgram = $this->getMiniProgramApplication();
+
+        return $miniProgram->code->getQrCode($path);
+    }
+
+    /**
+     * 上传审核专用临时文件素材
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws ParamsErrorException
+     * @throws WeChatException
+     */
+    public function uploadCodeAuditMedia()
+    {
+        $fileName = request()->input('fileName');
+        $type = request()->input('type');
+        if (!in_array($type, ['image', 'video', 'voice'])) {
+            throw new ParamsErrorException();
+        }
+        $miniProgram = $this->getMiniProgramApplication();
+        $mediaService = new MediaService();
+        $file = $mediaService->getFilePath($this->getAppId(), $fileName, $type);
+        return $miniProgram->code->httpUpload('wxa/uploadmedia', [$fileName => $file]);
+    }
+
+    /**
+     * 提交审核
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function codeAudit()
+    {
+        $data = request()->only(['version_desc','preview_info', 'item_list', 'ugc_declare', 'feedback_info', 'feedback_stuff']);
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->submitAudit($data);
+    }
+
+    /**
+     * 撤销审核
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function withdrawAudit()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->withdrawAudit();
+    }
+
+    /**
+     * 查询指定版本审核状态
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     * @throws GuzzleException
+     */
+    public function getAuditStatus()
+    {
+        $auditId = request()->input('audit_id');
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->getAuditStatus($auditId);
+    }
+
+    /**
+     * 查询最近一次审核状态
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function getLatestAuditStatus()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->getLatestAuditStatus();
+    }
+
+    /**
+     * 线上发布
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function codeRelease()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->release();
+    }
+
+    /**
+     * 获取可回滚版本
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     * @throws GuzzleException
+     */
+    public function getCodeReleaseHistories()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->httpGet('wxa/revertcoderelease', ['action' => 'get_history_version']);
+    }
+
+    /**
+     * 已发布版本回滚
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     * @throws GuzzleException
+     */
+    public function codeRollbackRelease()
+    {
+        $app_version = request('app_version');
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->httpGet('wxa/revertcoderelease', ['app_version' => $app_version]);
     }
 }

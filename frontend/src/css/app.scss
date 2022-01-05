@@ -118,13 +118,13 @@ a {
     &-label {
       width: 100px;
       font-weight: bold;
-      line-height: 2.4;
       margin-right: 16px;
+      padding-top: 6px;
+      line-height: 28px;
     }
 
     &-value {
       flex: 1;
-      line-height: 2;
 
       &-tip {
         color: #9a9a9a;
