@@ -117,6 +117,10 @@ Route::group([
             $router->post('code-release', [\App\Http\Controllers\SubMiniProgramController::class, 'codeRelease']);
             $router->post('code-rollback-release', [\App\Http\Controllers\SubMiniProgramController::class, 'codeRollbackRelease']);
             $router->post('code-release-histories', [\App\Http\Controllers\SubMiniProgramController::class, 'getCodeReleaseHistories']);
+
+            $router->get('privacy-setting', [\App\Http\Controllers\SubMiniProgramController::class, 'getPrivacySetting']);
+            $router->post('privacy-setting', [\App\Http\Controllers\SubMiniProgramController::class, 'setPrivacySetting']);
+            $router->post('upload-privacy-file', [\App\Http\Controllers\SubMiniProgramController::class, 'uploadPrivacyExtFile']);
         });
 
         /** 开放平台代公众号实现功能 */

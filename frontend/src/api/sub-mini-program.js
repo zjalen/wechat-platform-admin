@@ -193,3 +193,23 @@ export function getCodeReleaseHistories(id, appId, data) {
     data
   );
 }
+
+export function getPrivacySetting(id, appId, params) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/privacy-setting", {
+    params,
+  });
+}
+
+export function setPrivacySetting(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/privacy-setting",
+    data
+  );
+}
+
+export function uploadPrivacyFile(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/upload-privacy-file",
+    data
+  );
+}

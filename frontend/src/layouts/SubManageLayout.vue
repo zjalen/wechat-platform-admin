@@ -111,6 +111,10 @@ const menuList = [
         title: "类目管理",
         to: "category",
       },
+      {
+        title: "用户隐私保护",
+        to: "privacy",
+      },
     ],
   },
   {
@@ -125,10 +129,6 @@ const menuList = [
       {
         title: "代码管理",
         to: "codeManage",
-      },
-      {
-        title: "版本管理",
-        to: "",
       },
     ],
   },

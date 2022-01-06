@@ -63,6 +63,11 @@ const routes = [
         name: "category",
       },
       {
+        path: "privacy",
+        component: () => import("pages/mp/Privacy.vue"),
+        name: "privacy",
+      },
+      {
         path: "trust-domain",
         component: () => import("pages/mp/DomainSettings.vue"),
         name: "trustDomain",
