@@ -143,6 +143,10 @@ a {
   }
 }
 
+.q-table__card {
+  color: $globalColor;
+}
+
 .q-field__bottom--animated {
   transform: translateY(0%);
   position: relative;
@@ -192,9 +196,8 @@ a {
 
   .q-expansion-item__content {
     .q-item {
-      margin-left: 70px;
+      padding: 10px 8px 10px 66px !important;
       font-size: 14px;
-      padding: 10px 8px !important;
       font-weight: normal;
       line-height: 15px;
       min-height: 40px;

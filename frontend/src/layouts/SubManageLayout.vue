@@ -24,6 +24,7 @@
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
+      width="256"
       class="drawer-right-bordered"
     >
       <q-btn
@@ -108,7 +109,7 @@ const menuList = [
         to: "trustDomain",
       },
       {
-        title: "类目管理",
+        title: "服务类目管理",
         to: "category",
       },
       {
