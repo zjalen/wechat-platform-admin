@@ -13,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // 根据 env 定义的 APP_URL 来生成链接
+        if (app('url')->isValidUrl(config('app.url'))) {
+            app('url')->forceRootUrl(config('app.url'));
+        }
     }
 
     /**
