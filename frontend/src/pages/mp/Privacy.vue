@@ -178,7 +178,18 @@
                   hint="描述使用场景，如：扫码支付"
                   lazy-rules
                   :rules="[(val) => (val && val.length > 0) || '必填内容']"
-                ></q-input>
+                >
+                  <template v-slot:after>
+                    <q-icon
+                      name="r_remove"
+                      class="cursor-pointer"
+                      size="24px"
+                      @click="onRemovePrivacySettingList(index)"
+                    >
+                      <q-tooltip>移除该条目</q-tooltip>
+                    </q-icon>
+                  </template>
+                </q-input>
               </div>
             </view>
             <view class="flex-center q-field__marginal">
@@ -188,6 +199,7 @@
                 size="24px"
                 @click="onAddPrivacySettingList"
               >
+                <q-tooltip>添加一条</q-tooltip>
               </q-icon>
             </view>
           </view>
@@ -311,6 +323,9 @@ export default {
           });
       }
       this.formData.setting_list.push({ privacy_key: "", privacy_text: "" });
+    },
+    onRemovePrivacySettingList(index) {
+      this.formData.setting_list.splice(index, 1);
     },
     onSubmitClick() {
       setPrivacySetting(this.opId, this.appId, this.formData).then(() => {

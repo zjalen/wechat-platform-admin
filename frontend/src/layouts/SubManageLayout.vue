@@ -24,7 +24,7 @@
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
-      width="256"
+      :width="256"
       class="drawer-right-bordered"
     >
       <q-btn

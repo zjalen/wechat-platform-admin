@@ -717,4 +717,75 @@ class SubMiniProgramController extends Controller
         $data['file'] = $fullPath;
         return $miniProgram->setting->httpUpload('cgi-bin/component/uploadprivacyextfile', $data);
     }
+
+    /**
+     * 获取已设置的类目
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws WeChatException
+     */
+    public function getCategory()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->setting->getCategories();
+    }
+
+    /**
+     * 获取所有可用类目
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws WeChatException
+     */
+    public function getAllCategories()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->setting->getAllCategories();
+    }
+
+    /**
+     * 获取指定主体的可用类目
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function getAllCategoriesByType()
+    {
+        $type = request('type');
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->setting->httpPostJson('cgi-bin/wxopen/getcategoriesbytype',
+            ['verify_type' => (int) $type]);
+    }
+
+    /**
+     * 删除已设置的类目
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function deleteCategory()
+    {
+        $first= request('first');
+        $second= request('second');
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->setting->deleteCategories($first, $second);
+    }
+
+    /**
+     * 添加经营类目
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function addCategory()
+    {
+        $categories= request('categories');
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->setting->addCategories($categories);
+    }
 }

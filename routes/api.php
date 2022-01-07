@@ -121,6 +121,12 @@ Route::group([
             $router->get('privacy-setting', [\App\Http\Controllers\SubMiniProgramController::class, 'getPrivacySetting']);
             $router->post('privacy-setting', [\App\Http\Controllers\SubMiniProgramController::class, 'setPrivacySetting']);
             $router->post('upload-privacy-file', [\App\Http\Controllers\SubMiniProgramController::class, 'uploadPrivacyExtFile']);
+
+            $router->get('category', [\App\Http\Controllers\SubMiniProgramController::class, 'getCategory']);
+            $router->get('all-categories', [\App\Http\Controllers\SubMiniProgramController::class, 'getAllCategories']);
+            $router->get('categories-by-type', [\App\Http\Controllers\SubMiniProgramController::class, 'getAllCategoriesByType']);
+            $router->post('category', [\App\Http\Controllers\SubMiniProgramController::class, 'addCategory']);
+            $router->post('delete-category', [\App\Http\Controllers\SubMiniProgramController::class, 'deleteCategory']);
         });
 
         /** 开放平台代公众号实现功能 */

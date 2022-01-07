@@ -207,9 +207,28 @@ export function setPrivacySetting(id, appId, data) {
   );
 }
 
-export function uploadPrivacyFile(id, appId, data) {
+export function getAllCategories(id, appId) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/all-categories");
+}
+
+export function getCategoriesByType(id, appId, params) {
+  return api.get(
+    "open-platform/" + id + "/mp/" + appId + "/categories-by-type",
+    { params }
+  );
+}
+
+export function getCategory(id, appId) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/category");
+}
+
+export function addCategory(id, appId, data) {
+  return api.post("open-platform/" + id + "/mp/" + appId + "/category", data);
+}
+
+export function deleteCategory(id, appId, data) {
   return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/upload-privacy-file",
+    "open-platform/" + id + "/mp/" + appId + "/delete-category",
     data
   );
 }
