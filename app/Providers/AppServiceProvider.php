@@ -17,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
         if (app('url')->isValidUrl(config('app.url'))) {
             app('url')->forceRootUrl(config('app.url'));
         }
+        // HTTPS 访问
+        if(config('app.secure_url')){
+            app('url')->forceScheme('https');
+        }
     }
 
     /**
