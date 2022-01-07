@@ -17,16 +17,16 @@
           服务器域名配置
           <q-space />
           <div class="q-gutter-md">
-            <q-btn unelevated dense color="primary" @click="toGetServerDomain"
+            <q-btn flat dense color="primary" @click="toGetServerDomain"
               >查询
             </q-btn>
-            <q-btn unelevated dense color="secondary" @click="toAddServerDomain"
+            <q-btn flat dense color="secondary" @click="toAddServerDomain"
               >添加
             </q-btn>
-            <q-btn unelevated dense color="negative" @click="toSetServerDomain"
+            <q-btn flat dense color="secondary" @click="toSetServerDomain"
               >修改
             </q-btn>
-            <q-btn unelevated dense color="grey" @click="toDeleteServerDomain"
+            <q-btn flat dense color="secondary" @click="toDeleteServerDomain"
               >删除
             </q-btn>
           </div>
@@ -202,19 +202,23 @@
           业务域名配置
           <q-space />
           <div class="q-gutter-md">
-            <q-btn flat dense color="primary" @click="toSetDefaultWebDomain"
+            <q-btn
+              unelevated
+              dense
+              color="primary"
+              @click="toSetDefaultWebDomain"
               >同步全部
             </q-btn>
-            <q-btn unelevated dense color="primary" @click="toGetWebDomain"
+            <q-btn flat dense color="primary" @click="toGetWebDomain"
               >查询
             </q-btn>
-            <q-btn unelevated dense color="secondary" @click="toAddWebDomain"
+            <q-btn flat dense color="secondary" @click="toAddWebDomain"
               >添加
             </q-btn>
-            <q-btn unelevated dense color="negative" @click="toSetWebDomain"
+            <q-btn flat dense color="secondary" @click="toSetWebDomain"
               >修改
             </q-btn>
-            <q-btn unelevated dense color="grey" @click="toDeleteWebDomain"
+            <q-btn flat dense color="secondary" @click="toDeleteWebDomain"
               >删除
             </q-btn>
           </div>
@@ -399,6 +403,10 @@ export default {
     currentAction: "",
     targetDomain: null,
   }),
+  beforeMount() {
+    this.toGetServerDomain();
+    this.toGetWebDomain();
+  },
   methods: {
     parseServerDomain(res) {
       this.serverDomain = res;

@@ -74,21 +74,21 @@
           label="绑定新账号"
         ></q-btn>
         <q-btn
-          unelevated
+          flat
           color="secondary"
           label="创建测试小程序"
           @click="showCreateBetaDialog = true"
         ></q-btn>
         <q-btn
-          unelevated
-          color="grey"
+          flat
+          color="secondary"
           @click="loadAuthorizers"
-          label="远程获取已绑定账号"
+          label="获取已授权账号"
         >
           <q-tooltip>从微信服务器的接口获取已绑定的账号</q-tooltip>
         </q-btn>
         <q-btn
-          unelevated
+          flat
           color="negative"
           :to="`/open-platform/${id}/code-manage`"
           label="代码管理"
@@ -109,9 +109,9 @@
           v-for="(item, index) in authorizers"
           :key="index"
         >
-          <q-card class="cursor-pointer">
+          <q-card>
             <q-card-section class="flex items-center">
-              <view class="text-primary">{{ item.authorizer_appid }}</view>
+              <view>{{ item.authorizer_appid }}</view>
               <q-space />
               <q-btn
                 flat

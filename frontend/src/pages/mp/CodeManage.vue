@@ -7,10 +7,10 @@
         <q-btn unelevated color="primary" @click="editCard = 'commit'"
           >设置体验版
         </q-btn>
-        <q-btn flat color="primary" @click="onGetCodePages"
+        <q-btn flat color="secondary" @click="onGetCodePages"
           >获取代码页面列表
         </q-btn>
-        <q-btn flat color="primary" @click="onGetTestCodeQR"
+        <q-btn flat color="secondary" @click="onGetTestCodeQR"
           >体验版二维码
         </q-btn>
       </q-card-section>
@@ -22,7 +22,7 @@
           @click="$router.push('code-manage-audit')"
           >提交审核
         </q-btn>
-        <q-btn flat color="primary" @click="onGetAuditResultClick"
+        <q-btn flat color="secondary" @click="onGetAuditResultClick"
           >获取审核结果
         </q-btn>
         <q-btn flat color="negative" @click="onWithdrawClick">审核撤销</q-btn>
@@ -32,14 +32,14 @@
         <q-btn unelevated color="primary" @click="onReleaseClick"
           >线上发布
         </q-btn>
-        <q-btn flat color="primary" @click="onReleaseHistoriesClick"
+        <q-btn flat color="secondary" @click="onReleaseHistoriesClick"
           >可回退版本查询
         </q-btn>
         <q-btn flat color="negative" @click="onRollbackClick">版本回退</q-btn>
 
-        <q-btn flat color="primary">分阶段发布</q-btn>
-        <q-btn flat color="primary">分阶段发布查询</q-btn>
-        <q-btn flat color="negative">取消分阶段发布</q-btn>
+        <q-btn flat color="secondary">分阶段发布</q-btn>
+        <q-btn flat color="secondary">分阶段发布查询</q-btn>
+        <q-btn flat color="secondary">取消分阶段发布</q-btn>
       </q-card-section>
     </q-card>
 

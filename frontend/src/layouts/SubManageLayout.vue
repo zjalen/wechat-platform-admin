@@ -139,8 +139,8 @@ const menuList = [
     to: null,
     children: [
       {
-        title: "服务器素材",
-        to: "localMedia",
+        title: "素材管理",
+        to: "mediaManage",
       },
     ],
   },

@@ -8,12 +8,13 @@
         </div>
       </q-card-section>
       <q-separator />
-      <q-card-section class="q-pb-none">
+      <q-card-section>
         <q-form @submit="bindTester" class="row">
           <q-input
             style="width: 200px"
             clearable
             dense
+            hide-bottom-space
             v-model="wechatId"
             :model-value="wechatId"
             outlined
@@ -21,22 +22,18 @@
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || '不能为空']"
           />
-          <q-btn
-            class="q-ml-lg"
-            style="height: 40px"
-            unelevated
-            color="primary"
-            type="submit"
-            >绑定
-          </q-btn>
-          <q-btn
-            flat
-            color="grey"
-            class="q-ml-sm"
-            style="height: 40px"
-            @click="unBindTester(wechatId, true)"
-            >用微信号解绑
-          </q-btn>
+          <div style="padding-top: 3px">
+            <q-btn class="q-ml-lg" flat color="primary" type="submit"
+              >绑定
+            </q-btn>
+            <q-btn
+              flat
+              color="secondary"
+              class="q-ml-sm"
+              @click="unBindTester(wechatId, true)"
+              >用微信号解绑
+            </q-btn>
+          </div>
         </q-form>
       </q-card-section>
     </q-card>

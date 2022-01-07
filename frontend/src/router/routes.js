@@ -78,9 +78,9 @@ const routes = [
         name: "tester",
       },
       {
-        path: "local-media",
-        component: () => import("pages/mp/LocalMedia.vue"),
-        name: "localMedia",
+        path: "media-manage",
+        component: () => import("pages/mp/MediaManage.vue"),
+        name: "mediaManage",
       },
       {
         path: "code-manage",

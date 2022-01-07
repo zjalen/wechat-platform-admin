@@ -38,7 +38,7 @@
                 label="全选"
                 @update:model-value="onSelectAll"
               ></q-checkbox>
-              <q-btn color="negative" unelevated @click="deleteBatch">
+              <q-btn color="negative" flat @click="deleteBatch">
                 批量删除
               </q-btn>
             </view>
@@ -75,7 +75,7 @@
     </q-card>
 
     <q-dialog v-model="showUploader">
-      <q-card>
+      <q-card style="width: 80vw">
         <q-card-section class="text-subtitle1 text-bold row">
           <view
             >点击加号添加文件
@@ -210,7 +210,7 @@ import {
 import { copyToClipboard } from "quasar";
 
 export default {
-  name: "LocalMedia",
+  name: "MediaManage",
   data: () => ({
     mediaList: [],
     typeList: [],

@@ -12,10 +12,10 @@
         <q-btn unelevated color="primary" @click="onSetPrivacyClick"
           >设置隐私保护指引
         </q-btn>
-        <q-btn flat color="primary" @click="onGetPrivacyClick(1)"
+        <q-btn flat color="secondary" @click="onGetPrivacyClick(1)"
           >获取现网隐私保护指引
         </q-btn>
-        <q-btn flat color="primary" @click="onGetPrivacyClick(2)"
+        <q-btn flat color="secondary" @click="onGetPrivacyClick(2)"
           >获取开发版隐私保护指引
         </q-btn>
       </q-card-section>
