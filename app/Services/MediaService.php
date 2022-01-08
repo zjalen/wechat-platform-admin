@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Exceptions\BusinessExceptions\NotFoundException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,8 +29,17 @@ class MediaService
         return Storage::allFiles('media/'.$appId.'/'.$type);
     }
 
-    public function getFileResponse(string $appId, string $name, string $type): \Symfony\Component\HttpFoundation\StreamedResponse
-    {
+    /**
+     * @throws NotFoundException
+     */
+    public function getFileResponse(
+        string $appId,
+        string $name,
+        string $type
+    ): \Symfony\Component\HttpFoundation\StreamedResponse {
+        if (!Storage::exists('media/'.$appId.'/'.$type.'/'.$name)) {
+            throw new NotFoundException('文件不存在');
+        }
         return Storage::response('media/'.$appId.'/'.$type.'/'.$name);
     }
 
