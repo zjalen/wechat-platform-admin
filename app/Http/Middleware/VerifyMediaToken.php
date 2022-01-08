@@ -18,10 +18,10 @@ class VerifyMediaToken
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->query('token');
+        $token = $request->route('token');
         $appId = $request->route('appId');
         $key = config('custom.media_token_cache_prefix').$appId;
-        if (!cache()->get($key) == $token) {
+        if (cache()->get($key) != $token) {
             throw new NotAllowedException('token 无效');
         }
         return $next($request);

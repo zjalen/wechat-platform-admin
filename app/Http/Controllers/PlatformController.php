@@ -57,7 +57,7 @@ class PlatformController extends Controller
     }
 
 
-    public function getLocalMedia($appId, $type, $fileName): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function getLocalMedia($appId, $type, $token, $fileName): \Symfony\Component\HttpFoundation\StreamedResponse
     {
         $mediaService = new MediaService();
         return $mediaService->getFileResponse($appId, $fileName, $type);

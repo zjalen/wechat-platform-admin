@@ -129,7 +129,7 @@ class SubMiniProgramController extends Controller
             $type = $itemNameArray[count($itemNameArray) - 2];
             $name = $itemNameArray[count($itemNameArray) - 1];
             $url = route("platform-media",
-                    ['appId' => $this->getAppId(), 'type' => $type, 'fileName' => $name]).'?token='.$token;
+                    ['appId' => $this->getAppId(), 'type' => $type, 'token' => $token, 'fileName' => $name]);
             $resultArray[$type][] = ['url' => $url, 'name' => $name];
         }
         return $resultArray;

@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 /** 多媒体文件带权限访问 */
-Route::get('platform-media/{appId}/{type}/{fileName}', [\App\Http\Controllers\PlatformController::class, 'getLocalMedia'])->middleware('media.token')->name('platform-media');
+Route::get('platform-media/{appId}/{type}/{token}/{fileName}', [\App\Http\Controllers\PlatformController::class, 'getLocalMedia'])->middleware('media.token')->name('platform-media');
 
 /** 开放平台代授权方实现业务 */
 Route::group([
