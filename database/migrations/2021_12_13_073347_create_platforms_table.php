@@ -15,7 +15,7 @@ class CreatePlatformsTable extends Migration
     {
         Schema::create('platforms', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique()->comment('名称');
+            $table->string('name')->comment('名称');
             $table->string('slug')->unique()->index()->comment('索引标识');
             $table->string('logo')->nullable(true)->comment('logo');
             $table->string('app_id')->unique()->index()->comment('app_id');
