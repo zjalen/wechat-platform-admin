@@ -15,7 +15,7 @@ class CreateSubPlatformsTable extends Migration
     {
         Schema::create('sub_platforms', function (Blueprint $table) {
             $table->id();
-            $table->string('nick_name')->unique()->comment('昵称');
+            $table->string('nick_name')->comment('授权平台名称');
             $table->string('slug')->unique()->index()->comment('索引标识');
             $table->string('head_img')->nullable(true)->comment('头像');
             $table->string('app_id')->index()->comment('app_id');
