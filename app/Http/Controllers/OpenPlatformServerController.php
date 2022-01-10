@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Events\SubPlatformAuthorized;
 use App\Events\SubPlatformUnAuthorized;
+use App\Jobs\SendCustomMessage;
 use App\Models\Platform;
 use App\Services\ThirdApi\OpenPlatformService;
 use EasyWeChat\Kernel\Exceptions\BadRequestException;
@@ -98,8 +99,6 @@ class OpenPlatformServerController extends Controller
         $appId = request()->route('appId');
         try {
             $officialAccount = $this->getOfficialAccount($appId);
-            $openId = null;
-            $customContent = null;
             // 这里的 server 为授权方的 server，而不是开放平台的 server，请注意！！！
             $officialAccount->server->push(function ($message) use ($officialAccount) {
                 // TODO 线上调试使用，不需要存储消息可删除 Log 语句
@@ -115,7 +114,7 @@ class OpenPlatformServerController extends Controller
                             $query_auth_code = $contentArr[1];
                             $openId = $message['FromUserName'];
                             $customContent = $query_auth_code.'_from_api';
-                            $this->sendCustomMessage($officialAccount, $openId, $customContent);
+                            SendCustomMessage::dispatchAfterResponse($officialAccount, $openId, new Text($customContent));
                             return '';
                         }
                         switch ($content) {
@@ -146,24 +145,6 @@ class OpenPlatformServerController extends Controller
         } catch (Exception $e) {
             Log::error($e->getMessage());
             return '';
-        }
-    }
-
-    /**
-     * 发送客服消息
-     * @param  \EasyWeChat\OfficialAccount\Application  $officialAccount
-     * @param  string  $openId
-     * @param  string  $content
-     */
-    private function sendCustomMessage(
-        \EasyWeChat\OfficialAccount\Application $officialAccount,
-        string $openId,
-        string $content
-    ) {
-        try {
-            $officialAccount->customer_service->message(new Text($content))->to($openId)->send();
-        } catch (InvalidArgumentException | InvalidConfigException | RuntimeException $e) {
-            Log::error($e);
         }
     }
 }
