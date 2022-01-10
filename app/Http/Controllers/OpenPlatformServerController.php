@@ -53,6 +53,7 @@ class OpenPlatformServerController extends Controller
     private function getOfficialAccount($appId): \EasyWeChat\OpenPlatform\Authorizer\OfficialAccount\Application
     {
         $openPlatformModel = request()->attributes->get('openPlatform');
+        $this->openPlatformModel = request()->attributes->get('openPlatform');
         $openPlatformService = new OpenPlatformService($openPlatformModel);
         // 生成实例，代小程序实现业务
         return $openPlatformService->getOfficialAccountApplication($appId);
