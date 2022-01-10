@@ -67,4 +67,15 @@ class OpenPlatformService
         // 生成实例，代小程序实现业务
         return $this->openPlatformApplication->miniProgram($appId, $refreshToken);
     }
+
+    /**
+     * @throws WeChatException
+     */
+    public function getOfficialAccountApplication($appId): \EasyWeChat\OpenPlatform\Authorizer\OfficialAccount\Application
+    {
+        $result = $this->getAuthorizer($appId);
+        $refreshToken = $result['authorization_info']['authorizer_refresh_token'];
+        // 生成实例，代公众号实现业务
+        return $this->openPlatformApplication->officialAccount($appId, $refreshToken);
+    }
 }

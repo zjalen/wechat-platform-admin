@@ -34,12 +34,27 @@ class OpenPlatformServerController extends Controller
     private $openPlatformModel;
 
     /**
+     * 获取开放平台实例
+     *
      * @return \EasyWeChat\OpenPlatform\Application
      */
     private function getOpenPlatform(): \EasyWeChat\OpenPlatform\Application
     {
         $this->openPlatformModel = request()->attributes->get('openPlatform');
         return (new OpenPlatformService($this->openPlatformModel))->getApplication();
+    }
+
+    /**
+     * 获取已授权公众号实例
+     *
+     * @throws \App\Exceptions\BusinessExceptions\WeChatException
+     */
+    private function getOfficialAccount($appId): \EasyWeChat\OpenPlatform\Authorizer\OfficialAccount\Application
+    {
+        $openPlatformModel = request()->attributes->get('openPlatform');
+        $openPlatformService = new OpenPlatformService($openPlatformModel);
+        // 生成实例，代小程序实现业务
+        return $openPlatformService->getOfficialAccountApplication($appId);
     }
 
     /**
@@ -82,11 +97,11 @@ class OpenPlatformServerController extends Controller
     {
         $appId = request()->route('appId');
         try {
-            $officialAccount = $this->getOpenPlatform()->officialAccount($appId);
+            $officialAccount = $this->getOfficialAccount($appId);
             $openId = null;
             $customContent = null;
             // 这里的 server 为授权方的 server，而不是开放平台的 server，请注意！！！
-            $officialAccount->server->push(function ($message) use (&$openId, &$customContent) {
+            $officialAccount->server->push(function ($message) use ($officialAccount) {
                 // TODO 线上调试使用，不需要存储消息可删除 Log 语句
                 Log::info($message);
                 switch ($message['MsgType']) {
@@ -95,11 +110,12 @@ class OpenPlatformServerController extends Controller
                     case 'text':
                         $content = $message['Content'];
                         // !!!全网发布测试 —— 客服消息
-                        if (Str::contains('QUERY_AUTH_CODE:', $content)) {
+                        if (Str::startsWith($content, 'QUERY_AUTH_CODE:')) {
                             $contentArr = explode('QUERY_AUTH_CODE:', $content);
                             $query_auth_code = $contentArr[1];
                             $openId = $message['FromUserName'];
                             $customContent = $query_auth_code.'_from_api';
+                            $this->sendCustomMessage($officialAccount, $openId, $customContent);
                             return '';
                         }
                         switch ($content) {
@@ -126,10 +142,6 @@ class OpenPlatformServerController extends Controller
                         return '收到其它消息';
                 }
             });
-            if ($openId && $customContent) {
-                // !!!全网发布测试 —— 客服消息
-                $this->sendCustomMessage($officialAccount, $openId, $customContent);
-            }
             return $officialAccount->server->serve();
         } catch (Exception $e) {
             Log::error($e->getMessage());
