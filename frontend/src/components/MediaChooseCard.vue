@@ -60,8 +60,9 @@
       <q-card-section class="text-subtitle1 text-bold row">
         <view
           >点击加号添加文件
-          <div class="text-body2 text-negative">
-            请注意<span class="text-bold">不要上传同名文件</span>，否则将会失败
+          <div class="text-body2">
+            请注意<span class="text-bold text-negative">不要上传同名文件</span
+            >，否则将会失败
           </div>
         </view>
       </q-card-section>
@@ -174,7 +175,7 @@ export default {
       }).then((res) => {
         this.uploading = false;
         this.showMediaPicker = false;
-        this.$emit("media-chosen", { slug: this.slug, mediaId: res.media_id });
+        this.$emit("media-chosen", { slug: this.slug, mediaId: res.mediaid });
       });
     },
     onRejected(rejectedEntries) {

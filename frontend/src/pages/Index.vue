@@ -23,7 +23,7 @@
               icon="r_close"
               size="sm"
               color="negative"
-              @click="deletePlatform(item.id)"
+              @click.stop="deletePlatform(item.id)"
             ></q-btn>
           </q-card-section>
           <q-separator />

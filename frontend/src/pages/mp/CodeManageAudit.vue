@@ -573,10 +573,14 @@ export default {
     },
     onMediaChosen(data) {
       const arr = data.slug.split("_");
-      if (arr[0] === "pic") {
-        this.formData.preview_info.pic_id_list[arr[1]] = data.mediaId;
-      } else if (arr[0] === "video") {
-        this.formData.preview_info.video_id_list[arr[1]] = data.mediaId;
+      if (this.isForAudit) {
+        if (arr[0] === "pic") {
+          this.formData.preview_info.pic_id_list[arr[1]] = data.mediaId;
+        } else if (arr[0] === "video") {
+          this.formData.preview_info.video_id_list[arr[1]] = data.mediaId;
+        }
+      } else {
+        this.feedback_stuff_list[arr[1]] = data.mediaId;
       }
       this.showMediaChooseDialog = false;
     },
