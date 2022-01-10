@@ -2,11 +2,13 @@
 
 namespace App\Jobs;
 
+use App\Exceptions\BusinessExceptions\WeChatException;
+use App\Models\Platform;
+use App\Services\ThirdApi\OpenPlatformService;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use EasyWeChat\Kernel\Messages\Message;
-use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -18,8 +20,11 @@ class SendCustomMessage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /** @var Application */
-    private $application;
+    /** @var Platform */
+    private $openPlatformModel;
+
+    /** @var string */
+    private $appId;
 
     /** @var string */
     private $openId;
@@ -32,9 +37,10 @@ class SendCustomMessage implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Application $application, $openId, $message)
+    public function __construct(Platform $openPlatformModel, $appId, $openId, $message)
     {
-        $this->application = $application;
+        $this->openPlatformModel = $openPlatformModel;
+        $this->appId = $appId;
         $this->openId = $openId;
         $this->message = $message;
     }
@@ -47,8 +53,9 @@ class SendCustomMessage implements ShouldQueue
     public function handle()
     {
         try {
-            $this->application->customer_service->message($this->message)->to($this->openId)->send();
-        } catch (InvalidArgumentException|InvalidConfigException|RuntimeException $e) {
+            $app = (new OpenPlatformService($this->openPlatformModel))->getOfficialAccountApplication($this->appId);
+            $app->customer_service->message($this->message)->to($this->openId)->send();
+        } catch (InvalidArgumentException|InvalidConfigException|RuntimeException|WeChatException $e) {
             Log::error($e);
         }
     }

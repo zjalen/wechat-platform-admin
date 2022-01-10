@@ -100,7 +100,7 @@ class OpenPlatformServerController extends Controller
         try {
             $officialAccount = $this->getOfficialAccount($appId);
             // 这里的 server 为授权方的 server，而不是开放平台的 server，请注意！！！
-            $officialAccount->server->push(function ($message) use ($officialAccount) {
+            $officialAccount->server->push(function ($message) use ($appId) {
                 // TODO 线上调试使用，不需要存储消息可删除 Log 语句
                 Log::info($message);
                 switch ($message['MsgType']) {
@@ -114,7 +114,7 @@ class OpenPlatformServerController extends Controller
                             $query_auth_code = $contentArr[1];
                             $openId = $message['FromUserName'];
                             $customContent = $query_auth_code.'_from_api';
-                            SendCustomMessage::dispatchAfterResponse($officialAccount, $openId, new Text($customContent));
+                            SendCustomMessage::dispatchAfterResponse($this->openPlatformModel, $appId, $openId, new Text($customContent));
                             return '';
                         }
                         switch ($content) {
