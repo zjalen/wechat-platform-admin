@@ -21,7 +21,7 @@ Route::group([
     $router->post('serve',
         [\App\Http\Controllers\OpenPlatformServerController::class, 'serve'])->name('openPlatformServe');
     // 代公众平台接收用户消息
-    $router->post('sub/{appId}/notify',
+    $router->post('{appId}/notify',
         [\App\Http\Controllers\OpenPlatformServerController::class, 'subPlatformNotify'])->name('subPlatformNotify');
 });
 

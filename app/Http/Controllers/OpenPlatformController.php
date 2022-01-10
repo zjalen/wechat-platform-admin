@@ -7,11 +7,15 @@ namespace App\Http\Controllers;
 use App\Exceptions\BusinessExceptions\UnavailableException;
 use App\Models\Platform;
 use App\Services\ThirdApi\OpenPlatformService;
+use EasyWeChat\Kernel\Exceptions\HttpException;
+use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
+use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use EasyWeChat\OpenPlatform\Application;
 use Illuminate\Http\File;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -46,18 +50,29 @@ class OpenPlatformController extends Controller
 
     /**
      * 获取调用接口核心参数 component_access_token
+     *
      * @return array
-     * @throws \Throwable
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function getSecretConfig(): array
     {
         $openPlatform = $this->getOpenPlatform();
         $error = null;
-        $token = $openPlatform->access_token->getToken();
+        try {
+            $token = $openPlatform->access_token->getToken();
+        } catch (\Throwable $e) {
+            Log::error($e);
+            $token = null;
+            $error = $e->getMessage();
+        }
         return [
             'name' => $this->openPlatformModel->name,
             'app_id' => $this->openPlatformModel->app_id,
+            'token' => $this->openPlatformModel->token,
+            'aes_key' => $this->openPlatformModel->aes_key,
+            'domain' => config('app.url'),
             'serve_url' => route('openPlatformServe', ['openPlatformSlug' => $this->openPlatformModel->slug]),
+            'notify_url' => urldecode(route('subPlatformNotify', ['openPlatformSlug' => $this->openPlatformModel->slug, 'appId' => '$APPID$'])),
             'bind_url' => route('bind', ['openPlatformSlug' => $this->openPlatformModel->slug]),
             'access_token' => $token,
             'errMsg' => $error

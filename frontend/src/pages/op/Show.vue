@@ -7,7 +7,7 @@
     <q-card class="q-mt-lg">
       <q-card-section class="panel-form">
         <view class="row">
-          <view class="text-bold"
+          <view class="text-bold text-negative"
             >以下信息需与微信开放平台填写信息保持一致，注意保护隐私信息，防止泄露
           </view>
           <q-space />
@@ -40,10 +40,32 @@
             </div>
           </view>
         </view>
-        <view class="panel-form-item">
-          <view class="panel-form-item-label">可信任域名</view>
+        <view class="q-pb-none panel-form-item">
+          <view class="panel-form-item-label">消息与事件接收配置</view>
           <view class="panel-form-item-value">
-            <a :href="`/#/open-platform/${id}/domain`">点击查看</a>
+            <div>{{ notify_url || "加载中" }}</div>
+            <div class="panel-form-item-value-tip">
+              用于代授权的公众号或小程序的接收平台推送的消息与事件，该参数按规则填写（需包含/$APPID$，如www.abc.com/$APPID$/callback），实际接收消息时$APPID$将被替换为公众号或小程序AppId。
+              注意：该URL的一级域名需与“授权事件接收配置”的一级域名一致
+            </div>
+          </view>
+        </view>
+        <view class="panel-form-item">
+          <view class="panel-form-item-label">消息校验Token</view>
+          <view class="panel-form-item-value">
+            <div>{{ visibleData(token) }}</div>
+            <div class="panel-form-item-value-tip">
+              开发者在代替公众号或小程序接收到消息时，用此Token来校验消息。
+            </div>
+          </view>
+        </view>
+        <view class="panel-form-item">
+          <view class="panel-form-item-label">消息加解密Key</view>
+          <view class="panel-form-item-value">
+            <div>{{ visibleData(aes_key) }}</div>
+            <div class="panel-form-item-value-tip">
+              在代替公众号或小程序收发消息过程中使用。必须是长度为43位的字符串，只能是字母和数字。
+            </div>
           </view>
         </view>
         <view class="panel-form-item">
@@ -60,6 +82,21 @@
               微信官方票据换取的身份标识，接口调用必需参数，该参数会随使用自动更新，最长
               2 小时内有效
             </div>
+          </view>
+        </view>
+        <view class="panel-form-item">
+          <view class="panel-form-item-label">授权发起页域名</view>
+          <view class="panel-form-item-value">
+            <div>{{ domain }}</div>
+            <div class="panel-form-item-value-tip">
+              必须从本域名内网页跳转到登录授权页，才可完成登录授权
+            </div>
+          </view>
+        </view>
+        <view class="panel-form-item">
+          <view class="panel-form-item-label">域名配置</view>
+          <view class="panel-form-item-value">
+            <a :href="`/#/open-platform/${id}/domain`">点击进行域名配置管理</a>
           </view>
         </view>
       </q-card-section>
@@ -278,8 +315,12 @@ export default {
     breadcrumbTitle: "第三方平台",
     app_id: null,
     serve_url: null,
+    notify_url: null,
     bind_url: null,
     access_token: "",
+    domain: "",
+    token: "",
+    aes_key: "",
     errMsg: null,
     authorizers: [],
     authorizerDetails: [],
@@ -314,13 +355,23 @@ export default {
           this.app_id = res.app_id;
           this.breadcrumbTitle = res.name;
           this.serve_url = res.serve_url;
+          this.notify_url = res.notify_url;
           this.bind_url = res.bind_url;
+          this.token = res.token;
+          this.aes_key = res.aes_key;
+          this.domain = res.domain.includes("//")
+            ? res.domain.split("//")[1]
+            : res.domain;
           if (res.access_token) {
             this.errMsg = null;
             this.access_token = res.access_token.component_access_token;
           } else {
             this.access_token = "无效";
             this.errMsg = res.errMsg;
+            this.$q.notify({
+              message: res.errMsg,
+              color: "negative",
+            });
           }
         })
         .catch((err) => {
