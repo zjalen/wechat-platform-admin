@@ -16,6 +16,7 @@ use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\OpenPlatform\Server\Guard;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use ReflectionException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -93,9 +94,9 @@ class OpenPlatformServerController extends Controller
                         return '';
                     case 'text':
                         $content = $message['Content'];
-                        $contentArr = explode('QUERY_AUTH_CODE:', $content);
                         // !!!全网发布测试 —— 客服消息
-                        if (count($contentArr) > 0) {
+                        if (Str::contains('QUERY_AUTH_CODE:', $content)) {
+                            $contentArr = explode('QUERY_AUTH_CODE:', $content);
                             $query_auth_code = $contentArr[1];
                             $openId = $message['FromUserName'];
                             $customContent = $query_auth_code.'_from_api';
