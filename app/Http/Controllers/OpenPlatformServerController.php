@@ -74,11 +74,12 @@ class OpenPlatformServerController extends Controller
 
     /**
      * 接管微信公众号或小程序用户消息
-     * @param string $appId
+     *
      * @return string|Response
      */
-    public function subPlatformNotify(string $appId)
+    public function subPlatformNotify()
     {
+        $appId = request()->route('appId');
         try {
             $officialAccount = $this->getOpenPlatform()->officialAccount($appId);
             $openId = null;
