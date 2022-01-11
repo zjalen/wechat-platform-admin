@@ -19,7 +19,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\SubPlatformBuild',
         ],
         'App\Events\SubPlatformUnAuthorized' => [
-            'App\Listeners\SubPlatformStatusReset',
+            'App\Listeners\SubPlatformRemove',
         ],
     ];
 

@@ -7,7 +7,7 @@ use App\Models\SubPlatform;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SubPlatformStatusReset
+class SubPlatformRemove
 {
     /**
      * Create the event listener.
@@ -29,6 +29,6 @@ class SubPlatformStatusReset
     {
         $openPlatformModel = $event->openPlatformModel;
         $appId = $event->appId;
-        SubPlatform::query()->where('app_id', $appId)->where('platform_id', $openPlatformModel->id)->update(['status' => 0]);
+        SubPlatform::query()->where('app_id', $appId)->where('platform_id', $openPlatformModel->id)->delete();
     }
 }
