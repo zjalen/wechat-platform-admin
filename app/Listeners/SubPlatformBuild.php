@@ -7,6 +7,7 @@ use App\Models\SubPlatform;
 use App\Services\ThirdApi\OpenPlatformService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class SubPlatformBuild
@@ -39,13 +40,13 @@ class SubPlatformBuild
             $subPlatform->slug = Str::random();
         }
         $subPlatform->app_id = $appId;
-        $subPlatform->nick_name = $authorizer->authorizer_info->nick_name;
-        $subPlatform->head_img = $authorizer->authorizer_info->head_img;
-        $subPlatform->principal_name = $authorizer->authorizer_info->principal_name;
-        $subPlatform->qrcode_url = $authorizer->authorizer_info->qrcode_url;
-        $subPlatform->user_name = $authorizer->authorizer_info->user_name;
-        $subPlatform->service_type_info = $authorizer->authorizer_info->service_type_info->id;
-        $subPlatform->is_mini_program = !!$authorizer->authorizer_info->MiniProgramInfo ? 1 : 0;
+        $subPlatform->nick_name = $authorizer['authorizer_info']['nick_name'];
+        $subPlatform->head_img = $authorizer['authorizer_info']['head_img'];
+        $subPlatform->principal_name = $authorizer['authorizer_info']['principal_name'];
+        $subPlatform->qrcode_url = $authorizer['authorizer_info']['qrcode_url'];
+        $subPlatform->user_name = $authorizer['authorizer_info']['user_name'];
+        $subPlatform->service_type_info = $authorizer['authorizer_info']['service_type_info']['id'];
+        $subPlatform->is_mini_program = array_key_exists('MiniProgramInfo',$authorizer['authorizer_info']) ? 1 : 0;
         $subPlatform->platform_id = $openPlatformModel->id;
         $subPlatform->status = 1;
         $subPlatform->save();
