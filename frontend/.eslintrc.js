@@ -17,7 +17,7 @@ module.exports = {
   // Rules order is important, please avoid shuffling them
   extends: [
     // Base ESLint recommended rules
-    // 'eslint:recommended',
+    'eslint:recommended',
 
 
     // Uncomment any of the lines below to choose desired strictness,
@@ -29,7 +29,7 @@ module.exports = {
 
     // https://github.com/prettier/eslint-config-prettier#installation
     // usage with Prettier, provided by 'eslint-config-prettier'.
-    'prettier'
+    'plugin:prettier/recommended'
   ],
 
   plugins: [
@@ -57,9 +57,6 @@ module.exports = {
 
   // add your custom rules here
   rules: {
-    'prefer-promise-reject-errors': 'off',
-
-
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   }

@@ -287,7 +287,7 @@ export default {
   }),
   methods: {
     ownerContactRule() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         const check =
           !!this.formData.owner_setting.contact_email ||
           !!this.formData.owner_setting.contact_phone ||
@@ -344,7 +344,7 @@ export default {
         "/upload-privacy-file"
       );
     },
-    onRejected(rejectedEntries) {
+    onRejected() {
       this.$q.notify({
         type: "negative",
         message: `文件添加失败，超过 100K`,

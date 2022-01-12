@@ -195,13 +195,13 @@ export default {
     onSubmit() {
       const data = {};
       this.formParams.forEach((item) => {
-        if (!!item.value) {
+        if (item.value) {
           data[item.name] = item.value;
         }
         if (item.children) {
           data[item.name] = {};
           item.children.forEach((subItem) => {
-            if (!!subItem.value) {
+            if (subItem.value) {
               data[item.name][subItem.name] = subItem.value;
             }
           });

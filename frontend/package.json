@@ -24,8 +24,10 @@
     "dotenv": "^10.0.0",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.2.0",
-    "eslint-webpack-plugin": "^2.4.0"
+    "eslint-webpack-plugin": "^2.4.0",
+    "prettier": "^2.5.1"
   },
   "browserslist": [
     "last 10 Chrome versions",

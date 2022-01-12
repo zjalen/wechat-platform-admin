@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh LpR lFf">
-    <q-header class="q-px-md" :height-hint=56 :elevated="true">
+    <q-header class="q-px-md" :height-hint="56" :elevated="true">
       <q-toolbar class="q-px-lg">
         <q-toolbar-title>
           <text class="text-primary text-weight-medium">微信</text>
@@ -20,14 +20,14 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
   data: () => ({
-    title: '微信平台管理',
+    title: "微信平台管理",
   }),
-})
+});
 </script>
 <style scoped lang="scss">
 .footer {

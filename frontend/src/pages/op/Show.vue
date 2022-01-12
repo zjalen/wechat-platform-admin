@@ -452,7 +452,7 @@ export default {
           },
         })
         .onOk(() => {
-          deleteSubPlatform(this.id, item.id).then((res) => {
+          deleteSubPlatform(this.id, item.id).then(() => {
             this.$q.notify("删除成功");
             this.loadSubPlatforms();
           });

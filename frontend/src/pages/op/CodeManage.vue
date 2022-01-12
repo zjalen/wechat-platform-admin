@@ -178,7 +178,7 @@ export default {
         label: "上传时间",
         field: "create_time",
         align: "center",
-        format: (val, row) =>
+        format: (val) =>
           `${date.formatDate(val * 1000, "YYYY-MM-DD HH:mm:ss")}`,
       },
       {
@@ -219,7 +219,7 @@ export default {
         label: "添加到模板库时间",
         field: "create_time",
         align: "center",
-        format: (val, row) =>
+        format: (val) =>
           `${date.formatDate(val * 1000, "YYYY-MM-DD HH:mm:ss")}`,
       },
       {
@@ -260,7 +260,7 @@ export default {
         label: "添加到模板库时间",
         field: "create_time",
         align: "center",
-        format: (val, row) =>
+        format: (val) =>
           `${date.formatDate(val * 1000, "YYYY-MM-DD HH:mm:ss")}`,
       },
       {

@@ -272,12 +272,12 @@ export default {
         });
     },
     onSubmitAvatar(data) {
-      setAvatar(this.opId, this.appId, data).then((res) => {
+      setAvatar(this.opId, this.appId, data).then(() => {
         this.$q.notify("设置成功，请刷新");
       });
     },
     onSubmitSignature(data) {
-      setSignature(this.opId, this.appId, data).then((res) => {
+      setSignature(this.opId, this.appId, data).then(() => {
         this.$q.notify("设置成功，请刷新");
       });
     },

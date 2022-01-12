@@ -28,7 +28,7 @@
 <script>
 import pk from "../../package.json";
 
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "MainLayout",
