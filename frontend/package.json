@@ -19,7 +19,9 @@
     "core-js": "^3.6.5",
     "qrcodejs2": "^0.0.2",
     "quasar": "^2.0.0",
+    "vue": "^3.0.0",
     "vue-json-viewer": "3",
+    "vue-router": "^4.0.0",
     "vuex": "^4.0.1"
   },
   "devDependencies": {

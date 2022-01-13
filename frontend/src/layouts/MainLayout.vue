@@ -10,8 +10,11 @@
         <q-btn flat :label="$store.state.currentPlatformInfo.name || version">
           <q-menu>
             <q-list style="min-width: 100px">
-              <q-item clickable v-close-popup to="/operation-logs">
+              <q-item clickable to="/operation-logs">
                 <q-item-section>查看操作日志</q-item-section>
+              </q-item>
+              <q-item clickable @click="logout">
+                <q-item-section>退出登录</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
@@ -37,5 +40,11 @@ export default defineComponent({
     title: "微信平台管理",
     version: pk.version,
   }),
+  methods: {
+    logout() {
+      this.$store.dispatch("setToken", null);
+      this.$router.replace({ name: "login" });
+    },
+  },
 });
 </script>

@@ -10,8 +10,11 @@
         <q-btn flat :label="$store.state.currentPlatformInfo.name">
           <q-menu>
             <q-list style="min-width: 100px">
-              <q-item clickable v-close-popup to="/operation-logs">
+              <q-item clickable to="/operation-logs">
                 <q-item-section>查看操作日志</q-item-section>
+              </q-item>
+              <q-item clickable @click="logout">
+                <q-item-section>退出登录</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
@@ -40,6 +43,12 @@ export default defineComponent({
   beforeMount() {
     const id = this.$route.params.id;
     this.$store.dispatch("loadCurrentPlatformInfo", id);
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("setToken", null);
+      this.$router.replace({ name: "login" });
+    },
   },
 });
 </script>

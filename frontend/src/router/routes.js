@@ -3,11 +3,11 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", redirect: { name: "platformIndex" } },
+      { path: "", redirect: { name: "index" } },
       {
         path: "platforms",
         component: () => import("pages/Index.vue"),
-        name: "platformIndex",
+        name: "index",
       },
       {
         path: "platforms/create",
@@ -99,12 +99,17 @@ const routes = [
     path: "/",
     component: () => import("layouts/NoAuthLayout.vue"),
     children: [
-      { path: "login", component: () => import("pages/Login.vue") },
+      {
+        path: "login",
+        component: () => import("pages/Login.vue"),
+        name: "login",
+      },
       // Always leave this as last one,
       // but you can also remove it
       {
         path: "/:catchAll(.*)*",
         component: () => import("pages/Error404.vue"),
+        name: "404",
       },
     ],
   },

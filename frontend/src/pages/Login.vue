@@ -7,6 +7,7 @@
           <q-input
             v-model="formData.email"
             label="输入你的邮箱"
+            type="email"
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || '邮箱不能为空']"
           />
@@ -45,13 +46,25 @@ export default {
       password: "",
     },
   }),
+  beforeMount() {
+    if (this.$store.getters.getToken) {
+      this.jump();
+    }
+  },
   methods: {
     onSubmit() {
       login(this.formData).then((res) => {
         const token = res.data;
         this.$store.dispatch("setToken", token);
-        this.$router.replace("/");
+        this.jump();
       });
+    },
+    jump() {
+      if (this.$store.state.redirectPath) {
+        this.$router.replace(this.$store.state.redirectPath);
+      } else {
+        this.$router.replace({ name: "index" });
+      }
     },
   },
 };

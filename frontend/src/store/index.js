@@ -1,7 +1,6 @@
 import { store } from "quasar/wrappers";
 import { createStore } from "vuex";
 
-// import index from './module-index'
 import { Loading, LocalStorage, Notify } from "quasar";
 import { getAuthorizer } from "src/api/open-platform";
 import { getBasicInfo } from "src/api/sub-mini-program";
@@ -20,20 +19,17 @@ const saveToken = LocalStorage.getItem("token");
 
 export default store((/* { ssrContext } */) => {
   return createStore({
-    // modules: {
-    //   index
-    // },
-
     // enable strict mode (adds overhead!)
     // for dev mode and --debug builds only
     strict: process.env.DEBUGGING,
     state: () => ({
-      token: saveToken,
+      token: saveToken === "null" ? null : saveToken,
       userInfo: null,
       currentOpId: null,
       currentSubAppId: null,
       currentAuthorizerInfo: {},
       currentPlatformInfo: {},
+      redirectPath: null,
       basicInfo: {
         appid: "",
         account_type: 0,
@@ -79,6 +75,9 @@ export default store((/* { ssrContext } */) => {
       },
       setCurrentPlatformInfo(state, info) {
         state.currentPlatformInfo = info;
+      },
+      setRedirectPath(state, path) {
+        state.redirectPath = path;
       },
     },
     actions: {
