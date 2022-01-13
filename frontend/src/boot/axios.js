@@ -8,9 +8,9 @@ import { Dialog, Notify } from "quasar";
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-
+const apiHost = process.env.DEV ? process.env.API_URL_DEV : process.env.API_URL;
 const api = axios.create({
-  baseURL: "api",
+  baseURL: apiHost + "/api",
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 10000, // request timeout
 });

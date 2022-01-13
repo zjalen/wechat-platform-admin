@@ -14,12 +14,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-//    return view('welcome');
-    return response()->json(['data' => '欢迎使用'])->setEncodingOptions(JSON_UNESCAPED_UNICODE);
+    return redirect(\route('frontend'));
+    //    return view('welcome');
+    //    return response()->json(['data' => '欢迎使用'])->setEncodingOptions(JSON_UNESCAPED_UNICODE);
 });
 
+Route::get('/frontend', function () {
+    return view('frontend');
+})->name('frontend');
+
 /** 多媒体文件带权限访问 */
-Route::get('platform-media/{appId}/{type}/{fileName}/{token}', [\App\Http\Controllers\PlatformController::class, 'getLocalMedia'])->middleware('media.token')->name('platform-media');
+Route::get('platform-media/{appId}/{type}/{fileName}/{token}', [
+    \App\Http\Controllers\PlatformController::class, 'getLocalMedia'
+])->middleware('media.token')->name('platform-media');
 
 /** 开放平台代授权方实现业务 */
 Route::group([

@@ -9,6 +9,7 @@
 /* eslint-env node */
 const ESLintPlugin = require("eslint-webpack-plugin");
 const { configure } = require("quasar/wrappers");
+const dotEnv = require("dotenv").config().parsed;
 
 module.exports = configure(function (ctx) {
   return {
@@ -45,7 +46,7 @@ module.exports = configure(function (ctx) {
       vueRouterMode: "hash", // available values: 'hash', 'history'
 
       // transpile: false,
-      // publicPath: '/',
+      publicPath: process.env.FOR_LARAVEL ? "frontend" : "/",
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
       // (from node_modules, which are by default not transpiled).
@@ -68,7 +69,7 @@ module.exports = configure(function (ctx) {
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);
       },
-      env: require("dotenv").config().parsed,
+      env: dotEnv,
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
@@ -76,7 +77,7 @@ module.exports = configure(function (ctx) {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: process.env.API_URL,
+          target: dotEnv.API_URL_DEV,
           changeOrigin: true,
           pathRewrite: {
             "^/api": "api",

@@ -6,8 +6,12 @@
   "author": "zjl <zjalen@163.com>",
   "private": true,
   "scripts": {
+    "env": "cp .env.example .env",
+    "dev": "node_modules/.bin/quasar dev",
+    "build": "node_modules/.bin/quasar build",
     "lint": "eslint --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "build-for-laravel": "rm -rf ../public/frontend/* && rm -r ../resources/frontend.blade.html && FOR_LARAVEL=true node_modules/.bin/quasar build && cp dist/spa/ ../public/frontend/ && mv ../public/frontend/index.html ../resources/views/frontend.blade.php"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -21,6 +25,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
     "@quasar/app": "^3.0.0",
+    "@quasar/cli": "^1.2.2",
     "dotenv": "^10.0.0",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
