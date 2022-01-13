@@ -193,7 +193,7 @@
             unelevated
             color="primary"
             label="添加为审核临时素材"
-            @click="addTemplateMedia"
+            @click="addAuditTemplateMedia"
           ></q-btn>
         </q-card-actions>
       </q-card>
@@ -205,6 +205,7 @@
 import {
   deleteLocalMedia,
   getLocalMediaList,
+  uploadCodeAuditMedia,
   uploadTemplateFile,
 } from "src/api/sub-mini-program";
 import { copyToClipboard } from "quasar";
@@ -280,6 +281,14 @@ export default {
     },
     addTemplateMedia() {
       uploadTemplateFile(this.opId, this.appId, {
+        fileName: this.currentMedia.name,
+        type: this.tab,
+      }).then((res) => {
+        this.currentMedia.mediaId = res.media_id;
+      });
+    },
+    addAuditTemplateMedia() {
+      uploadCodeAuditMedia(this.opId, this.appId, {
         fileName: this.currentMedia.name,
         type: this.tab,
       }).then((res) => {
