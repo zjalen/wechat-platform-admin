@@ -109,6 +109,38 @@ yarn build-for-laravel
 
 完成以上步骤后，直接访问后端入口，默认路由即渲染出前端项目。
 
+## 代码结构
+
+```text
+.
+├── README.md
+├── babel.config.js
+├── dist  # 打包后输出文件
+│   └── spa  # 打包后的 spa 资源
+├── jsconfig.json
+├── package.json
+├── public
+│   ├── favicon.ico
+│   └── icons
+├── quasar.conf.js  # 前端核心配置文件，参见 quasar 文档
+├── src  # 前端核心代码
+│   ├── App.vue
+│   ├── api  # 接口定义
+│   ├── assets  # 资源文件
+│   ├── boot  # 插件启动配置项
+│   ├── components  # 组件库
+│   ├── css
+│   ├── index.template.html  # index 页面模板
+│   ├── layouts  # 页面结构
+│   ├── pages  # 页面内容
+│   ├── quasar.d.ts
+│   ├── router  # 路由
+│   ├── store  # vuex 状态管理
+│   └── utils  # 自定义工具
+├── .eslintrc.js  # eslint 相关配置
+└── yarn.lock
+```
+
 ## 其它
 
 ### 代码严格检查
