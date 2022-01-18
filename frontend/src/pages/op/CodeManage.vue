@@ -132,10 +132,9 @@
 
 <script>
 import {
-  addCodeTemplate,
   deleteCodeTemplate,
-  getCodeDrafts,
-  getCodeTemplate,
+  getCode,
+  setCodeTemplate,
 } from "src/api/open-platform";
 import { copyToClipboard, date } from "quasar";
 
@@ -286,12 +285,12 @@ export default {
       }
     },
     loadDraftList() {
-      getCodeDrafts(this.id).then((res) => {
+      getCode(this.id, { type: "draft" }).then((res) => {
         this.draftList = res.draft_list;
       });
     },
     loadCodeTemplate(type) {
-      getCodeTemplate(this.id, { type: type }).then((res) => {
+      getCode(this.id, { type: type }).then((res) => {
         if (type === 0) {
           this.normalTemplateList = res.template_list;
         } else {
@@ -314,7 +313,7 @@ export default {
           },
         })
         .onOk(() => {
-          addCodeTemplate(this.id, {
+          setCodeTemplate(this.id, {
             draftId: draftId,
             type: type,
           }).then(() => {
@@ -333,9 +332,7 @@ export default {
           },
         })
         .onOk(() => {
-          deleteCodeTemplate(this.id, {
-            templateId: templateId,
-          }).then(() => {
+          deleteCodeTemplate(this.id, templateId).then(() => {
             this.$q.notify("删除成功");
             if (this.tab === "normal") {
               this.loadCodeTemplate(0);

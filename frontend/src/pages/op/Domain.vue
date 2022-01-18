@@ -184,6 +184,7 @@
               <q-btn flat color="grey" label="取消" v-close-popup></q-btn>
               <q-btn
                 unelevated
+                :loading="loading"
                 color="primary"
                 label="提交"
                 type="submit"
@@ -198,10 +199,6 @@
 
 <script>
 import {
-  addServerDomain,
-  addWebDomain,
-  deleteServerDomain,
-  deleteWebDomain,
   getServerDomain,
   getWebDomain,
   getWebDomainCheckFile,
@@ -229,6 +226,7 @@ export default {
     showDomainEditForm: false,
     currentAction: null,
     targetDomain: null,
+    loading: false,
   }),
   beforeMount() {
     this.id = this.$route.params.id;
@@ -271,28 +269,19 @@ export default {
           },
         })
         .onOk(() => {
-          if (this.currentAction === "add") {
-            addServerDomain(this.id, {
-              domainList: this.inputDomain,
-            }).then((res) => {
+          this.loading = true;
+          setServerDomain(this.id, {
+            domainList: this.inputDomain,
+            action: this.currentAction,
+          })
+            .then((res) => {
+              this.loading = false;
               this.parseServerDomainList(res);
               this.showDomainEditForm = false;
+            })
+            .catch(() => {
+              this.loading = false;
             });
-          } else if (this.currentAction === "set") {
-            setServerDomain(this.id, {
-              domainList: this.inputDomain,
-            }).then((res) => {
-              this.parseServerDomainList(res);
-              this.showDomainEditForm = false;
-            });
-          } else if (this.currentAction === "delete") {
-            deleteServerDomain(this.id, {
-              domainList: this.inputDomain,
-            }).then((res) => {
-              this.parseServerDomainList(res);
-              this.showDomainEditForm = false;
-            });
-          }
         });
     },
     parseServerDomainList(obj) {
@@ -352,28 +341,19 @@ export default {
           },
         })
         .onOk(() => {
-          if (this.currentAction === "add") {
-            addWebDomain(this.id, {
-              domainList: this.inputDomain,
-            }).then((res) => {
+          this.loading = true;
+          setWebDomain(this.id, {
+            domainList: this.inputDomain,
+            action: this.currentAction,
+          })
+            .then((res) => {
+              this.loading = false;
               this.parseWebDomainList(res);
               this.showDomainEditForm = false;
+            })
+            .catch(() => {
+              this.loading = false;
             });
-          } else if (this.currentAction === "set") {
-            setWebDomain(this.id, {
-              domainList: this.inputDomain,
-            }).then((res) => {
-              this.parseWebDomainList(res);
-              this.showDomainEditForm = false;
-            });
-          } else if (this.currentAction === "delete") {
-            deleteWebDomain(this.id, {
-              domainList: this.inputDomain,
-            }).then((res) => {
-              this.parseWebDomainList(res);
-              this.showDomainEditForm = false;
-            });
-          }
         });
     },
     parseWebDomainList(obj) {

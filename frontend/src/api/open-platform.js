@@ -4,16 +4,18 @@ export function getSecretConfig(id) {
   return api.get("open-platform/" + id + "/secret-config");
 }
 
-export function getSubPlatforms(platformId, params) {
-  return api.get("open-platform/" + platformId + "/sub-platforms", { params });
+export function getLocalAuthorizer(platformId, params) {
+  return api.get("open-platform/" + platformId + "/local-authorizers", {
+    params,
+  });
 }
 
-export function saveSubPlatform(platformId, params) {
-  return api.post("open-platform/" + platformId + "/sub-platforms", params);
+export function saveLocalAuthorizer(platformId, params) {
+  return api.post("open-platform/" + platformId + "/local-authorizers", params);
 }
 
-export function deleteSubPlatform(platformId, id) {
-  return api.delete("open-platform/" + platformId + "/sub-platforms/" + id);
+export function deleteLocalAuthorizer(platformId, id) {
+  return api.delete("open-platform/" + platformId + "/local-authorizers/" + id);
 }
 
 export function getAuthorizers(id, params) {
@@ -31,53 +33,32 @@ export function createBetaMiniProgram(id, data) {
 }
 
 export function getServerDomain(id) {
-  return api.get("open-platform/" + id + "/get-server-domain");
-}
-
-export function deleteServerDomain(id, data) {
-  return api.post("open-platform/" + id + "/delete-server-domain", data);
-}
-
-export function addServerDomain(id, data) {
-  return api.post("open-platform/" + id + "/add-server-domain", data);
+  return api.get("open-platform/" + id + "/wxa-server-domain");
 }
 
 export function setServerDomain(id, data) {
-  return api.post("open-platform/" + id + "/set-server-domain", data);
+  return api.put("open-platform/" + id + "/wxa-server-domain/set", data);
 }
 
 export function getWebDomain(id) {
-  return api.get("open-platform/" + id + "/get-web-domain");
-}
-
-export function deleteWebDomain(id, data) {
-  return api.post("open-platform/" + id + "/delete-web-domain", data);
-}
-
-export function addWebDomain(id, data) {
-  return api.post("open-platform/" + id + "/add-web-domain", data);
+  return api.get("open-platform/" + id + "/wxa-jump-domain");
 }
 
 export function setWebDomain(id, data) {
-  return api.post("open-platform/" + id + "/set-web-domain", data);
+  return api.put("open-platform/" + id + "/wxa-jump-domain/set", data);
 }
 
 export function getWebDomainCheckFile(id) {
-  return api.post("open-platform/" + id + "/get-domain-confirm-file");
+  return api.get("open-platform/" + id + "/domain-confirm-file");
 }
 
-export function getCodeDrafts(id) {
-  return api.get("open-platform/" + id + "/code-drafts");
+export function getCode(id, params) {
+  return api.get("open-platform/" + id + "/code", { params });
+}
+export function setCodeTemplate(id, data) {
+  return api.put("open-platform/" + id + "/code/template", data);
 }
 
-export function getCodeTemplate(id, params) {
-  return api.get("open-platform/" + id + "/code-template", { params });
-}
-
-export function addCodeTemplate(id, data) {
-  return api.post("open-platform/" + id + "/add-template", data);
-}
-
-export function deleteCodeTemplate(id, data) {
-  return api.post("open-platform/" + id + "/delete-template", data);
+export function deleteCodeTemplate(id, templateId) {
+  return api.post("open-platform/" + id + "/code/" + templateId);
 }

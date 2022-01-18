@@ -18,11 +18,11 @@ Route::group([
     'middleware' => ['platform.op']
 ], function (\Illuminate\Routing\Router $router) {
     // 开放平台接收微信官方消息
-    $router->post('serve',
-        [\App\Http\Controllers\OpenPlatformServerController::class, 'serve'])->name('openPlatformServe');
+    $router->post('notify',
+        [\App\Http\Controllers\OpenPlatform\NotifyController::class, 'store'])->name('openPlatformNotify');
     // 代公众平台接收用户消息
     $router->post('{appId}/notify',
-        [\App\Http\Controllers\OpenPlatformServerController::class, 'subPlatformNotify'])->name('subPlatformNotify');
+        [\App\Http\Controllers\OpenPlatform\AuthorizerNotifyController::class, 'store'])->name('authorizerNotify');
 });
 
 /** 无需 json 格式化的文件下载 */
@@ -31,48 +31,41 @@ Route::get('open-platform/{openPlatformId}/mp/{appId}/code-test-qr', [\App\Http\
 Route::group([
     /** 统一格式化结果 */
     'middleware' => ['format.json', 'operation-log'],
-], function () {
+], function (\Illuminate\Routing\Router $router) {
     /** 登录 */
-    Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);
+    $router->post('login', [\App\Http\Controllers\AuthController::class, 'login']);
+
+    /** 资源文件查看 */
+    $router->get('platforms/{appId}/resources/{token}', [\App\Http\Controllers\ResourceController::class, 'show'])->name('resources.show');
 
     /** 首页平台列表相关操作 */
-    Route::group(['middleware' => ['auth:api']], function (\Illuminate\Routing\Router $router) {
+    $router->group(['middleware' => ['auth:api']], function (\Illuminate\Routing\Router $router) {
         $router->apiResource('platforms', \App\Http\Controllers\PlatformController::class);
+        $router->apiResource('platforms/{appId}/resources', \App\Http\Controllers\ResourceController::class)->only(['index','store','destroy']);
         $router->apiResource('operation-logs', \App\Http\Controllers\OperationLogController::class)->only('index');
     });
 
     /** 开放平台相关 */
-    Route::group([
+    $router->group([
         'prefix' => 'open-platform/{openPlatformId}',
         'middleware' => ['auth:api', 'platform.op']
     ], function (\Illuminate\Routing\Router $router) {
-        $router->get('secret-config', [\App\Http\Controllers\OpenPlatformController::class, 'getSecretConfig']);
-        $router->get('get-server-domain', [\App\Http\Controllers\OpenPlatformController::class, 'getServerDomain']);
-        $router->post('delete-server-domain', [\App\Http\Controllers\OpenPlatformController::class, 'deleteServerDomain']);
-        $router->post('add-server-domain', [\App\Http\Controllers\OpenPlatformController::class, 'addServerDomain']);
-        $router->post('set-server-domain', [\App\Http\Controllers\OpenPlatformController::class, 'setServerDomain']);
-        $router->post('get-domain-confirm-file', [\App\Http\Controllers\OpenPlatformController::class, 'getDomainConfirmFile']);
-        $router->get('get-web-domain', [\App\Http\Controllers\OpenPlatformController::class, 'getWebDomain']);
-        $router->post('delete-web-domain', [\App\Http\Controllers\OpenPlatformController::class, 'deleteWebDomain']);
-        $router->post('add-web-domain', [\App\Http\Controllers\OpenPlatformController::class, 'addWebDomain']);
-        $router->post('set-web-domain', [\App\Http\Controllers\OpenPlatformController::class, 'setWebDomain']);
-        $router->get('authorizers', [\App\Http\Controllers\OpenPlatformController::class, 'getAuthorizerList']);
-        $router->get('authorizers/{appId}', [\App\Http\Controllers\OpenPlatformController::class, 'getAuthorizer']);
-        $router->post('beta-mini-program',
-            [\App\Http\Controllers\OpenPlatformController::class, 'createBetaMiniProgram']);
+        $router->get('secret-config', [\App\Http\Controllers\OpenPlatform\OpenPlatformController::class, 'show']);
+        $router->apiResource('wxa-server-domain', \App\Http\Controllers\OpenPlatform\WXAServerDomainController::class)->only(['index', 'update']);
+        $router->get('domain-confirm-file', [\App\Http\Controllers\OpenPlatform\OpenPlatformController::class, 'webDomainValidateFile']);
+        $router->apiResource('wxa-jump-domain', \App\Http\Controllers\OpenPlatform\WXAJumpDomainController::class)->only(['index', 'update']);
 
-        $router->get('code-drafts', [\App\Http\Controllers\OpenPlatformController::class, 'codeDrafts']);
-        $router->get('code-template', [\App\Http\Controllers\OpenPlatformController::class, 'codeTemplate']);
-        $router->post('add-template', [\App\Http\Controllers\OpenPlatformController::class, 'addCodeDraftToTemplate']);
-        $router->post('delete-template', [\App\Http\Controllers\OpenPlatformController::class, 'deleteCodeTemplate']);
-
+        $router->apiResource('authorizers', \App\Http\Controllers\OpenPlatform\AuthorizerController::class)->only(['index', 'show']);
         /** 存储已授权的子平台详细信息在数据库方便后续查看 */
-        $router->apiResource('sub-platforms', \App\Http\Controllers\SubPlatformController::class)->only([
+        $router->apiResource('local-authorizers', \App\Http\Controllers\OpenPlatform\LocalAuthorizerController::class)->only([
             'index', 'store', 'show', 'destroy'
         ]);
+        $router->apiResource('beta-mini-program',\App\Http\Controllers\OpenPlatform\BetaMiniProgramController::class)->only('store');
+        $router->apiResource('code', \App\Http\Controllers\OpenPlatform\CodeController::class)->only(['index', 'update', 'destroy']);
+
 
         /** 开放平台代小程序实现功能 */
-        Route::group([
+        $router->group([
             'prefix' => 'mp/{appId}',
         ], function (\Illuminate\Routing\Router $router) {
             $router->get('basic-info', [\App\Http\Controllers\SubMiniProgramController::class, 'basicInfo']);
@@ -130,7 +123,7 @@ Route::group([
         });
 
         /** 开放平台代公众号实现功能 */
-        Route::group([
+        $router->group([
             'prefix' => 'oa/{appId}',
         ], function (\Illuminate\Routing\Router $router) {
 

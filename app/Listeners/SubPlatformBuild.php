@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\SubPlatformAuthorized;
-use App\Models\SubPlatform;
+use App\Models\Authorizer;
 use App\Services\ThirdApi\OpenPlatformService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -34,9 +34,9 @@ class SubPlatformBuild
         $appId = $event->appId;
         $openPlatform = new OpenPlatformService($openPlatformModel);
         $authorizer = $openPlatform->getAuthorizer($appId);
-        $subPlatform = SubPlatform::whereAppId($appId)->first();
+        $subPlatform = Authorizer::whereAppId($appId)->first();
         if (!$subPlatform) {
-            $subPlatform = new SubPlatform();
+            $subPlatform = new Authorizer();
             $subPlatform->slug = Str::random();
         }
         $subPlatform->app_id = $appId;

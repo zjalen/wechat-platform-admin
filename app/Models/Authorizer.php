@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * App\Models\SubPlatform
+ * App\Models\Authorizer
  *
  * @property int $id
  * @property string $nick_name 昵称
@@ -19,29 +19,29 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $is_mini_program 是否是小程序
  * @property int $platform_id 关联第三方平台 id
  * @property int $status 绑定状态 1 绑定成功 0 未绑定
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereStatus($value)
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read string $service_type_name
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform query()
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereAppId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereHeadImg($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereIsMiniProgram($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereNickName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform wherePlatformId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform wherePrincipalName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereQrcodeUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereServiceTypeInfo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubPlatform whereUserName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereAppId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereHeadImg($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereIsMiniProgram($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereNickName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer wherePlatformId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer wherePrincipalName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereQrcodeUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereServiceTypeInfo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereUserName($value)
  * @mixin \Eloquent
  */
-class SubPlatform extends Model
+class Authorizer extends Model
 {
     use HasFactory;
 

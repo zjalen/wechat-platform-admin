@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read string $type_name
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SubPlatform[] $subPlatforms
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Authorizer[] $subPlatforms
  * @property-read int|null $sub_platforms_count
  * @method static \Illuminate\Database\Eloquent\Builder|Platform newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Platform newQuery()
@@ -74,8 +74,8 @@ class Platform extends Model
      * 开放平台第三方平台的关联绑定账号
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function subPlatforms(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function localAuthorizers(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(SubPlatform::class, 'platform_id', 'id');
+        return $this->hasMany(Authorizer::class, 'platform_id', 'id');
     }
 }

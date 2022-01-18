@@ -111,6 +111,13 @@
           label="绑定新账号"
         ></q-btn>
         <q-btn
+          color="primary"
+          unelevated
+          :to="`/open-platform/${id}/code-manage`"
+          label="代码管理"
+        >
+        </q-btn>
+        <q-btn
           flat
           color="secondary"
           label="创建测试小程序"
@@ -123,13 +130,6 @@
           label="获取已授权账号"
         >
           <q-tooltip>从微信服务器的接口获取已绑定的账号</q-tooltip>
-        </q-btn>
-        <q-btn
-          flat
-          color="negative"
-          :to="`/open-platform/${id}/code-manage`"
-          label="代码管理"
-        >
         </q-btn>
       </q-card-actions>
     </q-card>
@@ -178,7 +178,7 @@
               <platform-card :info="item"></platform-card>
             </q-card-section>
             <q-card-actions align="right">
-              <q-btn flat color="negative" @click="deleteSubPlatform(item)"
+              <q-btn flat color="secondary" @click="onDeleteClick(item)"
                 >删除
               </q-btn>
               <q-btn flat color="secondary" @click="loadAuthorizer(item.app_id)"
@@ -296,12 +296,12 @@
 <script>
 import {
   createBetaMiniProgram,
-  deleteSubPlatform,
+  deleteLocalAuthorizer,
   getAuthorizer,
   getAuthorizers,
   getSecretConfig,
-  getSubPlatforms,
-  saveSubPlatform,
+  getLocalAuthorizer,
+  saveLocalAuthorizer,
 } from "src/api/open-platform";
 import PlatformCard from "components/SubPlatformContent";
 import QRCode from "qrcodejs2";
@@ -381,7 +381,7 @@ export default {
       this.loadSubPlatforms();
     },
     loadSubPlatforms() {
-      getSubPlatforms(this.id, {
+      getLocalAuthorizer(this.id, {
         limit: this.perPage,
         skip: this.perPage * (this.currentPage - 1),
       }).then((res) => {
@@ -430,29 +430,24 @@ export default {
           "MiniProgramInfo"
         ),
       };
-      saveSubPlatform(this.id, params).then(() => {
+      saveLocalAuthorizer(this.id, params).then(() => {
         this.$q.notify("同步成功");
         this.showAuthorizerDetail = false;
         this.loadSubPlatforms();
       });
     },
-    deleteSubPlatform(item) {
+    onDeleteClick(item) {
       this.$q
         .dialog({
-          title: "删除确认",
-          message: "删除后可通过远程获取重新绑定",
-          ok: {
-            label: "确认",
-            unelevated: true,
-          },
+          title: "删除",
+          message: "仅删除数据库内容，并非解绑，获取已授权账号重新添加",
           cancel: {
             color: "grey",
             flat: true,
-            label: "取消",
           },
         })
         .onOk(() => {
-          deleteSubPlatform(this.id, item.id).then(() => {
+          deleteLocalAuthorizer(this.id, item.id).then(() => {
             this.$q.notify("删除成功");
             this.loadSubPlatforms();
           });

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubPlatformsTable extends Migration
+class CreateAuthorizersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateSubPlatformsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sub_platforms', function (Blueprint $table) {
+        Schema::create('authorizers', function (Blueprint $table) {
             $table->id();
             $table->string('nick_name')->comment('授权平台名称');
             $table->string('slug')->unique()->index()->comment('索引标识');
@@ -37,6 +37,6 @@ class CreateSubPlatformsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_platforms');
+        Schema::dropIfExists('authorizers');
     }
 }

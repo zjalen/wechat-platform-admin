@@ -89,7 +89,7 @@
 
 <script>
 import { copyToClipboard, date } from "quasar";
-import { getCodeTemplate } from "src/api/open-platform";
+import { getCode } from "src/api/open-platform";
 
 export default {
   name: "OpenPlatformCodeList",
@@ -198,7 +198,7 @@ export default {
       }
     },
     loadCodeTemplate(type) {
-      getCodeTemplate(this.openPlatformId, { type: type }).then((res) => {
+      getCode(this.openPlatformId, { type: type }).then((res) => {
         if (type === 0) {
           this.normalTemplateList = res.template_list;
         } else {

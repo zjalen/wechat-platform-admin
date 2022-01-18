@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\SubPlatformUnAuthorized;
-use App\Models\SubPlatform;
+use App\Models\Authorizer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -29,6 +29,6 @@ class SubPlatformRemove
     {
         $openPlatformModel = $event->openPlatformModel;
         $appId = $event->appId;
-        SubPlatform::query()->where('app_id', $appId)->where('platform_id', $openPlatformModel->id)->delete();
+        Authorizer::query()->where('app_id', $appId)->where('platform_id', $openPlatformModel->id)->delete();
     }
 }

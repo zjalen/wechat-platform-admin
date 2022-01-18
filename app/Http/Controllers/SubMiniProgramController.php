@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\BusinessExceptions\ParamsErrorException;
-use App\Exceptions\BusinessExceptions\UnavailableException;
 use App\Exceptions\BusinessExceptions\WeChatException;
 use App\Models\Tester;
 use App\Services\MediaService;
@@ -11,7 +10,6 @@ use App\Services\ThirdApi\OpenPlatformService;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class SubMiniProgramController extends Controller
 {
@@ -51,88 +49,6 @@ class SubMiniProgramController extends Controller
     {
         $application = $this->getMiniProgramApplication();
         return $application->account->getBasicInfo();
-    }
-
-    /**
-     * 上传到本地文件
-     *
-     * @return \Illuminate\Http\JsonResponse
-     * @throws UnavailableException
-     * @throws ParamsErrorException
-     */
-    public function uploadLocalMedia(): \Illuminate\Http\JsonResponse
-    {
-        $files = request()->allFiles();
-        $type = request()->input('type');
-        if (!in_array($type, ['image', 'video', 'voice'])) {
-            throw new ParamsErrorException();
-        }
-        $mediaService = new MediaService();
-        $count = 0;
-        foreach ($files as $file) {
-            $result = $mediaService->upload($this->getAppId(), $file, $type);
-            if ($result) {
-                $count++;
-            }
-        }
-        if ($count == 0) {
-            throw new UnavailableException('文件上传失败');
-        }
-        return response()->json(['success' => $count]);
-    }
-
-    /**
-     * 删除到本地文件
-     *
-     * @throws ParamsErrorException
-     */
-    public function deleteLocalMedia(): string
-    {
-        $fileNames = request()->input('fileNames');
-        $type = request()->input('type');
-        if (!in_array($type, ['image', 'video', 'voice'])) {
-            throw new ParamsErrorException();
-        }
-        $mediaService = new MediaService();
-        $result = $mediaService->deleteFiles($this->getAppId(), $fileNames, $type);
-        return response()->json(['success' => $result]);
-    }
-
-
-    /**
-     * 获取本地多媒体文件列表
-     *
-     * @return array|array[]
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     * @throws \Exception
-     */
-    public function getLocalMediaList(): array
-    {
-        $mediaService = new MediaService();
-        $type = request()->query('type');
-        $list = $mediaService->allFiles($this->getAppId(), $type);
-        $resultArray = [
-            'image' => [],
-            'video' => [],
-            'voice' => []
-        ];
-        $key = config('custom.media_token_cache_prefix').$this->getAppId();
-        $token = cache()->get($key);
-        if (!$token) {
-            $token = Str::random();
-            cache()->set($key, $token, config('custom.media_token_cache_ttl') * 60);
-        }
-        foreach ($list as $item) {
-            $itemNameArray = explode('/', $item);
-            $type = $itemNameArray[count($itemNameArray) - 2];
-            $name = $itemNameArray[count($itemNameArray) - 1];
-            $url = route("platform-media",
-                    ['appId' => $this->getAppId(), 'type' => $type, 'token' => $token, 'fileName' => $name]);
-            $resultArray[$type][] = ['url' => $url, 'name' => $name];
-        }
-        return $resultArray;
     }
 
     /**
