@@ -81,7 +81,11 @@
 </template>
 
 <script>
-import { bindTester, getTesters, unBindTester } from "src/api/sub-mini-program";
+import {
+  bindTester,
+  getTesters,
+  unBindTester,
+} from "src/api/authorizer-mini-program";
 
 export default {
   name: "MpTester",

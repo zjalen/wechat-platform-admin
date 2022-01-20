@@ -203,12 +203,11 @@
 
 <script>
 import {
-  deleteLocalMedia,
-  getLocalMediaList,
   uploadCodeAuditMedia,
   uploadTemplateFile,
-} from "src/api/sub-mini-program";
+} from "src/api/authorizer-mini-program";
 import { copyToClipboard } from "quasar";
+import { deleteLocalResource, getLocalResources } from "src/api/platform";
 
 export default {
   name: "MediaManage",
@@ -243,16 +242,15 @@ export default {
   methods: {
     uploadUrl() {
       return (
-        "/api/open-platform/" +
-        this.opId +
-        "/mp/" +
+        process.env.API +
+        "/api/platforms/" +
         this.appId +
-        "/local-media?type=" +
+        "/resources?type=" +
         this.tab
       );
     },
     initData() {
-      getLocalMediaList(this.opId, this.appId).then((res) => {
+      getLocalResources(this.appId).then((res) => {
         this.mediaList = res;
         this.typeList = Object.keys(res);
         this.typeList.forEach((type) => {
@@ -324,13 +322,24 @@ export default {
         this.$q.notify({ color: "negative", message: "请先勾选文件" });
         return;
       }
-      deleteLocalMedia(this.opId, this.appId, {
-        fileNames: fileNames,
-        type: this.tab,
-      }).then(() => {
-        this.$q.notify("删除成功");
-        this.initData();
-      });
+      this.$q
+        .dialog({
+          title: "删除确认",
+          message: "删除后将无法找回，确定删除吗？",
+          cancel: {
+            flat: true,
+            color: "grey",
+          },
+        })
+        .onOk(() => {
+          deleteLocalResource(this.appId, {
+            fileNames: fileNames,
+            type: this.tab,
+          }).then(() => {
+            this.$q.notify("删除成功");
+            this.initData();
+          });
+        });
     },
     onMediaIdClick(text) {
       copyToClipboard(text)

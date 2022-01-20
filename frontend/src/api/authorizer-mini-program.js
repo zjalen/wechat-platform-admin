@@ -19,12 +19,6 @@ export function unBindTester(id, appId, userSlug, params = null) {
   );
 }
 
-export function getLocalMediaList(id, appId, params) {
-  return api.get("open-platform/" + id + "/mp/" + appId + "/local-media", {
-    params,
-  });
-}
-
 export function uploadTemplateFile(id, appId, data) {
   return api.post(
     "open-platform/" + id + "/mp/" + appId + "/upload-template-media",
@@ -32,18 +26,8 @@ export function uploadTemplateFile(id, appId, data) {
   );
 }
 
-export function deleteLocalMedia(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/delete-local-media",
-    data
-  );
-}
-
-export function checkNickName(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/check-nick-name",
-    data
-  );
+export function checkNickName(id, appId, name) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/nick-name/" + name);
 }
 
 export function getNicknameAuditStatus(id, appId, auditId) {
@@ -52,144 +36,147 @@ export function getNicknameAuditStatus(id, appId, auditId) {
       id +
       "/mp/" +
       appId +
-      "/nick-name-audit-status/" +
+      "/nick-name/audit-status/" +
       auditId
   );
 }
 
 export function setNickName(id, appId, data) {
-  return api.put("open-platform/" + id + "/mp/" + appId + "/nick-name", data);
+  return api.put(
+    "open-platform/" + id + "/mp/" + appId + "/nick-name/update",
+    data
+  );
 }
 
 export function setAvatar(id, appId, data) {
-  return api.put("open-platform/" + id + "/mp/" + appId + "/avatar", data);
+  return api.put(
+    "open-platform/" + id + "/mp/" + appId + "/avatar/update",
+    data
+  );
 }
 
 export function setSignature(id, appId, data) {
-  return api.put("open-platform/" + id + "/mp/" + appId + "/signature", data);
+  return api.put(
+    "open-platform/" + id + "/mp/" + appId + "/signature/update",
+    data
+  );
 }
 
 export function getServerDomain(id, appId) {
-  return api.get("open-platform/" + id + "/mp/" + appId + "/get-server-domain");
+  return api.get("open-platform/" + id + "/mp/" + appId + "/server-domain");
 }
 
 export function addServerDomain(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/add-server-domain",
+  return api.put(
+    "open-platform/" + id + "/mp/" + appId + "/server-domain/add",
     data
   );
 }
 
 export function setServerDomain(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/set-server-domain",
+  return api.put(
+    "open-platform/" + id + "/mp/" + appId + "/server-domain/set",
     data
   );
 }
 
 export function deleteServerDomain(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/delete-server-domain",
+  return api.put(
+    "open-platform/" + id + "/mp/" + appId + "/server-domain/delete",
     data
   );
 }
 
 export function getWebDomain(id, appId) {
-  return api.get("open-platform/" + id + "/mp/" + appId + "/get-web-domain");
+  return api.get("open-platform/" + id + "/mp/" + appId + "/webview-domain");
 }
 
 export function addWebDomain(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/add-web-domain",
+  return api.put(
+    "open-platform/" + id + "/mp/" + appId + "/webview-domain/add",
     data
   );
 }
 
 export function syncWebDomain(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/sync-web-domain",
+  return api.put(
+    "open-platform/" + id + "/mp/" + appId + "/webview-domain/sync",
     data
   );
 }
 
 export function setWebDomain(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/set-web-domain",
+  return api.put(
+    "open-platform/" + id + "/mp/" + appId + "/webview-domain/set",
     data
   );
 }
 
 export function deleteWebDomain(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/delete-web-domain",
+  return api.put(
+    "open-platform/" + id + "/mp/" + appId + "/webview-domain/delete",
     data
   );
 }
 
 export function codeCommit(id, appId, data) {
   return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/code-commit",
+    "open-platform/" + id + "/mp/" + appId + "/code/commit",
     data
   );
 }
 
 export function getCodePages(id, appId) {
-  return api.get("open-platform/" + id + "/mp/" + appId + "/code-pages");
+  return api.get("open-platform/" + id + "/mp/" + appId + "/code/pages");
 }
 
 export function getCodeTestQr(id, appId) {
-  return api.get("open-platform/" + id + "/mp/" + appId + "/code-test-qr", {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/code/test-qr", {
     responseType: "blob",
   });
 }
 
 export function codeAudit(id, appId, data) {
-  return api.post("open-platform/" + id + "/mp/" + appId + "/code-audit", data);
+  return api.post("open-platform/" + id + "/mp/" + appId + "/code/audit", data);
 }
 
 export function uploadCodeAuditMedia(id, appId, data) {
   return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/upload-code-audit-media",
+    "open-platform/" + id + "/mp/" + appId + "/code/upload-audit-media",
     data
   );
 }
 
 export function withdrawCodeAudit(id, appId) {
   return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/code-audit-withdraw"
-  );
-}
-
-export function getCodeAuditLatestStatus(id, appId) {
-  return api.get(
-    "open-platform/" + id + "/mp/" + appId + "/code-audit-latest-status"
+    "open-platform/" + id + "/mp/" + appId + "/code/audit-withdraw"
   );
 }
 
 export function getCodeAuditStatus(id, appId, params) {
   return api.get(
-    "open-platform/" + id + "/mp/" + appId + "/code-audit-status",
+    "open-platform/" + id + "/mp/" + appId + "/code/audit-status",
     { params }
   );
 }
 
 export function codeRelease(id, appId, data) {
   return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/code-release",
+    "open-platform/" + id + "/mp/" + appId + "/code/release",
     data
   );
 }
 
 export function codeRollbackRelease(id, appId, data) {
   return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/code-rollback-release",
+    "open-platform/" + id + "/mp/" + appId + "/code/revert",
     data
   );
 }
 
 export function getCodeReleaseHistories(id, appId, data) {
   return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/code-release-histories",
+    "open-platform/" + id + "/mp/" + appId + "/code/release-history-versions",
     data
   );
 }
@@ -207,28 +194,23 @@ export function setPrivacySetting(id, appId, data) {
   );
 }
 
-export function getAllCategories(id, appId) {
-  return api.get("open-platform/" + id + "/mp/" + appId + "/all-categories");
-}
-
-export function getCategoriesByType(id, appId, params) {
-  return api.get(
-    "open-platform/" + id + "/mp/" + appId + "/categories-by-type",
-    { params }
-  );
+export function getCategories(id, appId, params) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/categories", {
+    params,
+  });
 }
 
 export function getCategory(id, appId) {
-  return api.get("open-platform/" + id + "/mp/" + appId + "/category");
+  return api.get("open-platform/" + id + "/mp/" + appId + "/categories/show");
 }
 
 export function addCategory(id, appId, data) {
-  return api.post("open-platform/" + id + "/mp/" + appId + "/category", data);
+  return api.post("open-platform/" + id + "/mp/" + appId + "/categories", data);
 }
 
 export function deleteCategory(id, appId, data) {
-  return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/delete-category",
+  return api.put(
+    "open-platform/" + id + "/mp/" + appId + "/categories/delete",
     data
   );
 }

@@ -146,7 +146,7 @@ import {
   setAvatar,
   setNickName,
   setSignature,
-} from "src/api/sub-mini-program";
+} from "src/api/authorizer-mini-program";
 
 export default {
   name: "BasicInformation",
@@ -302,16 +302,14 @@ export default {
           persistent: true,
         })
         .onOk((data) => {
-          checkNickName(this.opId, this.appId, { nick_name: data }).then(
-            (res) => {
-              if (res.errcode === 0) {
-                this.$q.dialog({
-                  title: "名称可用",
-                  message: res.wording,
-                });
-              }
+          checkNickName(this.opId, this.appId, data).then((res) => {
+            if (res.errcode === 0) {
+              this.$q.dialog({
+                title: "名称可用",
+                message: res.wording,
+              });
             }
-          );
+          });
         });
     },
     onGetNicknameAuditStatus() {

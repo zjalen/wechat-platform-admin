@@ -25,9 +25,6 @@ Route::group([
         [\App\Http\Controllers\OpenPlatform\AuthorizerNotifyController::class, 'store'])->name('authorizerNotify');
 });
 
-/** 无需 json 格式化的文件下载 */
-Route::get('open-platform/{openPlatformId}/mp/{appId}/code-test-qr', [\App\Http\Controllers\SubMiniProgramController::class, 'getTestQRCode'])->middleware(['auth:api', 'platform.op']);
-
 Route::group([
     /** 统一格式化结果 */
     'middleware' => ['format.json', 'operation-log'],
@@ -41,7 +38,8 @@ Route::group([
     /** 首页平台列表相关操作 */
     $router->group(['middleware' => ['auth:api']], function (\Illuminate\Routing\Router $router) {
         $router->apiResource('platforms', \App\Http\Controllers\PlatformController::class);
-        $router->apiResource('platforms/{appId}/resources', \App\Http\Controllers\ResourceController::class)->only(['index','store','destroy']);
+        $router->apiResource('platforms/{appId}/resources', \App\Http\Controllers\ResourceController::class)->only(['index','store']);
+        $router->post('platforms/{appId}/resources/delete', [\App\Http\Controllers\ResourceController::class, 'destroy']);
         $router->apiResource('operation-logs', \App\Http\Controllers\OperationLogController::class)->only('index');
     });
 
@@ -68,58 +66,31 @@ Route::group([
         $router->group([
             'prefix' => 'mp/{appId}',
         ], function (\Illuminate\Routing\Router $router) {
-            $router->get('basic-info', [\App\Http\Controllers\SubMiniProgramController::class, 'basicInfo']);
-            $router->post('delete-local-media',
-                [\App\Http\Controllers\SubMiniProgramController::class, 'deleteLocalMedia']);
-            $router->post('local-media', [\App\Http\Controllers\SubMiniProgramController::class, 'uploadLocalMedia']);
-            $router->get('local-media', [\App\Http\Controllers\SubMiniProgramController::class, 'getLocalMediaList']);
-            $router->get('local-media/{fileName}',
-                [\App\Http\Controllers\SubMiniProgramController::class, 'getLocalMedia']);
+            $router->get('basic-info', [\App\Http\Controllers\OpenPlatform\MiniProgram\MiniProgramController::class, 'show']);
             $router->post('upload-template-media',
-                [\App\Http\Controllers\SubMiniProgramController::class, 'uploadTemplateMedia']);
-            $router->get('testers', [\App\Http\Controllers\SubMiniProgramController::class, 'testers']);
-            $router->post('testers', [\App\Http\Controllers\SubMiniProgramController::class, 'bindTester']);
-            $router->delete('testers/{userSlug}',
-                [\App\Http\Controllers\SubMiniProgramController::class, 'unBindTester']);
+                [\App\Http\Controllers\OpenPlatform\MiniProgram\MiniProgramController::class, 'uploadTemplateMedia']);
+            $router->apiResource('testers', \App\Http\Controllers\OpenPlatform\MiniProgram\TesterController::class)->only(['index', 'store', 'destroy']);
+            $router->apiResource('nick-name', \App\Http\Controllers\OpenPlatform\MiniProgram\NickNameController::class)->only(['show', 'update']);
+            $router->get('nick-name/audit-status/{audit_id}', [\App\Http\Controllers\OpenPlatform\MiniProgram\NickNameController::class, 'auditStatus']);
+            $router->apiResource('avatar', \App\Http\Controllers\OpenPlatform\MiniProgram\AvatarController::class)->only(['update']);
+            $router->apiResource('signature', \App\Http\Controllers\OpenPlatform\MiniProgram\SignatureController::class)->only(['update']);
+            $router->apiResource('server-domain', \App\Http\Controllers\OpenPlatform\MiniProgram\ServerDomainController::class)->only(['index','update']);
+            $router->apiResource('webview-domain', \App\Http\Controllers\OpenPlatform\MiniProgram\WebviewDomainController::class)->only(['index', 'update']);
+            $router->apiResource('privacy-setting', \App\Http\Controllers\OpenPlatform\MiniProgram\PrivacySettingController::class)->only(['index', 'store']);
+            $router->post('upload-privacy-ext-file', [\App\Http\Controllers\OpenPlatform\MiniProgram\PrivacySettingController::class, 'uploadPrivacyExtFile']);
+            $router->apiResource('categories', \App\Http\Controllers\OpenPlatform\MiniProgram\CategoryController::class)->only(['index','store','show','destroy']);
 
-            $router->post('check-nick-name', [\App\Http\Controllers\SubMiniProgramController::class, 'checkNickName']);
-            $router->get('nick-name-audit-status/{auditId}',
-                [\App\Http\Controllers\SubMiniProgramController::class, 'getNicknameAuditStatus']);
-            $router->put('nick-name', [\App\Http\Controllers\SubMiniProgramController::class, 'setNickName']);
-            $router->put('avatar', [\App\Http\Controllers\SubMiniProgramController::class, 'setAvatar']);
-            $router->put('signature', [\App\Http\Controllers\SubMiniProgramController::class, 'setSignature']);
+            $router->post('code/commit', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'commit']);
+            $router->get('code/test-qr', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getQrCode']);
+            $router->get('code/pages', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getPage']);
+            $router->post('code/audit', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'audit']);
+            $router->post('code/upload-audit-media', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'uploadAuditMedia']);
+            $router->get('code/audit-status', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getAuditStatus']);
+            $router->post('code/audit-withdraw', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'withdrawAudit']);
+            $router->post('code/release', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'release']);
+            $router->post('code/revert', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'revertReleaseVersion']);
+            $router->get('code/release-history-versions', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getReleaseHistoryVersions']);
 
-            $router->get('get-server-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'getServerDomain']);
-            $router->post('add-server-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'addServerDomain']);
-            $router->post('set-server-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'setServerDomain']);
-            $router->post('delete-server-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'deleteServerDomain']);
-
-            $router->get('get-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'getWebDomain']);
-            $router->post('sync-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'syncWebDomain']);
-            $router->post('add-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'addWebDomain']);
-            $router->post('set-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'setWebDomain']);
-            $router->post('delete-web-domain', [\App\Http\Controllers\SubMiniProgramController::class, 'deleteWebDomain']);
-
-            $router->post('code-commit', [\App\Http\Controllers\SubMiniProgramController::class, 'codeCommit']);
-            $router->get('code-pages', [\App\Http\Controllers\SubMiniProgramController::class, 'getCodePage']);
-            $router->post('code-audit', [\App\Http\Controllers\SubMiniProgramController::class, 'codeAudit']);
-            $router->post('upload-code-audit-media', [\App\Http\Controllers\SubMiniProgramController::class, 'uploadCodeAuditMedia']);
-            $router->get('code-audit-latest-status', [\App\Http\Controllers\SubMiniProgramController::class, 'getLatestAuditStatus']);
-            $router->get('code-audit-status', [\App\Http\Controllers\SubMiniProgramController::class, 'getAuditStatus']);
-            $router->post('code-audit-withdraw', [\App\Http\Controllers\SubMiniProgramController::class, 'withdrawAudit']);
-            $router->post('code-release', [\App\Http\Controllers\SubMiniProgramController::class, 'codeRelease']);
-            $router->post('code-rollback-release', [\App\Http\Controllers\SubMiniProgramController::class, 'codeRollbackRelease']);
-            $router->post('code-release-histories', [\App\Http\Controllers\SubMiniProgramController::class, 'getCodeReleaseHistories']);
-
-            $router->get('privacy-setting', [\App\Http\Controllers\SubMiniProgramController::class, 'getPrivacySetting']);
-            $router->post('privacy-setting', [\App\Http\Controllers\SubMiniProgramController::class, 'setPrivacySetting']);
-            $router->post('upload-privacy-file', [\App\Http\Controllers\SubMiniProgramController::class, 'uploadPrivacyExtFile']);
-
-            $router->get('category', [\App\Http\Controllers\SubMiniProgramController::class, 'getCategory']);
-            $router->get('all-categories', [\App\Http\Controllers\SubMiniProgramController::class, 'getAllCategories']);
-            $router->get('categories-by-type', [\App\Http\Controllers\SubMiniProgramController::class, 'getAllCategoriesByType']);
-            $router->post('category', [\App\Http\Controllers\SubMiniProgramController::class, 'addCategory']);
-            $router->post('delete-category', [\App\Http\Controllers\SubMiniProgramController::class, 'deleteCategory']);
         });
 
         /** 开放平台代公众号实现功能 */

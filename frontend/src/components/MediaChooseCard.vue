@@ -102,10 +102,10 @@
 
 <script>
 import {
-  getLocalMediaList,
   uploadCodeAuditMedia,
   uploadTemplateFile,
-} from "src/api/sub-mini-program";
+} from "src/api/authorizer-mini-program";
+import { getLocalResources } from "src/api/platform";
 
 export default {
   name: "MediaChooseCard",
@@ -148,7 +148,7 @@ export default {
     loadMediaList(type, formKey) {
       this.currentFormKey = formKey;
       this.currentMediaType = type;
-      getLocalMediaList(this.opId, this.appId, { type: type }).then((res) => {
+      getLocalResources(this.appId, { type: type }).then((res) => {
         this.mediaList = res[type];
         this.showMediaPicker = true;
       });

@@ -213,9 +213,9 @@
 import {
   addCategory,
   deleteCategory,
-  getCategoriesByType,
+  getCategories,
   getCategory,
-} from "src/api/sub-mini-program";
+} from "src/api/authorizer-mini-program";
 import MediaChooseCard from "components/MediaChooseCard";
 
 export default {
@@ -306,7 +306,7 @@ export default {
     onAddClick() {
       if (this.categories_list.length === 0) {
         this.$q.loading.show();
-        getCategoriesByType(this.opId, this.appId, {
+        getCategories(this.opId, this.appId, {
           type: this.$store.state.basicInfo.principal_type,
         })
           .then((res) => {

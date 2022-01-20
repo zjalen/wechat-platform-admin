@@ -90,7 +90,7 @@ class ResourceController extends Controller
     {
         $appId = request()->route('appId');
         $files = request()->allFiles();
-        $type = request()->input('type');
+        $type = request()->query('type');
         if (!in_array($type, ['image', 'video', 'voice'])) {
             throw new ParamsErrorException();
         }
@@ -114,10 +114,11 @@ class ResourceController extends Controller
      * @return void
      * @throws ParamsErrorException
      */
-    public function destroy($type)
+    public function destroy()
     {
         $appId = request()->route('appId');
         $fileNames = request()->input('fileNames');
+        $type = request()->input('type');
         if (!in_array($type, ['image', 'video', 'voice'])) {
             throw new ParamsErrorException();
         }

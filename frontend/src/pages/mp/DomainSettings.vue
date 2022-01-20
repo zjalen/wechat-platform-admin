@@ -366,7 +366,7 @@ import {
   setServerDomain,
   setWebDomain,
   syncWebDomain,
-} from "src/api/sub-mini-program";
+} from "src/api/authorizer-mini-program";
 
 export default {
   name: "DomainSettings",

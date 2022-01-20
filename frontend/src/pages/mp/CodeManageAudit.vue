@@ -479,7 +479,7 @@
 
 <script>
 import MediaChooseCard from "components/MediaChooseCard";
-import { codeAudit } from "src/api/sub-mini-program";
+import { codeAudit } from "src/api/authorizer-mini-program";
 
 export default {
   name: "CodeManageAudit",

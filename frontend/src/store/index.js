@@ -3,7 +3,7 @@ import { createStore } from "vuex";
 
 import { Loading, LocalStorage, Notify } from "quasar";
 import { getAuthorizer } from "src/api/open-platform";
-import { getBasicInfo } from "src/api/sub-mini-program";
+import { getBasicInfo } from "src/api/authorizer-mini-program";
 import { getPlatform } from "src/api";
 
 const saveToken = LocalStorage.getItem("token");

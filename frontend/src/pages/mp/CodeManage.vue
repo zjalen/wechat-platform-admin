@@ -95,13 +95,12 @@ import {
   codeCommit,
   codeRelease,
   codeRollbackRelease,
-  getCodeAuditLatestStatus,
   getCodeAuditStatus,
   getCodePages,
   getCodeReleaseHistories,
   getCodeTestQr,
   withdrawCodeAudit,
-} from "src/api/sub-mini-program";
+} from "src/api/authorizer-mini-program";
 import JsonCard from "components/JsonCard";
 
 export default {
@@ -268,21 +267,15 @@ export default {
           },
         })
         .onOk((data) => {
-          if (!data) {
-            getCodeAuditLatestStatus(this.opId, this.appId).then((res) => {
-              this.jsonCardTitle = "查询结果";
-              this.jsonCardData = res;
-              this.showJsonCard = true;
-            });
-          } else {
-            getCodeAuditStatus(this.opId, this.appId, { audit_id: data }).then(
-              (res) => {
-                this.jsonCardTitle = "查询结果";
-                this.jsonCardData = res;
-                this.showJsonCard = true;
-              }
-            );
+          let params = null;
+          if (data) {
+            params = { audit_id: data };
           }
+          getCodeAuditStatus(this.opId, this.appId, params).then((res) => {
+            this.jsonCardTitle = "查询结果";
+            this.jsonCardData = res;
+            this.showJsonCard = true;
+          });
         });
     },
     onWithdrawClick() {

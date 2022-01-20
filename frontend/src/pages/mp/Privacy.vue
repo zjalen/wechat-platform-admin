@@ -257,7 +257,10 @@
 </template>
 
 <script>
-import { getPrivacySetting, setPrivacySetting } from "src/api/sub-mini-program";
+import {
+  getPrivacySetting,
+  setPrivacySetting,
+} from "src/api/authorizer-mini-program";
 import JsonViewer from "vue-json-viewer";
 
 export default {
