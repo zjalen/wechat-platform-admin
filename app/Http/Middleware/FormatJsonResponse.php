@@ -5,23 +5,21 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class FormatJsonResponse
 {
     /**
      * @param  Request  $request
      * @param  Closure  $next
-     * @return JsonResponse|object|StreamedResponse
+     * @return JsonResponse|object|Response
      */
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
         $statusCode = 200;
         $content = [];
-        if ($response instanceof StreamedResponse) {
-            return $response;
-        }else if ($response instanceof JsonResponse) {
+        if ($response instanceof JsonResponse) {
             $data = $response->getData();
             $data = json_decode(json_encode($data), true);
             if (array_key_exists('errcode', $data)) {
@@ -44,6 +42,8 @@ class FormatJsonResponse
                 $content['errCode'] = 0;
                 $content['data'] = $data;
             }
+        } else if ($response instanceof Response) {
+            return $response;
         } else {
             $content = [
                 'errCode' => 0,

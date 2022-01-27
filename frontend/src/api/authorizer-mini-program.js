@@ -175,7 +175,7 @@ export function codeRollbackRelease(id, appId, data) {
 }
 
 export function getCodeReleaseHistories(id, appId, data) {
-  return api.post(
+  return api.get(
     "open-platform/" + id + "/mp/" + appId + "/code/release-history-versions",
     data
   );

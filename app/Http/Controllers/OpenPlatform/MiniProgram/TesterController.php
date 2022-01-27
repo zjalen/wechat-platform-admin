@@ -74,7 +74,7 @@ class TesterController extends AbstractOpenPlatformController
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function destroy($userSlug)
+    public function destroy($opId, $appId, $userSlug)
     {
         $useWechatId = request()->query->get('useWechatId');
         $miniProgram = $this->getMiniProgramApplication();
