@@ -107,8 +107,13 @@ const routes = [
       // Always leave this as last one,
       // but you can also remove it
       {
+        path: "/401",
+        component: () => import("pages/PageError401.vue"),
+        name: "401",
+      },
+      {
         path: "/:catchAll(.*)*",
-        component: () => import("pages/Error404.vue"),
+        component: () => import("pages/PageError404.vue"),
         name: "404",
       },
     ],

@@ -65,16 +65,18 @@ export default boot(({ app, router, store }) => {
           ? error.response.data.errMsg
           : error.response.statusText;
         if (error.response.status === 401) {
-          message = "身份验证失败，请重新登录";
-          Dialog.create({
-            title: "提示",
-            class: "text-negative",
-            message: message,
-            persistent: true,
-          }).onOk(() => {
-            store.dispatch("setToken", null);
-            router.replace({ path: "/login" });
-          });
+          store.dispatch("setToken", null);
+          router.replace("/401");
+          // message = "身份验证失败，请重新登录";
+          // Dialog.create({
+          //   title: "提示",
+          //   class: "text-negative",
+          //   message: message,
+          //   persistent: true,
+          // }).onOk(() => {
+          //   store.dispatch("setToken", null);
+          //   router.replace({ path: "/login" });
+          // });
         }
         Notify.create({
           color: "negative",

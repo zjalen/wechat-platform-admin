@@ -30,11 +30,11 @@ class FormatJsonResponse
                 $content['errMsg'] = $data['errmsg'];
                 $content['errCode'] = $data['errcode'];
                 $content['data'] = $data;
-            } else if (array_key_exists('exceptionCode', $data)) {
+            } else if (array_key_exists('errCode', $data)) {
                 /** 异常格式化结果 */
                 $content = [
-                    'errCode' => $data['exceptionCode'],
-                    'errMsg' => $data['exceptionMsg']
+                    'errCode' => $data['errCode'],
+                    'errMsg' => $data['errMsg']
                 ];
                 $statusCode = $response->getStatusCode();
             } else {

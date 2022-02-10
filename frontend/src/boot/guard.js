@@ -6,7 +6,7 @@ export default async ({ router, store }) => {
   // something to do
 
   router.beforeEach((to, from, next) => {
-    if (to.name !== "login" && to.name !== "404") {
+    if (to.name !== "login" && to.name !== "404" && to.name !== "401") {
       // 权限验证
       const token = store.getters["getToken"];
       if (token && token !== "null") {
