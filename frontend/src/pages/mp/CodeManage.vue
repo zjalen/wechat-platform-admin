@@ -1,7 +1,9 @@
 <template>
   <q-page class="q-pa-lg">
     <q-card>
-      <q-card-section class="text-h4">代码管理</q-card-section>
+      <q-card-section class="row items-center">
+        <div class="text-h4">代码管理</div>
+      </q-card-section>
       <q-separator />
       <q-card-section class="q-gutter-sm">
         <q-btn unelevated color="primary" @click="editCard = 'commit'"
@@ -13,6 +15,12 @@
         <q-btn flat color="secondary" @click="onGetTestCodeQR"
           >体验版二维码
         </q-btn>
+        <q-btn flat color="secondary" @click="onGetSupportVersionClick"
+          >获取基础版本库状态</q-btn
+        >
+        <q-btn flat color="secondary" @click="onSetSupportVersionClick"
+          >设置基础版本库</q-btn
+        >
       </q-card-section>
       <q-separator />
       <q-card-section class="q-gutter-sm">
@@ -26,6 +34,7 @@
           >获取审核结果
         </q-btn>
         <q-btn flat color="negative" @click="onWithdrawClick">审核撤销</q-btn>
+        <q-btn flat color="negative" @click="onSpeedAuditClick">加急审核</q-btn>
       </q-card-section>
       <q-separator />
       <q-card-section class="q-gutter-sm">
@@ -114,8 +123,12 @@ import {
   getCodeReleaseHistories,
   getCodeTestQr,
   getGrayReleaseInfo,
+  getSpeedAuditCount,
+  getSupportVersion,
   grayRelease,
   revertGrayRelease,
+  setSupportVersion,
+  speedAudit,
   withdrawCodeAudit,
 } from "src/api/authorizer-mini-program";
 import JsonCard from "components/JsonCard";
@@ -249,6 +262,7 @@ export default {
     showQrDialog: false,
     qrCodeSrc: null,
     showGrayRelease: true,
+    visible: "open",
   }),
   beforeMount() {
     this.openPlatformId = this.opId;
@@ -301,6 +315,10 @@ export default {
             type: "text",
             outlined: true,
           },
+          ok: {
+            label: "确定",
+            unelevated: true,
+          },
           cancel: {
             flat: true,
             color: "grey",
@@ -323,6 +341,10 @@ export default {
         .dialog({
           title: "确定撤销吗",
           message: "点击确定将会撤回最近一次提交的审核请求。",
+          ok: {
+            label: "确定",
+            unelevated: true,
+          },
           cancel: {
             flat: true,
             color: "grey",
@@ -339,6 +361,10 @@ export default {
         .dialog({
           title: "确定发布吗",
           message: "确定之后，已审核成功的最新版将在线上发布。",
+          ok: {
+            label: "确定",
+            unelevated: true,
+          },
           cancel: {
             flat: true,
             color: "grey",
@@ -359,6 +385,10 @@ export default {
             label: "您可以输入指定版本号(app_version)或留空回滚到上一个版本",
             type: "number",
             outlined: true,
+          },
+          ok: {
+            label: "确定",
+            unelevated: true,
           },
           cancel: {
             flat: true,
@@ -395,6 +425,10 @@ export default {
         .dialog({
           title: "确定撤销分阶段发布吗",
           message: "撤销后，已发布的分阶段灰度版本将会失效。",
+          ok: {
+            label: "确定",
+            unelevated: true,
+          },
           cancel: {
             flat: true,
             color: "grey",
@@ -411,8 +445,77 @@ export default {
         this.$q.notify("发布成功");
       });
     },
+    onSpeedAuditClick() {
+      this.$q.loading.show();
+      getSpeedAuditCount(this.opId, this.appId).then((res) => {
+        this.$q.loading.hide();
+        this.$q
+          .dialog({
+            title: "是否使用加急审核",
+            prompt: {
+              model: "",
+              label: "请输入提交审核时所返回的 audit_id",
+              hint: `总可用${res.speedup_rest}次，当月可用${res.speedup_limit}次`,
+              outlined: true,
+            },
+            ok: {
+              label: "确定",
+              unelevated: true,
+            },
+            cancel: {
+              flat: true,
+              color: "grey",
+            },
+          })
+          .onOk((data) => {
+            speedAudit(this.opId, this.appId, {
+              auditId: data,
+            }).then(() => {
+              this.$q.notify("设置成功");
+            });
+          });
+      });
+    },
+    onGetSupportVersionClick() {
+      getSupportVersion(this.opId, this.appId).then((res) => {
+        this.jsonCardTitle = "当前基础库详情";
+        this.jsonCardData = res;
+        this.showJsonCard = true;
+      });
+    },
+    onSetSupportVersionClick() {
+      this.$q
+        .dialog({
+          title: "基础库设置",
+          prompt: {
+            model: "",
+            label: "请输入您想设置的最低基础库版本号",
+            isValid: (val) => !!val,
+            outlined: true,
+          },
+          ok: {
+            label: "确定",
+            unelevated: true,
+          },
+          cancel: {
+            flat: true,
+            color: "grey",
+          },
+        })
+        .onOk((data) => {
+          setSupportVersion(this.opId, this.appId, {
+            version: data,
+          }).then(() => {
+            this.$q.notify("设置成功");
+          });
+        });
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.my-custom-toggle {
+  border: 1px solid $primary;
+}
+</style>

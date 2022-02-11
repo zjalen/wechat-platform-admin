@@ -217,4 +217,75 @@ class CodeController extends AbstractOpenPlatformController
         $miniProgram = $this->getMiniProgramApplication();
         return $miniProgram->code->revertGrayRelease();
     }
+
+    /**
+     * 查询可用加急审核次数
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function getSpeedAuditCount()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->queryQuota();
+    }
+
+    /**
+     * 加急审核
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function speedAudit()
+    {
+        $auditId = request('auditId');
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->speedupAudit($auditId);
+    }
+
+    /**
+     * 查询当前最低基础库版本详情
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function getSupportVersion()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->getSupportVersion();
+    }
+
+    /**
+     * 设置最低基础库版本
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function setSupportVersion()
+    {
+        $version = request('version');
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->setSupportVersion($version);
+    }
+
+    /**
+     * 改变小程序服务状态
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function changeVisitStatus()
+    {
+        $visitStatus = request('visitStatus');
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->changeVisitStatus($visitStatus);
+    }
 }

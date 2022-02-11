@@ -192,6 +192,37 @@ export function grayRelease(id, appId, data) {
   );
 }
 
+export function getSpeedAuditCount(id, appId) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/code/speed-audit");
+}
+
+export function speedAudit(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/code/speed-audit",
+    data
+  );
+}
+
+export function getSupportVersion(id, appId) {
+  return api.get(
+    "open-platform/" + id + "/mp/" + appId + "/code/support-version"
+  );
+}
+
+export function setSupportVersion(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/code/support-version",
+    data
+  );
+}
+
+export function changeVisitStatus(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/code/visit-status",
+    data
+  );
+}
+
 export function revertGrayRelease(id, appId) {
   return api.delete(
     "open-platform/" + id + "/mp/" + appId + "/code/gray-release"

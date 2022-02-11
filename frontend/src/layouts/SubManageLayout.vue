@@ -101,15 +101,15 @@ const menuList = [
     to: null,
     children: [
       {
-        title: "基本信息配置",
+        title: "基础设置",
         to: "basicInformation",
       },
       {
-        title: "信任域名设置",
+        title: "信任域名",
         to: "trustDomain",
       },
       {
-        title: "服务类目管理",
+        title: "服务类目",
         to: "category",
       },
       {
@@ -124,11 +124,11 @@ const menuList = [
     to: null,
     children: [
       {
-        title: "测试人员",
+        title: "成员管理",
         to: "tester",
       },
       {
-        title: "代码管理",
+        title: "版本管理",
         to: "codeManage",
       },
     ],

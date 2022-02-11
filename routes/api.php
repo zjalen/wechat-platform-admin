@@ -93,6 +93,11 @@ Route::group([
             $router->get('code/gray-release', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getGrayRelease']);
             $router->post('code/gray-release', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'grayRelease']);
             $router->delete('code/gray-release', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'revertGrayRelease']);
+            $router->get('code/speed-audit', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getSpeedAuditCount']);
+            $router->post('code/speed-audit', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'speedAudit']);
+            $router->get('code/support-version', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getSupportVersion']);
+            $router->post('code/support-version', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'setSupportVersion']);
+            $router->post('code/visit-status', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'changeVisitStatus']);
         });
 
         /** 开放平台代公众号实现功能 */

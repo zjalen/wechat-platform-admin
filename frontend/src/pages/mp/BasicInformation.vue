@@ -12,7 +12,7 @@
       </template>
     </q-banner>
     <q-card>
-      <q-card-section class="text-h4"> 基本信息配置</q-card-section>
+      <q-card-section class="text-h4">基础信息</q-card-section>
       <q-card-section class="q-pt-none">
         <q-list separator>
           <q-item>
@@ -112,6 +112,42 @@
         </q-list>
       </q-card-section>
     </q-card>
+
+    <q-card>
+      <q-card-section class="text-h4 q-mt-lg">功能配置</q-card-section>
+      <q-card-section class="q-pt-none">
+        <q-list separator>
+          <q-item>
+            <q-item-section thumbnail>
+              <q-item-label>暂停服务</q-item-label>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label
+                >暂停服务后，用户将不可以正常访问线上版本小程序
+              </q-item-label>
+            </q-item-section>
+
+            <q-item-section side>
+              <q-btn
+                flat
+                dense
+                label="启用"
+                color="positive"
+                @click="onOpenClick"
+              ></q-btn>
+              <q-btn
+                flat
+                dense
+                label="暂停"
+                color="negative"
+                @click="onCloseClick"
+              ></q-btn>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
+    </q-card>
+
     <my-request-form-card
       v-if="editCard === 'name'"
       class="q-mt-lg"
@@ -141,6 +177,7 @@ import { useStore } from "vuex";
 import { computed } from "vue";
 import MyRequestFormCard from "components/MyRequestFormCard";
 import {
+  changeVisitStatus,
   checkNickName,
   getNicknameAuditStatus,
   setAvatar,
@@ -342,6 +379,36 @@ export default {
             }
           });
         });
+    },
+    onCloseClick() {
+      this.$q
+        .dialog({
+          title: "确定要暂停小程序吗？",
+          message: "一旦关闭，用户将无法打开使用小程序",
+          ok: {
+            label: "确定",
+            unelevated: true,
+          },
+          cancel: {
+            label: "取消",
+            flat: true,
+            color: "grey",
+          },
+        })
+        .onOk(() => {
+          changeVisitStatus(this.opId, this.appId, {
+            visitStatus: "close",
+          }).then(() => {
+            this.$q.notify("小程序已暂停服务");
+          });
+        });
+    },
+    onOpenClick() {
+      changeVisitStatus(this.opId, this.appId, { visitStatus: "open" }).then(
+        () => {
+          this.$q.notify("小程序已启用");
+        }
+      );
     },
   },
 };
