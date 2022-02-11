@@ -90,7 +90,9 @@ Route::group([
             $router->post('code/release', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'release']);
             $router->post('code/revert', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'revertReleaseVersion']);
             $router->get('code/release-history-versions', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getReleaseHistoryVersions']);
-
+            $router->get('code/gray-release', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getGrayRelease']);
+            $router->post('code/gray-release', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'grayRelease']);
+            $router->delete('code/gray-release', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'revertGrayRelease']);
         });
 
         /** 开放平台代公众号实现功能 */

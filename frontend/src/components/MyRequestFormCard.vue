@@ -4,10 +4,19 @@
       <q-card-section class="q-pb-none text-subtitle1"
         >{{ title }}
       </q-card-section>
-      <q-card-section class="q-pt-none">
-        <q-form @submit="onSubmit" class="q-gutter-sm q-ml-none">
-          <view v-for="(item, index) in formParams" :key="index">
+      <q-card-section>
+        <q-form @submit="onSubmit" class="q-gutter-sm">
+          <div v-for="(item, index) in formParams" :key="index">
+            <q-toggle
+              v-if="item.type === 'toggle'"
+              :ref="`form[${index}]`"
+              :label="item.label"
+              :hint="item.hint"
+              v-model="item.value"
+              :model-value="item.value"
+            />
             <q-input
+              v-else
               :ref="`form[${index}]`"
               outlined
               hide-bottom-space
@@ -39,9 +48,9 @@
                 ></q-icon>
               </template>
             </q-input>
-          </view>
+          </div>
           <q-btn
-            class="q-ml-none q-mt-md"
+            class="q-mt-md"
             unelevated
             color="primary"
             type="submit"
@@ -193,16 +202,13 @@ export default {
     onSubmit() {
       const data = {};
       this.formParams.forEach((item) => {
-        if (item.value) {
-          data[item.name] = item.value;
-        }
         if (item.children) {
           data[item.name] = {};
           item.children.forEach((subItem) => {
-            if (subItem.value) {
-              data[item.name][subItem.name] = subItem.value;
-            }
+            data[item.name][subItem.name] = subItem.value;
           });
+        } else {
+          data[item.name] = item.value;
         }
       });
       this.$emit("submit", data);

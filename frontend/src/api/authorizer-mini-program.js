@@ -181,6 +181,23 @@ export function getCodeReleaseHistories(id, appId, data) {
   );
 }
 
+export function getGrayReleaseInfo(id, appId) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/code/gray-release");
+}
+
+export function grayRelease(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/code/gray-release",
+    data
+  );
+}
+
+export function revertGrayRelease(id, appId) {
+  return api.delete(
+    "open-platform/" + id + "/mp/" + appId + "/code/gray-release"
+  );
+}
+
 export function getPrivacySetting(id, appId, params) {
   return api.get("open-platform/" + id + "/mp/" + appId + "/privacy-setting", {
     params,

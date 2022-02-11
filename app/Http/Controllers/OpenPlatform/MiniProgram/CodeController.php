@@ -170,4 +170,51 @@ class CodeController extends AbstractOpenPlatformController
         $miniProgram = $this->getMiniProgramApplication();
         return $miniProgram->code->httpGet('wxa/revertcoderelease', ['app_version' => $app_version]);
     }
+
+    /**
+     * 分阶段发布，灰度发布
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function grayRelease()
+    {
+        $gray_percentage = request('gray_percentage');
+        $support_experiencer_first = request('support_experiencer_first', false);
+        $support_debugger_first = request('support_debuger_first', false);
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->httpPostJson('wxa/grayrelease', [
+            'gray_percentage' => $gray_percentage,
+            'support_experiencer_first' => $support_experiencer_first,
+            'support_debuger_first' => $support_debugger_first
+        ]);
+    }
+
+    /**
+     * 查询分阶段发布详情
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function getGrayRelease()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->getGrayRelease();
+    }
+
+    /**
+     * 撤销分阶段发布
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function revertGrayRelease()
+    {
+        $miniProgram = $this->getMiniProgramApplication();
+        return $miniProgram->code->revertGrayRelease();
+    }
 }

@@ -37,9 +37,15 @@
         </q-btn>
         <q-btn flat color="negative" @click="onRollbackClick">版本回退</q-btn>
 
-        <q-btn flat color="secondary">分阶段发布</q-btn>
-        <q-btn flat color="secondary">分阶段发布查询</q-btn>
-        <q-btn flat color="secondary">取消分阶段发布</q-btn>
+        <q-btn flat color="secondary" @click="onGrayReleaseClick"
+          >分阶段发布</q-btn
+        >
+        <q-btn flat color="secondary" @click="onGetGrayReleaseClick"
+          >分阶段发布查询</q-btn
+        >
+        <q-btn flat color="secondary" @click="onRevertGrayReleaseClick"
+          >取消分阶段发布</q-btn
+        >
       </q-card-section>
     </q-card>
 
@@ -50,6 +56,14 @@
       title="设置体验版"
       @append-click="onAppendClick"
       @submit="onCommitSubmit"
+    ></my-request-form-card>
+
+    <my-request-form-card
+      v-else-if="editCard === 'grayRelease'"
+      class="q-mt-lg"
+      :form-data="grayReleaseForm"
+      title="分阶段发布"
+      @submit="onGrayReleaseSubmit"
     ></my-request-form-card>
 
     <q-dialog v-model="showTemplateList" full-width>
@@ -99,6 +113,9 @@ import {
   getCodePages,
   getCodeReleaseHistories,
   getCodeTestQr,
+  getGrayReleaseInfo,
+  grayRelease,
+  revertGrayRelease,
   withdrawCodeAudit,
 } from "src/api/authorizer-mini-program";
 import JsonCard from "components/JsonCard";
@@ -199,6 +216,28 @@ export default {
         required: true,
       },
     ],
+    grayReleaseForm: [
+      {
+        label: "发布百分比(1-100)",
+        name: "gray_percentage",
+        value: "",
+        hint: "请输入1-100 之间的数字",
+        required: true,
+        type: "number",
+      },
+      {
+        label: "仅发布给体验成员",
+        name: "support_experiencer_first",
+        value: false,
+        type: "toggle",
+      },
+      {
+        label: "仅发布给项目成员",
+        name: "support_debuger_first",
+        value: false,
+        type: "toggle",
+      },
+    ],
     defaultExtJson: {
       extAppid: "",
       ext: {},
@@ -209,6 +248,7 @@ export default {
     jsonCardData: {},
     showQrDialog: false,
     qrCodeSrc: null,
+    showGrayRelease: true,
   }),
   beforeMount() {
     this.openPlatformId = this.opId;
@@ -316,7 +356,7 @@ export default {
           title: "确定回滚吗",
           prompt: {
             model: "",
-            label: "您可以输入指定版本号或留空回滚到上一个",
+            label: "您可以输入指定版本号(app_version)或留空回滚到上一个版本",
             type: "number",
             outlined: true,
           },
@@ -338,6 +378,37 @@ export default {
         this.jsonCardTitle = "历史版本";
         this.jsonCardData = res.version_list;
         this.showJsonCard = true;
+      });
+    },
+    onGetGrayReleaseClick() {
+      getGrayReleaseInfo(this.opId, this.appId).then((res) => {
+        this.jsonCardTitle = "分阶段发布详情";
+        this.jsonCardData = res.gray_release_plan;
+        this.showJsonCard = true;
+      });
+    },
+    onGrayReleaseClick() {
+      this.editCard = "grayRelease";
+    },
+    onRevertGrayReleaseClick() {
+      this.$q
+        .dialog({
+          title: "确定撤销分阶段发布吗",
+          message: "撤销后，已发布的分阶段灰度版本将会失效。",
+          cancel: {
+            flat: true,
+            color: "grey",
+          },
+        })
+        .onOk(() => {
+          revertGrayRelease(this.opId, this.appId).then(() => {
+            this.$q.notify("撤销成功");
+          });
+        });
+    },
+    onGrayReleaseSubmit(data) {
+      grayRelease(this.opId, this.appId, data).then(() => {
+        this.$q.notify("发布成功");
       });
     },
   },

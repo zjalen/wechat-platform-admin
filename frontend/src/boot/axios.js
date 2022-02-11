@@ -52,8 +52,8 @@ export default boot(({ app, router, store }) => {
           if (error.response.data.data.errcode !== 0) {
             Dialog.create({
               title: "请求出现错误",
-              class: "text-negative",
-              message: error.response.data.data.errmsg,
+              message: `<view class="text-negative">${error.response.data.data.errmsg}</view>`,
+              html: true,
             });
           }
         }
@@ -67,16 +67,6 @@ export default boot(({ app, router, store }) => {
         if (error.response.status === 401) {
           store.dispatch("setToken", null);
           router.replace("/401");
-          // message = "身份验证失败，请重新登录";
-          // Dialog.create({
-          //   title: "提示",
-          //   class: "text-negative",
-          //   message: message,
-          //   persistent: true,
-          // }).onOk(() => {
-          //   store.dispatch("setToken", null);
-          //   router.replace({ path: "/login" });
-          // });
         }
         Notify.create({
           color: "negative",
