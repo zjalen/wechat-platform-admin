@@ -17,12 +17,15 @@
           </view>
           <q-space />
           <q-avatar size="40px">
-            <q-img
-              v-if="basicInfo.head_image_info"
-              :src="basicInfo.head_image_info.head_image_url"
-              alt="avatar"
-            />
-            <q-icon color="grey" size="40px" v-else name="r_broken_image" />
+            <q-icon
+              class="cursor-pointer"
+              color="grey"
+              size="40px"
+              name="r_qr_code"
+              @click="toMakeQR"
+            >
+              <q-tooltip>去生成二维码</q-tooltip>
+            </q-icon>
           </q-avatar>
         </view>
         <q-separator class="q-mb-md" />
@@ -259,6 +262,11 @@ export default {
           break;
       }
       return name;
+    },
+    toMakeQR() {
+      this.$router.push({
+        name: "mp-qr",
+      });
     },
   },
 };

@@ -116,6 +116,10 @@ const menuList = [
         title: "用户隐私保护",
         to: "privacy",
       },
+      {
+        title: "生成二维码",
+        to: "mpQR",
+      },
     ],
   },
   {

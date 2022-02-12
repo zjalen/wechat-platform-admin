@@ -269,3 +269,9 @@ export function verifyBetaWeApp(id, appId, data) {
     data
   );
 }
+
+export function getQr(id, appId, data) {
+  return api.post("open-platform/" + id + "/mp/" + appId + "/qr", data, {
+    responseType: "blob",
+  });
+}

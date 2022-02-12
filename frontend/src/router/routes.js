@@ -53,6 +53,11 @@ const routes = [
         name: "subMiniProgramIndex",
       },
       {
+        path: "qr",
+        component: () => import("pages/mp/QR.vue"),
+        name: "mpQR",
+      },
+      {
         path: "basic-information",
         component: () => import("pages/mp/BasicInformation.vue"),
         name: "basicInformation",
