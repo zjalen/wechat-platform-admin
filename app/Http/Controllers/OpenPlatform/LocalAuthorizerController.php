@@ -64,7 +64,7 @@ class LocalAuthorizerController extends AbstractOpenPlatformController
      */
     public function destroy(): int
     {
-        $id = request()->route('sub_platform');
+        $id = request()->route('local_authorizer');
         return Authorizer::destroy($id);
     }
 }
