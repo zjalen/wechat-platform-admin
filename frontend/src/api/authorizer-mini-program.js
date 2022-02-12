@@ -262,3 +262,10 @@ export function deleteCategory(id, appId, data) {
     data
   );
 }
+
+export function verifyBetaWeApp(id, appId, data) {
+  return api.post(
+    "open-platform/" + id + "/mp/" + appId + "/beta-verification",
+    data
+  );
+}

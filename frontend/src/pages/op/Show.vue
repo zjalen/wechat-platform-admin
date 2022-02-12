@@ -178,6 +178,13 @@
               <platform-card :info="item"></platform-card>
             </q-card-section>
             <q-card-actions align="right">
+              <q-btn
+                v-if="item.service_type_name === '试用小程序'"
+                flat
+                color="negative"
+                @click="onBetaVerifyClick(item)"
+                >去转正
+              </q-btn>
               <q-btn flat color="secondary" @click="onDeleteClick(item)"
                 >删除
               </q-btn>
@@ -290,6 +297,109 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="showBetaVerifyDialog">
+      <q-card>
+        <q-card-section>
+          <div class="text-subtitle1">试用小程序认证转正</div>
+          <div class="text-caption text-grey q-mt-sm">
+            提交后需经过法人认证和管理员授权。详情请
+            <a
+              href="https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/2.0/api/beta_Mini_Programs/fastverify.html"
+              target="_blank"
+              >点击链接查看</a
+            >
+          </div>
+        </q-card-section>
+        <q-separator />
+        <q-card-section>
+          <q-form @submit="submitBetaVerify">
+            <q-input
+              dense
+              outlined
+              hide-bottom-space
+              label="公司名"
+              hint="公司名称"
+              v-model="betaVerifyForm.enterprise_name"
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || '必填内容']"
+            ></q-input>
+            <div class="q-mb-sm q-gutter-sm">
+              <q-radio
+                v-model="betaVerifyForm.code_type"
+                :val="1"
+                label="统一信用代码(18位)"
+              />
+              <q-radio
+                v-model="betaVerifyForm.code_type"
+                :val="2"
+                label="组织机构代码(9位)"
+              />
+              <q-radio
+                v-model="betaVerifyForm.code_type"
+                :val="3"
+                label="营业执照注册号(15位)"
+              />
+            </div>
+            <q-input
+              dense
+              outlined
+              label="企业证件号"
+              hint="如：营业执照统一信用代码"
+              v-model="betaVerifyForm.code"
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || '必填内容']"
+            ></q-input>
+            <q-input
+              dense
+              outlined
+              label="法人微信号"
+              hint="法人微信号码"
+              v-model="betaVerifyForm.legal_persona_wechat"
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || '必填内容']"
+            ></q-input>
+            <q-input
+              dense
+              outlined
+              label="法人姓名"
+              hint="法人姓名，需与微信号实名一致"
+              v-model="betaVerifyForm.legal_persona_name"
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || '必填内容']"
+            ></q-input>
+            <q-input
+              dense
+              outlined
+              label="法人身份证"
+              hint="法人身份证，需与微信号实名一致"
+              v-model="betaVerifyForm.legal_persona_idcard"
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || '必填内容']"
+            ></q-input>
+            <q-input
+              dense
+              outlined
+              label="第三方联系电话"
+              hint="提供第三方服务的平台电话"
+              v-model="betaVerifyForm.component_phone"
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || '必填内容']"
+            ></q-input>
+
+            <div>
+              <q-btn
+                label="提交"
+                unelevated
+                color="primary"
+                icon="r_save"
+                type="submit"
+              ></q-btn>
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -305,6 +415,7 @@ import {
 } from "src/api/open-platform";
 import PlatformCard from "components/SubPlatformContent";
 import QRCode from "qrcodejs2";
+import { verifyBetaWeApp } from "src/api/authorizer-mini-program";
 
 export default {
   name: "ThirdPlatform",
@@ -338,6 +449,17 @@ export default {
     betaOpenId: "",
     showBetaMpAuthDialog: false,
     betaMpAuthUrl: "",
+    showBetaVerifyDialog: false,
+    currentMpAppId: null,
+    betaVerifyForm: {
+      enterprise_name: "",
+      code: "",
+      code_type: 1,
+      legal_persona_wechat: "",
+      legal_persona_name: "",
+      component_phone: "",
+      legal_persona_idcard: "",
+    },
   }),
   computed: {
     maxPage() {
@@ -485,6 +607,19 @@ export default {
           }, 500);
         }
       });
+    },
+    onBetaVerifyClick(item) {
+      console.log(item);
+      this.currentMpAppId = item.app_id;
+      this.showBetaVerifyDialog = true;
+    },
+    submitBetaVerify() {
+      console.log(this.betaVerifyForm);
+      verifyBetaWeApp(this.id, this.currentMpAppId, this.betaVerifyForm).then(
+        () => {
+          this.$q.notify("提交成功");
+        }
+      );
     },
   },
 };
