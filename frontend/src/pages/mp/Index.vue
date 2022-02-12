@@ -265,7 +265,7 @@ export default {
     },
     toMakeQR() {
       this.$router.push({
-        name: "mp-qr",
+        name: "mpQR",
       });
     },
   },
