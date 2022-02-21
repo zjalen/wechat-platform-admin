@@ -32,6 +32,9 @@ Route::group([
     /** 登录 */
     $router->post('login', [\App\Http\Controllers\AuthController::class, 'login']);
 
+    // 对外登录接口，后续独立设置权限
+    $router->post('open-platform/{openPlatformId}/mp/{appId}/auth/login', [\App\Http\Controllers\AuthController::class, 'login']);
+
     /** 资源文件查看 */
     $router->get('platforms/{appId}/resources/{token}', [\App\Http\Controllers\ResourceController::class, 'show'])->name('resources.show');
 
@@ -102,7 +105,6 @@ Route::group([
             $router->post('code/visit-status', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'changeVisitStatus']);
 
             // 对外使用接口
-            $router->post('auth/login', [\App\Http\Controllers\AuthController::class, 'login']);
             $router->post('auth/user/login', [\App\Http\Controllers\OpenPlatform\MiniProgram\AuthController::class, 'store']);
         });
 
