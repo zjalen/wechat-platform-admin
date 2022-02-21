@@ -100,6 +100,9 @@ Route::group([
             $router->get('code/support-version', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getSupportVersion']);
             $router->post('code/support-version', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'setSupportVersion']);
             $router->post('code/visit-status', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'changeVisitStatus']);
+
+            // 对外使用接口
+            $router->post('auth/login', [\App\Http\Controllers\OpenPlatform\MiniProgram\AuthController::class, 'store']);
         });
 
         /** 开放平台代公众号实现功能 */
