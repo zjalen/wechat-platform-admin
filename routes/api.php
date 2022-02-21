@@ -102,7 +102,8 @@ Route::group([
             $router->post('code/visit-status', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'changeVisitStatus']);
 
             // 对外使用接口
-            $router->post('auth/login', [\App\Http\Controllers\OpenPlatform\MiniProgram\AuthController::class, 'store']);
+            $router->post('auth/login', [\App\Http\Controllers\AuthController::class, 'login']);
+            $router->post('auth/user/login', [\App\Http\Controllers\OpenPlatform\MiniProgram\AuthController::class, 'store']);
         });
 
         /** 开放平台代公众号实现功能 */
