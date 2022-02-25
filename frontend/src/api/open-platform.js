@@ -60,5 +60,5 @@ export function setCodeTemplate(id, data) {
 }
 
 export function deleteCodeTemplate(id, templateId) {
-  return api.post("open-platform/" + id + "/code/" + templateId);
+  return api.delete("open-platform/" + id + "/code/" + templateId);
 }

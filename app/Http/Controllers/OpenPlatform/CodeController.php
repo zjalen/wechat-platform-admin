@@ -45,13 +45,13 @@ class CodeController extends AbstractOpenPlatformController
     /**
      * 删除代码模板
      *
-     * @param $templateId
      * @return mixed
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function destroy($templateId)
+    public function destroy()
     {
+        $templateId = request()->route('code');
         $openPlatform = $this->getOpenPlatform();
         return $openPlatform->code_template->delete($templateId);
     }
