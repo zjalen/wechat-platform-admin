@@ -137,8 +137,15 @@
     <view v-show="showRemoteList">
       <q-separator class="q-mt-lg" />
       <view class="row q-col-gutter-lg q-mt-none relative-position">
-        <view v-if="showRemoteLoading" class="q-py-lg">加载中...</view>
-        <view v-if="authorizers.length === 0" class="q-py-lg"
+        <view v-if="showRemoteLoading" class="q-py-lg q-mt-lg">
+          <q-inner-loading
+            style="left: 24px; top: 24px"
+            :showing="showRemoteLoading"
+          >
+            <q-spinner-gears size="50px" color="primary" />
+          </q-inner-loading>
+        </view>
+        <view v-else-if="authorizers.length === 0" class="q-py-lg"
           >没有已绑定的账号
         </view>
         <view
@@ -159,12 +166,9 @@
             </q-card-section>
           </q-card>
         </view>
-        <q-inner-loading :showing="showRemoteLoading">
-          <q-spinner-gears size="50px" color="primary" />
-        </q-inner-loading>
       </view>
-      <q-separator class="q-mt-lg" />
     </view>
+    <q-separator class="q-mt-lg" />
 
     <view v-if="subPlatforms.length > 0">
       <view class="row q-col-gutter-lg q-pt-lg">
@@ -185,7 +189,7 @@
                 @click="onBetaVerifyClick(item)"
                 >去转正
               </q-btn>
-              <q-btn flat color="secondary" @click="onDeleteClick(item)"
+              <q-btn flat color="grey" @click="onDeleteClick(item)"
                 >删除
               </q-btn>
               <q-btn flat color="secondary" @click="loadAuthorizer(item.app_id)"
@@ -409,8 +413,8 @@ import {
   deleteLocalAuthorizer,
   getAuthorizer,
   getAuthorizers,
-  getSecretConfig,
   getLocalAuthorizer,
+  getSecretConfig,
   saveLocalAuthorizer,
 } from "src/api/open-platform";
 import PlatformCard from "components/SubPlatformContent";
