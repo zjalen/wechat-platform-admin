@@ -14,7 +14,7 @@ class CodeController extends AbstractOpenPlatformController
     public function index()
     {
         $type = request()->query('type');
-            $openPlatform = $this->getOpenPlatform();
+        $openPlatform = $this->getOpenPlatform();
         if ($type == 1) {
             // 标准模板
             return $openPlatform->code_template->list(1);
@@ -23,7 +23,7 @@ class CodeController extends AbstractOpenPlatformController
             return $openPlatform->code_template->list(0);
         } else {
             // 草稿
-            return $openPlatform->code_template->getDrafts();
+            return $openPlatform->code_template->httpPostJson('wxa/gettemplatedraftlist');
         }
     }
 
