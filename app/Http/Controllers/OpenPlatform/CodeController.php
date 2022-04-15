@@ -13,12 +13,12 @@ class CodeController extends AbstractOpenPlatformController
      */
     public function index()
     {
-        $type = request()->query('type');
+        $type = (string)request()->query('type');
         $openPlatform = $this->getOpenPlatform();
-        if ($type == 1) {
+        if ($type === '1') {
             // 标准模板
             return $openPlatform->code_template->list(1);
-        } else if ($type == 0) {
+        } else if ($type == '0') {
             // 普通模板
             return $openPlatform->code_template->list(0);
         } else {

@@ -33,7 +33,8 @@
               class="no-box-shadow"
               :rows="draftList"
               :columns="draftColumns"
-              hide-pagination
+              :pagination="pagination"
+              :rows-per-page-options="[5, 20, 100, 200]"
             >
               <template v-slot:body-cell-actions="props">
                 <q-td class="text-center">
@@ -61,7 +62,8 @@
               class="no-box-shadow"
               :rows="normalTemplateList"
               :columns="normalColumns"
-              hide-pagination
+              :pagination="pagination"
+              :rows-per-page-options="[5, 20, 100, 200]"
             >
               <template v-slot:body-cell-template_id="props">
                 <q-td class="text-center">
@@ -95,7 +97,8 @@
               class="no-box-shadow"
               :rows="standardTemplateList"
               :columns="standardColumns"
-              hide-pagination
+              :pagination="pagination"
+              :rows-per-page-options="[5, 20, 100, 200]"
             >
               <template v-slot:body-cell-templateId="props">
                 <q-td class="text-center">
@@ -269,6 +272,12 @@ export default {
         align: "center",
       },
     ],
+    pagination: {
+      sortBy: "desc",
+      descending: false,
+      page: 1,
+      rowsPerPage: 20,
+    },
   }),
   beforeMount() {
     this.id = this.$route.params.id;
