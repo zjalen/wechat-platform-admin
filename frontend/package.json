@@ -22,6 +22,7 @@
     "vue": "^3.0.0",
     "vue-json-viewer": "3",
     "vue-router": "^4.0.0",
+    "vuedraggable": "^4.1.0",
     "vuex": "^4.0.1"
   },
   "devDependencies": {

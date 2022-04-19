@@ -20,7 +20,6 @@
           class="no-box-shadow"
           :rows="normalTemplateList"
           :columns="normalColumns"
-          hide-pagination
         >
           <template v-slot:body-cell-template_id="props">
             <q-td class="text-center">
@@ -54,7 +53,6 @@
           class="no-box-shadow"
           :rows="standardTemplateList"
           :columns="standardColumns"
-          hide-pagination
         >
           <template v-slot:body-cell-templateId="props">
             <q-td class="text-center">

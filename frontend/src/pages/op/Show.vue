@@ -588,6 +588,14 @@ export default {
             appId: item.app_id,
           },
         });
+      } else {
+        this.$router.push({
+          name: "subOfficialAccountIndex",
+          params: {
+            opId: this.id,
+            appId: item.app_id,
+          },
+        });
       }
     },
     submitCreateBetaMiniProgram() {

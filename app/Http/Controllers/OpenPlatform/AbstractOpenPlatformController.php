@@ -41,10 +41,12 @@ abstract class AbstractOpenPlatformController extends Controller
      *
      * @throws \App\Exceptions\BusinessExceptions\WeChatException
      */
-    protected function getOfficialAccount($appId): \EasyWeChat\OpenPlatform\Authorizer\OfficialAccount\Application
+    protected function getOfficialAccount($appId = null): \EasyWeChat\OpenPlatform\Authorizer\OfficialAccount\Application
     {
+        if (!$appId) {
+            $appId = request()->route('appId');
+        }
         $openPlatformModel = request()->attributes->get('openPlatform');
-        $this->openPlatformModel = request()->attributes->get('openPlatform');
         $openPlatformService = new OpenPlatformService($openPlatformModel);
         // 生成实例，代小程序实现业务
         return $openPlatformService->getOfficialAccountApplication($appId);

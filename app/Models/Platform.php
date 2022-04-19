@@ -39,6 +39,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Platform whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Authorizer[] $localAuthorizers
+ * @property-read int|null $local_authorizers_count
  */
 class Platform extends Model
 {

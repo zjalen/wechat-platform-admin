@@ -17,7 +17,7 @@
           平台管理
         </q-toolbar-title>
 
-        <div>{{ $store.state.basicInfo.nickname_info.nickname }}</div>
+        <div>{{ $store.state.basicInfo.nickname }}</div>
       </q-toolbar>
     </q-header>
 
@@ -151,7 +151,7 @@ const menuList = [
 ];
 
 export default defineComponent({
-  name: "SubManageLayout",
+  name: "SubMiniProgramLayout",
 
   components: {},
 

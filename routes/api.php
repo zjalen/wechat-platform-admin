@@ -112,7 +112,10 @@ Route::group([
         $router->group([
             'prefix' => 'oa/{appId}',
         ], function (\Illuminate\Routing\Router $router) {
-
+            $router->apiResource('custom-menu', \App\Http\Controllers\OpenPlatform\OfficialAccount\CustomMenuController::class)->only(['index', 'show', 'store', 'destroy']);
+            $router->get('custom-menu/published/{menu_id}', [\App\Http\Controllers\OpenPlatform\OfficialAccount\CustomMenuController::class, 'showPublishedMenu']);
+            $router->post('custom-menu/published', [\App\Http\Controllers\OpenPlatform\OfficialAccount\CustomMenuController::class, 'publish']);
+            $router->delete('custom-menu/published/{menu_id}', [\App\Http\Controllers\OpenPlatform\OfficialAccount\CustomMenuController::class, 'destroyPublishedMenu']);
         });
     });
 });

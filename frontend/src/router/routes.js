@@ -45,7 +45,7 @@ const routes = [
 
   {
     path: "/open-platform/:opId/mini-program/:appId/",
-    component: () => import("layouts/SubManageLayout.vue"),
+    component: () => import("layouts/SubMiniProgramLayout.vue"),
     children: [
       {
         path: "",
@@ -96,6 +96,23 @@ const routes = [
         path: "code-manage-audit",
         component: () => import("pages/mp/CodeManageAudit.vue"),
         name: "codeManageAudit",
+      },
+    ],
+  },
+
+  {
+    path: "/open-platform/:opId/official-account/:appId/",
+    component: () => import("layouts/SubOfficialAccountLayout.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("pages/oa/Index.vue"),
+        name: "subOfficialAccountIndex",
+      },
+      {
+        path: "custom-menu",
+        component: () => import("pages/oa/CustomMenu.vue"),
+        name: "customMenu",
       },
     ],
   },
