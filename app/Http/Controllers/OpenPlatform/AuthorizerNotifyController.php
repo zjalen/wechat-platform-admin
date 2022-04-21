@@ -5,6 +5,11 @@ namespace App\Http\Controllers\OpenPlatform;
 
 
 use App\Jobs\SendCustomMessage;
+use App\Models\Authorizer;
+use App\Models\AutoReplyRule;
+use App\Models\Platform;
+use EasyWeChat\Kernel\Messages\Media;
+use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Text;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -47,6 +52,10 @@ class AuthorizerNotifyController extends AbstractOpenPlatformController
                             SendCustomMessage::dispatchAfterResponse($this->openPlatformModel, $appId, $openId, new Text($customContent));
                             return '';
                         }
+                        $officialAccountModel = Authorizer::query()->where('app_id', $appId)->first();
+                        if (!$officialAccountModel->is_auto_reply_open) {
+                            return '';
+                        }
                         switch ($content) {
                             case 'test-send':
                                 return 'test-callback';
@@ -54,6 +63,24 @@ class AuthorizerNotifyController extends AbstractOpenPlatformController
                             case 'TESTCOMPONENT_MSG_TYPE_TEXT':
                                 return 'TESTCOMPONENT_MSG_TYPE_TEXT_callback';
                             default:
+                                $autoReplyRule = AutoReplyRule::query()->where('app_id', $appId)->where('keyword', $content)->where('match_type', 1)->first();
+                                if (!$autoReplyRule) {
+                                    $autoReplyRule = AutoReplyRule::query()->where('app_id', $appId)->where('keyword','like', '%'.$content.'%')->where('match_type', 0)->first();
+                                }
+                                if (!$autoReplyRule){
+                                    return '';
+                                }
+                                switch ($autoReplyRule->type) {
+                                    case 0:
+                                    case 1:
+                                        return $autoReplyRule->content['text'];
+                                    case 2:
+                                    case 3:
+                                    case 4:
+                                        return new Media($autoReplyRule->content['media_id']);
+                                    case 5:
+                                        return new NewsItem($autoReplyRule->content);
+                                }
                                 return '';
                         }
                     case 'image':

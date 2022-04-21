@@ -24,6 +24,7 @@ class CreatePlatformsTable extends Migration
             $table->string('aes_key')->comment('解密 key');
             $table->string('description')->nullable(true)->comment('简介');
             $table->boolean('is_open')->default(true)->comment('是否开放');
+            $table->boolean('is_auto_reply_open')->default(false)->comment('是否启用自动回复');
             $table->tinyInteger('type')->default(0)->comment('类型');
             $table->timestamps();
         });

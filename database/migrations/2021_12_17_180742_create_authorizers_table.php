@@ -26,6 +26,7 @@ class CreateAuthorizersTable extends Migration
             $table->tinyInteger('is_mini_program')->default(0)->comment('是否是小程序');
             $table->tinyInteger('status')->default(0)->comment('绑定状态');
             $table->integer('platform_id')->comment('关联第三方平台 id');
+            $table->boolean('is_auto_reply_open')->default(false)->comment('是否启用自动回复');
             $table->timestamps();
         });
     }

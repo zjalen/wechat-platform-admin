@@ -41,6 +41,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Authorizer[] $localAuthorizers
  * @property-read int|null $local_authorizers_count
+ * @property int $is_auto_reply_open 是否启用自动回复
+ * @method static \Illuminate\Database\Eloquent\Builder|Platform whereIsAutoReplyOpen($value)
  */
 class Platform extends Model
 {
@@ -63,6 +65,7 @@ class Platform extends Model
      */
     protected $casts = [
         'is_open' => 'boolean',
+        'is_auto_reply_open' => 'boolean',
     ];
 
     protected $appends = ['type_name'];

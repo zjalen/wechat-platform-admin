@@ -16,17 +16,6 @@
             </q-chip>
           </view>
           <q-space />
-          <q-avatar size="40px">
-            <q-icon
-              class="cursor-pointer"
-              color="grey"
-              size="40px"
-              name="r_qr_code"
-              @click="toMakeQR"
-            >
-              <q-tooltip>去生成二维码</q-tooltip>
-            </q-icon>
-          </q-avatar>
         </view>
         <q-separator class="q-mb-md" />
         <view>

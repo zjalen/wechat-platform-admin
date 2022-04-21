@@ -101,6 +101,10 @@ const menuList = [
     to: null,
     children: [
       {
+        title: "自动回复",
+        to: "autoReplyRules",
+      },
+      {
         title: "自定义菜单",
         to: "customMenu",
       },
@@ -112,8 +116,12 @@ const menuList = [
     to: null,
     children: [
       {
-        title: "素材管理",
-        to: "mediaManage",
+        title: "服务器素材",
+        to: "subOfficialAccountMediaManage",
+      },
+      {
+        title: "公众号素材",
+        to: "subOfficialAccountOnlineMediaManage",
       },
     ],
   },

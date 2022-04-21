@@ -70,8 +70,8 @@ Route::group([
             'prefix' => 'mp/{appId}',
         ], function (\Illuminate\Routing\Router $router) {
             $router->get('basic-info', [\App\Http\Controllers\OpenPlatform\MiniProgram\MiniProgramController::class, 'show']);
-            $router->post('upload-template-media',
-                [\App\Http\Controllers\OpenPlatform\MiniProgram\MiniProgramController::class, 'uploadTemplateMedia']);
+            $router->post('upload-temporary-media',
+                [\App\Http\Controllers\OpenPlatform\MiniProgram\MiniProgramController::class, 'uploadTemporaryMedia']);
             $router->apiResource('testers', \App\Http\Controllers\OpenPlatform\MiniProgram\TesterController::class)->only(['index', 'store', 'destroy']);
             $router->apiResource('nick-name', \App\Http\Controllers\OpenPlatform\MiniProgram\NickNameController::class)->only(['show', 'update']);
             $router->get('nick-name/audit-status/{audit_id}', [\App\Http\Controllers\OpenPlatform\MiniProgram\NickNameController::class, 'auditStatus']);
@@ -112,10 +112,14 @@ Route::group([
         $router->group([
             'prefix' => 'oa/{appId}',
         ], function (\Illuminate\Routing\Router $router) {
+            $router->put('', [\App\Http\Controllers\OpenPlatform\OfficialAccount\OfficialAccountController::class, 'updateAutoReplyConfig']);
             $router->apiResource('custom-menu', \App\Http\Controllers\OpenPlatform\OfficialAccount\CustomMenuController::class)->only(['index', 'show', 'store', 'destroy']);
             $router->get('custom-menu/published/{menu_id}', [\App\Http\Controllers\OpenPlatform\OfficialAccount\CustomMenuController::class, 'showPublishedMenu']);
             $router->post('custom-menu/published', [\App\Http\Controllers\OpenPlatform\OfficialAccount\CustomMenuController::class, 'publish']);
             $router->delete('custom-menu/published/{menu_id}', [\App\Http\Controllers\OpenPlatform\OfficialAccount\CustomMenuController::class, 'destroyPublishedMenu']);
+            $router->apiResource('auto-reply-rules', \App\Http\Controllers\OpenPlatform\OfficialAccount\AutoReplyRuleController::class)->only(['index', 'show', 'store', 'destroy']);
+            $router->get('materials-count', [\App\Http\Controllers\OpenPlatform\OfficialAccount\MaterialController::class, 'count']);
+            $router->apiResource('materials', \App\Http\Controllers\OpenPlatform\OfficialAccount\MaterialController::class)->only(['index', 'show', 'store', 'destroy']);
         });
     });
 });

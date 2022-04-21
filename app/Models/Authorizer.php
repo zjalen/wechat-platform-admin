@@ -40,6 +40,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereUserName($value)
  * @mixin \Eloquent
+ * @property int $is_auto_reply_open 是否启用自动回复
+ * @method static \Illuminate\Database\Eloquent\Builder|Authorizer whereIsAutoReplyOpen($value)
  */
 class Authorizer extends Model
 {
@@ -77,6 +79,7 @@ class Authorizer extends Model
     protected $casts = [
         'is_mini_program' => 'boolean',
         'status' => 'boolean',
+        'is_auto_reply_open' => 'boolean',
     ];
 
     protected $appends = ['service_type_name'];

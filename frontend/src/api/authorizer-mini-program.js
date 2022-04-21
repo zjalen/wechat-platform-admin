@@ -21,7 +21,7 @@ export function unBindTester(id, appId, userSlug, params = null) {
 
 export function uploadTemplateFile(id, appId, data) {
   return api.post(
-    "open-platform/" + id + "/mp/" + appId + "/upload-template-media",
+    "open-platform/" + id + "/mp/" + appId + "/upload-temporary-media",
     data
   );
 }

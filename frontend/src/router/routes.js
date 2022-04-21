@@ -114,6 +114,31 @@ const routes = [
         component: () => import("pages/oa/CustomMenu.vue"),
         name: "customMenu",
       },
+      {
+        path: "auto-reply-rules",
+        component: () => import("pages/oa/AutoReplyRule.vue"),
+        name: "autoReplyRules",
+      },
+      {
+        path: "auto-reply-rules/create",
+        component: () => import("pages/oa/AutoReplyRuleCreateAndEdit.vue"),
+        name: "autoReplyRuleCreate",
+      },
+      {
+        path: "auto-reply-rules/:id/edit",
+        component: () => import("pages/oa/AutoReplyRuleCreateAndEdit.vue"),
+        name: "autoReplyRuleEdit",
+      },
+      {
+        path: "media-manage",
+        component: () => import("pages/oa/MediaManage.vue"),
+        name: "subOfficialAccountMediaManage",
+      },
+      {
+        path: "online-media-manage",
+        component: () => import("pages/oa/OnlineMediaManage.vue"),
+        name: "subOfficialAccountOnlineMediaManage",
+      },
     ],
   },
 
