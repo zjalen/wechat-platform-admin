@@ -57,10 +57,11 @@ class AuthorizerNotifyController extends AbstractOpenPlatformController
                             return '';
                         }
                         switch ($content) {
-                            case 'test-send':
-                                return 'test-callback';
-                            // !!!全网发布测试 —— 消息回复
+                            case 'openid_test':
+                                // 获取 openid
+                                return $message['FromUserName'];
                             case 'TESTCOMPONENT_MSG_TYPE_TEXT':
+                                // !!!全网发布测试 —— 消息回复
                                 return 'TESTCOMPONENT_MSG_TYPE_TEXT_callback';
                             default:
                                 $autoReplyRule = AutoReplyRule::query()->where('app_id', $appId)->where('keyword', $content)->where('match_type', 1)->first();
