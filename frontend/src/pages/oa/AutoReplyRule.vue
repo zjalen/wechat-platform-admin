@@ -40,32 +40,26 @@
           </template>
           <template v-slot:body-cell-match_type="props">
             <q-td>
-              <q-chip v-if="props.value === 0" dense color="warning"
+              <q-chip
+                v-if="props.value === 0"
+                dense
+                color="grey"
+                class="text-white"
                 >半匹配</q-chip
               >
-              <q-chip v-else dense color="warning">全匹配</q-chip>
+              <q-chip v-else dense color="grey-4">全匹配</q-chip>
             </q-td>
           </template>
           <template v-slot:body-cell-type="props">
             <q-td>
-              <q-chip v-if="props.value === 0" dense color="warning"
-                >已发表内容</q-chip
-              >
-              <q-chip v-else-if="props.value === 1" dense color="warning"
-                >文本</q-chip
-              >
-              <q-chip v-else-if="props.value === 2" dense color="warning"
-                >图片</q-chip
-              >
-              <q-chip v-else-if="props.value === 3" dense color="warning"
-                >音频</q-chip
-              >
-              <q-chip v-else-if="props.value === 4" dense color="warning"
-                >视频</q-chip
-              >
-              <q-chip v-else-if="props.value === 5" dense color="warning"
-                >图文</q-chip
-              >
+              <div v-if="props.value === 0" class="text-primary">
+                已发表内容
+              </div>
+              <div v-else-if="props.value === 1" class="text-primary">文本</div>
+              <div v-else-if="props.value === 2" class="text-primary">图片</div>
+              <div v-else-if="props.value === 3" class="text-primary">音频</div>
+              <div v-else-if="props.value === 4" class="text-primary">视频</div>
+              <div v-else-if="props.value === 5" class="text-primary">图文</div>
             </q-td>
           </template>
           <template v-slot:body-cell-content="props">

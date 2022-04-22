@@ -134,6 +134,21 @@ export function deleteAutoReplyRule(opId, appId, id) {
   );
 }
 
-export function uploadMaterial(id, appId, data) {
-  return api.post("open-platform/" + id + "/oa/" + appId + "/materials", data);
+export function uploadMaterial(opId, appId, data) {
+  return api.post(
+    "open-platform/" + opId + "/oa/" + appId + "/materials",
+    data
+  );
+}
+
+export function getMaterials(opId, appId, params) {
+  return api.get("open-platform/" + opId + "/oa/" + appId + "/materials", {
+    params,
+  });
+}
+
+export function deleteMaterial(opId, appId, mediaId) {
+  return api.delete(
+    "open-platform/" + opId + "/oa/" + appId + "/materials/" + mediaId
+  );
 }

@@ -46,6 +46,7 @@ abstract class AbstractOpenPlatformController extends Controller
         if (!$appId) {
             $appId = request()->route('appId');
         }
+        $this->appId = $appId;
         $openPlatformModel = request()->attributes->get('openPlatform');
         $openPlatformService = new OpenPlatformService($openPlatformModel);
         // 生成实例，代小程序实现业务

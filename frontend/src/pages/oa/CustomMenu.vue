@@ -77,7 +77,7 @@
                     anchor="top left"
                     self="bottom left"
                     :ref="`orderMenu` + index"
-                    style="background-color: rgba(0, 0, 0, 0)"
+                    style="background-color: rgba(0, 0, 0, 0); z-index: 1"
                   >
                     <q-list
                       style="
@@ -165,7 +165,7 @@
                 anchor="top left"
                 self="bottom left"
                 :ref="`primaryMenu` + key"
-                style="background-color: rgba(0, 0, 0, 0)"
+                style="background-color: rgba(0, 0, 0, 0); z-index: 1"
               >
                 <q-list
                   style="
@@ -230,7 +230,7 @@
           </q-card-section>
         </q-card>
       </div>
-      <div class="col col-grow q-mt-none">
+      <div class="col col-grow q-mt-none" style="z-index: 2">
         <q-card
           bordered
           square

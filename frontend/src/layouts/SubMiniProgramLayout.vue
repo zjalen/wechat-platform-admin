@@ -17,7 +17,16 @@
           平台管理
         </q-toolbar-title>
 
-        <div>{{ $store.state.basicInfo.nickname }}</div>
+        <div class="flex flex-center">
+          <span>{{ $store.state.basicInfo.nickname }}</span>
+          <q-chip
+            color="primary"
+            dense
+            square
+            class="text-white"
+            label="小程序"
+          ></q-chip>
+        </div>
       </q-toolbar>
     </q-header>
 

@@ -176,7 +176,7 @@
                 </template>
               </q-input>
               <q-item-label class="q-mt-sm text-negative" caption lines="2">
-                点击按钮复制，临时素材3天有效，本系统不保存 ID，请自行保存使用
+                点击按钮复制素材 media_id
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -186,14 +186,8 @@
           <q-btn
             unelevated
             color="primary"
-            label="添加为临时素材"
-            @click="addTemplateMedia"
-          ></q-btn>
-          <q-btn
-            unelevated
-            color="primary"
-            label="添加为审核临时素材"
-            @click="addAuditTemplateMedia"
+            label="上传到公众号素材库"
+            @click="onUploadClick"
           ></q-btn>
         </q-card-actions>
       </q-card>
@@ -202,12 +196,9 @@
 </template>
 
 <script>
-import {
-  uploadCodeAuditMedia,
-  uploadTemplateFile,
-} from "src/api/authorizer-mini-program";
 import { copyToClipboard } from "quasar";
 import { deleteLocalResource, getLocalResources } from "src/api/platform";
+import { uploadMaterial } from "src/api/authorizer-official-account.js";
 
 export default {
   name: "MediaManage",
@@ -277,20 +268,13 @@ export default {
       this.initData();
       this.$q.notify("上传成功");
     },
-    addTemplateMedia() {
-      uploadTemplateFile(this.opId, this.appId, {
+    onUploadClick() {
+      uploadMaterial(this.opId, this.appId, {
         fileName: this.currentMedia.name,
         type: this.tab,
       }).then((res) => {
         this.currentMedia.mediaId = res.media_id;
-      });
-    },
-    addAuditTemplateMedia() {
-      uploadCodeAuditMedia(this.opId, this.appId, {
-        fileName: this.currentMedia.name,
-        type: this.tab,
-      }).then((res) => {
-        this.currentMedia.mediaId = res.media_id;
+        this.$q.notify("上传成功");
       });
     },
     onMediaClick(media) {

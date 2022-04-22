@@ -7,18 +7,28 @@
           平台管理
         </q-toolbar-title>
 
-        <q-btn flat :label="$store.state.currentPlatformInfo.name">
-          <q-menu>
-            <q-list style="min-width: 100px">
-              <q-item clickable to="/operation-logs">
-                <q-item-section>查看操作日志</q-item-section>
-              </q-item>
-              <q-item clickable @click="logout">
-                <q-item-section>退出登录</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
+        <div class="flex flex-center">
+          <div class="cursor-pointer">
+            {{ $store.state.currentPlatformInfo.name }}
+            <q-menu>
+              <q-list style="min-width: 100px">
+                <q-item clickable to="/operation-logs">
+                  <q-item-section>查看操作日志</q-item-section>
+                </q-item>
+                <q-item clickable @click="logout">
+                  <q-item-section>退出登录</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </div>
+          <q-chip
+            color="primary"
+            dense
+            square
+            class="text-white"
+            label="第三方"
+          ></q-chip>
+        </div>
       </q-toolbar>
     </q-header>
 

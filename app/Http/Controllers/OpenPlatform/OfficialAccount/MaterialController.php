@@ -24,11 +24,12 @@ class MaterialController extends AbstractOpenPlatformController
     public function index()
     {
         $type = request()->input('type');
-        if (!in_array($type, ['image', 'video', 'voice', 'news'])) {
+        if (!in_array($type, ['image', 'video', 'voice'])) {
             throw new ParamsErrorException();
         }
         $offset = request('offset', 0);
         $count = request('count', 20);
+        $no_content = request('no_content', 0);
         $officialAccount = $this->getOfficialAccount();
         return $officialAccount->material->list($type, $offset, $count);
     }
@@ -86,7 +87,7 @@ class MaterialController extends AbstractOpenPlatformController
      */
     public function destroy()
     {
-        $mediaId = request('media_id');
+        $mediaId = request()->route('material');
         $officialAccount = $this->getOfficialAccount();
         return $officialAccount->material->delete($mediaId);
     }
