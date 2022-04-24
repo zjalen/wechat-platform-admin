@@ -2,82 +2,78 @@
 
 namespace App\Http\Controllers\OpenPlatform\OfficialAccount;
 
-use App\Exceptions\BusinessExceptions\ParamsErrorException;
 use App\Exceptions\BusinessExceptions\WeChatException;
 use App\Http\Controllers\OpenPlatform\AbstractOpenPlatformController;
-use App\Services\MediaService;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use GuzzleHttp\Exception\GuzzleException;
 
-class MaterialController extends AbstractOpenPlatformController
+class DraftController extends AbstractOpenPlatformController
 {
-
     /**
-     * 获取永久素材列表
+     * 获取草稿列表
      *
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      * @throws GuzzleException
      * @throws InvalidConfigException
-     * @throws ParamsErrorException
      * @throws WeChatException
      */
     public function index()
     {
-        $type = request()->input('type');
-        if (!in_array($type, ['image', 'video', 'voice'])) {
-            throw new ParamsErrorException();
-        }
         $offset = request('offset', 0);
         $count = request('count', 20);
+        $no_content = request('no_content', 0);
         $officialAccount = $this->getOfficialAccount();
-        return $officialAccount->material->list($type, $offset, $count);
+        return $officialAccount->material->httpPostJson('cgi-bin/draft/batchget',
+            ['offset' => $offset, 'count' => $count, 'no_content' => $no_content]);
     }
 
     /**
-     * 上传永久文件素材
+     * 创建草稿
      *
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      * @throws GuzzleException
      * @throws InvalidConfigException
-     * @throws ParamsErrorException
      * @throws WeChatException
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      */
     public function store()
     {
-        $fileName = request()->input('fileName');
-        $type = request()->input('type');
-        if (!in_array($type, ['image', 'video', 'voice', 'thumb'])) {
-            throw new ParamsErrorException();
-        }
+        $params = request()->input();
         $officialAccount = $this->getOfficialAccount();
-        $mediaService = new MediaService();
-        $file = $mediaService->getFilePath($this->appId, $fileName, $type);
-        if ($type == 'video') {
-            $title = request()->input('title');
-            $description = request()->input('description');
-            return $officialAccount->material->uploadVideo($file, $title, $description);
-        }
-        return $officialAccount->material->upload($type, $file);
+        return $officialAccount->material->httpPostJson('cgi-bin/draft/add', $params);
     }
 
     /**
-     * 查看某个素材详情
+     * 修改草稿
      *
-     * @return mixed
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws GuzzleException
+     * @throws InvalidConfigException
+     * @throws WeChatException
+     */
+    public function update()
+    {
+        $params = request()->input();
+        $officialAccount = $this->getOfficialAccount();
+        return $officialAccount->material->httpPostJson('cgi-bin/draft/update', $params);
+    }
+
+    /**
+     * 获取草稿
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      * @throws GuzzleException
      * @throws InvalidConfigException
      * @throws WeChatException
      */
     public function show()
     {
-        $mediaId = request()->route('material');
+        $mediaId = request()->route('draft');
         $officialAccount = $this->getOfficialAccount();
-        return $officialAccount->material->get($mediaId);
+        return $officialAccount->material->httpPostJson('cgi-bin/draft/get', ['media_id' => $mediaId]);
     }
 
     /**
-     * 删除永久素材
+     * 删除草稿
      *
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      * @throws GuzzleException
@@ -86,22 +82,8 @@ class MaterialController extends AbstractOpenPlatformController
      */
     public function destroy()
     {
-        $mediaId = request()->route('material');
+        $mediaId = request()->route('draft');
         $officialAccount = $this->getOfficialAccount();
-        return $officialAccount->material->delete($mediaId);
-    }
-
-    /**
-     * 获取永久素材总数
-     *
-     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     * @throws GuzzleException
-     * @throws InvalidConfigException
-     * @throws WeChatException
-     */
-    public function count()
-    {
-        $officialAccount = $this->getOfficialAccount();
-        return $officialAccount->material->httpPostJson('cgi-bin/material/get_materialcount');
+        return $officialAccount->material->httpPostJson('cgi-bin/draft/delete', ['media_id' => $mediaId]);
     }
 }

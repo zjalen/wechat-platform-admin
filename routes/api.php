@@ -117,9 +117,11 @@ Route::group([
             $router->get('custom-menu/published/{menu_id}', [\App\Http\Controllers\OpenPlatform\OfficialAccount\CustomMenuController::class, 'showPublishedMenu']);
             $router->post('custom-menu/published', [\App\Http\Controllers\OpenPlatform\OfficialAccount\CustomMenuController::class, 'publish']);
             $router->delete('custom-menu/published/{menu_id}', [\App\Http\Controllers\OpenPlatform\OfficialAccount\CustomMenuController::class, 'destroyPublishedMenu']);
-            $router->apiResource('auto-reply-rules', \App\Http\Controllers\OpenPlatform\OfficialAccount\AutoReplyRuleController::class)->only(['index', 'show', 'store', 'destroy']);
+            $router->apiResource('auto-reply-rules', \App\Http\Controllers\OpenPlatform\OfficialAccount\AutoReplyRuleController::class);
             $router->get('materials-count', [\App\Http\Controllers\OpenPlatform\OfficialAccount\MaterialController::class, 'count']);
             $router->apiResource('materials', \App\Http\Controllers\OpenPlatform\OfficialAccount\MaterialController::class)->only(['index', 'show', 'store', 'destroy']);
+            $router->apiResource('drafts', \App\Http\Controllers\OpenPlatform\OfficialAccount\DraftController::class);
+            $router->apiResource('articles', \App\Http\Controllers\OpenPlatform\OfficialAccount\ArticleController::class)->only(['index', 'store', 'show', 'destroy']);
         });
     });
 });

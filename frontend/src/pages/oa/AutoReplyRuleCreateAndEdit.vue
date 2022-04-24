@@ -46,7 +46,10 @@
               <q-item
                 :active="formData.type === 0"
                 clickable
-                @click="formData.type = 0"
+                @click="
+                  formData.type = 0;
+                  type = 'article';
+                "
                 dense
                 class="q-px-sm"
               >
@@ -70,7 +73,10 @@
               <q-item
                 :active="formData.type === 2"
                 clickable
-                @click="formData.type = 2"
+                @click="
+                  formData.type = 2;
+                  type = 'image';
+                "
                 dense
                 class="q-px-sm"
               >
@@ -82,7 +88,10 @@
               <q-item
                 :active="formData.type === 3"
                 clickable
-                @click="formData.type = 3"
+                @click="
+                  formData.type = 3;
+                  type = 'voice';
+                "
                 dense
                 class="q-px-sm"
               >
@@ -94,7 +103,10 @@
               <q-item
                 :active="formData.type === 4"
                 clickable
-                @click="formData.type = 4"
+                @click="
+                  formData.type = 4;
+                  type = 'video';
+                "
                 dense
                 class="q-px-sm"
               >
@@ -127,6 +139,16 @@
             <template #before>
               <div class="text-body2" style="width: 100px">已发表内容</div>
             </template>
+            <template #append>
+              <q-icon
+                name="r_search"
+                class="cursor-pointer"
+                @click="
+                  showMediaDialog = true;
+                  getMediaList(type);
+                "
+              ></q-icon>
+            </template>
           </q-input>
           <q-input
             v-if="formData.type === 1"
@@ -155,6 +177,16 @@
           >
             <template #before>
               <div class="text-body2" style="width: 100px">回复素材</div>
+            </template>
+            <template #append>
+              <q-icon
+                name="r_search"
+                class="cursor-pointer"
+                @click="
+                  showMediaDialog = true;
+                  getMediaList(type);
+                "
+              ></q-icon>
             </template>
           </q-input>
           <q-input
@@ -188,7 +220,7 @@
             outlined
             dense
             hint="请输入封面链接"
-            v-model="contentForm[5].pic_url"
+            v-model="contentForm[5].image"
             lazy-rules
             :rules="[(val) => !!val || '必填项目']"
           >
@@ -222,11 +254,108 @@
         </q-form>
       </q-card-section>
     </q-card>
+
+    <q-dialog v-model="showMediaDialog" full-width>
+      <q-card>
+        <q-card-section class="text-h6 flex flex-center">
+          <div>选择素材/文章</div>
+          <q-space />
+          <q-btn flat icon="r_close" color="negative" v-close-popup></q-btn>
+        </q-card-section>
+        <q-card-section class="row q-col-gutter-sm" style="min-height: 600px">
+          <div v-if="mediaList[type].length === 0" class="col-12 text-center">
+            暂无内容
+          </div>
+          <div v-if="type === 'article'" class="col-12 col">
+            <q-card
+              v-for="(media, key) in mediaList[type]"
+              :key="key"
+              class="row cursor-pointer bg-grey-3"
+              :class="media.article_id === chosenMediaId ? 'border-chosen' : ''"
+              @click="chosenMediaId = media.article_id"
+            >
+              <q-card-section>
+                <q-img
+                  width="80px"
+                  :src="media.content.news_item[0].thumb_url"
+                  :alt="media.content.news_item[0].title"
+                  :ratio="1"
+                ></q-img>
+              </q-card-section>
+              <q-card-section class="col">
+                <div class="text-subtitle1">
+                  {{ media.content.news_item[0].title }}
+                </div>
+                <div class="text-caption q-py-sm">
+                  {{ media.content.news_item[0].digest }}
+                </div>
+                <div class="text-caption text-grey">
+                  更新于：{{ formatDate(media.content.update_time) }}
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
+          <div v-else class="col-12 row q-col-gutter-md">
+            <view
+              class="col-xs-3 col-sm-4 col-md-2 col-lg-1"
+              v-for="(media, key) in mediaList[type]"
+              :key="key"
+            >
+              <view
+                class="flex flex-center q-pa-xs cursor-pointer relative-position"
+                :class="media.media_id === chosenMediaId ? 'border-chosen' : ''"
+              >
+                <q-img
+                  :src="media.url"
+                  :alt="media.name"
+                  class="cursor-pointer"
+                  @click="chosenMediaId = media.media_id"
+                ></q-img>
+                <view class="absolute-bottom text-white bg-grey text-body2">
+                  {{ media.name }}
+                </view>
+              </view>
+            </view>
+          </div>
+        </q-card-section>
+        <div class="row">
+          <q-space />
+          <q-pagination
+            v-model="page[type]"
+            :max="Math.ceil(totalCount[type] / pageSize)"
+            input
+            @update:model-value="getMediaList(type)"
+          />
+        </div>
+        <q-separator />
+        <q-card-section class="flex flex-center q-gutter-md">
+          <q-btn
+            unelevated
+            color="primary"
+            :disable="!chosenMediaId"
+            label="确定"
+            @click="onConfirmClick"
+          ></q-btn>
+          <q-btn
+            unelevated
+            label="取消"
+            @click="showMediaDialog = false"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
-import { createAutoReplyRule } from "src/api/authorizer-official-account.js";
+import {
+  createAutoReplyRule,
+  getArticles,
+  getAutoReplyRule,
+  getMaterials,
+  updateAutoReplyRule,
+} from "src/api/authorizer-official-account.js";
+import { date } from "quasar";
 
 export default {
   name: "AutoReplyRuleCreateAndEdit",
@@ -239,6 +368,28 @@ export default {
       type: 0,
       content: "",
     },
+    showMediaDialog: false,
+    mediaList: {
+      image: [],
+      voice: [],
+      video: [],
+      article: [],
+    },
+    type: "article",
+    page: {
+      image: 1,
+      voice: 1,
+      video: 1,
+      article: 1,
+    },
+    totalCount: {
+      image: 0,
+      voice: 0,
+      video: 0,
+      article: 0,
+    },
+    pageSize: 24,
+    chosenMediaId: null,
     content: "",
     contentForm: {
       0: { article_id: "" },
@@ -249,18 +400,72 @@ export default {
   }),
   mounted() {
     this.id = this.$route.params.id;
+    if (this.id) {
+      this.initData();
+    }
   },
   methods: {
+    initData() {
+      getAutoReplyRule(this.opId, this.appId, this.id).then((res) => {
+        this.formData = res;
+        Object.keys(this.contentForm[res.type]).forEach((key) => {
+          this.contentForm[res.type][key] = res.content[key];
+        });
+      });
+    },
+    getMediaList(type) {
+      if (type === "article") {
+        getArticles(this.opId, this.appId, {
+          offset: (this.page[type] - 1) * this.pageSize,
+          count: this.pageSize,
+        }).then((res) => {
+          this.mediaList[type] = res.item;
+          this.totalCount[type] = res.total_count;
+        });
+      } else {
+        getMaterials(this.opId, this.appId, {
+          type: type,
+          offset: (this.page[type] - 1) * this.pageSize,
+          count: this.pageSize,
+        }).then((res) => {
+          this.mediaList[type] = res.item;
+          this.totalCount[type] = res.total_count;
+        });
+      }
+    },
+    onConfirmClick() {
+      if (this.type === "article") {
+        this.contentForm[0].article_id = this.chosenMediaId;
+      } else {
+        this.contentForm[2].media_id = this.chosenMediaId;
+      }
+      this.showMediaDialog = false;
+    },
     onSubmitClick() {
       this.formData.content = this.contentForm[this.formData.type];
       if (!this.id) {
         createAutoReplyRule(this.opId, this.appId, this.formData).then(() => {
           this.$q.notify("创建成功");
+          this.$router.back();
         });
+      } else {
+        updateAutoReplyRule(this.opId, this.appId, this.id, this.formData).then(
+          () => {
+            this.$q.notify("更新成功");
+            this.$router.back();
+          }
+        );
       }
+    },
+    formatDate(timestamp) {
+      return date.formatDate(timestamp * 1000, "YYYY-MM-DD HH:mm:ss");
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.border-chosen {
+  border: 1px solid $primary;
+}
+</style>

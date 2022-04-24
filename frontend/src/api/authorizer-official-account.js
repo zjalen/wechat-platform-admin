@@ -93,6 +93,20 @@ export function getAutoReplyRules(opId, appId, params) {
 }
 
 /**
+ * 获取自动回复规则列表
+ *
+ * @param opId
+ * @param appId
+ * @param params
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function getAutoReplyRule(opId, appId, id) {
+  return api.get(
+    "open-platform/" + opId + "/oa/" + appId + "/auto-reply-rules/" + id
+  );
+}
+
+/**
  * 创建自动回复规则
  * @param opId
  * @param appId
@@ -150,5 +164,35 @@ export function getMaterials(opId, appId, params) {
 export function deleteMaterial(opId, appId, mediaId) {
   return api.delete(
     "open-platform/" + opId + "/oa/" + appId + "/materials/" + mediaId
+  );
+}
+
+export function getDrafts(opId, appId, params) {
+  return api.get("open-platform/" + opId + "/oa/" + appId + "/drafts", {
+    params,
+  });
+}
+
+export function deleteDraft(opId, appId, mediaId) {
+  return api.delete(
+    "open-platform/" + opId + "/oa/" + appId + "/drafts/" + mediaId
+  );
+}
+
+export function publishDraft(opId, appId, mediaId) {
+  return api.post("open-platform/" + opId + "/oa/" + appId + "/articles", {
+    media_id: mediaId,
+  });
+}
+
+export function getArticles(opId, appId, params) {
+  return api.get("open-platform/" + opId + "/oa/" + appId + "/articles", {
+    params,
+  });
+}
+
+export function deleteArticle(opId, appId, articleId) {
+  return api.delete(
+    "open-platform/" + opId + "/oa/" + appId + "/articles/" + articleId
   );
 }

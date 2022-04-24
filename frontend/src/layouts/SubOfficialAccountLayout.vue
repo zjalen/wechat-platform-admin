@@ -129,8 +129,16 @@ const menuList = [
         to: "subOfficialAccountMediaManage",
       },
       {
-        title: "公众号素材",
+        title: "公众号素材库",
         to: "subOfficialAccountOnlineMediaManage",
+      },
+      {
+        title: "草稿箱",
+        to: "subOfficialAccountDrafts",
+      },
+      {
+        title: "发表记录",
+        to: "subOfficialAccountArticles",
       },
     ],
   },

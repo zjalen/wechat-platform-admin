@@ -139,6 +139,16 @@ const routes = [
         component: () => import("pages/oa/OnlineMediaManage.vue"),
         name: "subOfficialAccountOnlineMediaManage",
       },
+      {
+        path: "drafts",
+        component: () => import("pages/oa/Drafts.vue"),
+        name: "subOfficialAccountDrafts",
+      },
+      {
+        path: "articles",
+        component: () => import("pages/oa/Articles.vue"),
+        name: "subOfficialAccountArticles",
+      },
     ],
   },
 

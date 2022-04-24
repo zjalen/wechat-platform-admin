@@ -2,7 +2,7 @@
   <q-page class="q-pa-lg">
     <q-card>
       <q-card-section>
-        <div class="text-h4">公众号素材中心</div>
+        <div class="text-h4">公众号素材库</div>
         <div class="text-caption text-grey q-mt-sm">
           当前为公众号已上传的素材，与微信公众号后台一致
         </div>
@@ -30,7 +30,7 @@
           <q-tab-panel v-for="type in typeList" :key="type" :name="type">
             <view class="row q-gutter-sm q-mb-md">
               <div class="text-subtitle1">
-                图片（共{{ totalCount[type] }}条）
+                素材（共{{ totalCount[type] }}条）
               </div>
               <q-space />
               <q-btn color="primary" dense unelevated @click="onUploadClick"
@@ -98,7 +98,6 @@
                 v-model="page[type]"
                 :max="Math.ceil(totalCount[type] / pageSize)"
                 input
-                input-class="text-orange-10"
                 @update:model-value="initData(tab)"
               />
             </div>
@@ -179,7 +178,7 @@ import {
 } from "src/api/authorizer-official-account.js";
 
 export default {
-  name: "MediaManage",
+  name: "OnlineMediaManage",
   data: () => ({
     mediaList: {
       image: [],
