@@ -132,9 +132,10 @@
           <q-input
             v-if="formData.type === 0"
             outlined
+            readonly
             dense
-            hint="请选择文章 ID"
-            v-model="contentForm[0].article_id"
+            hint="请选择已发布的文章"
+            :model-value="contentForm[0][0].title"
           >
             <template #before>
               <div class="text-body2" style="width: 100px">已发表内容</div>
@@ -150,6 +151,30 @@
               ></q-icon>
             </template>
           </q-input>
+          <div v-if="formData.type === 0" class="q-gutter-sm">
+            <q-card
+              v-for="(media, key) in contentForm[0]"
+              :key="key"
+              class="row bg-grey-3"
+            >
+              <q-card-section>
+                <q-img
+                  width="80px"
+                  :src="media.image"
+                  :alt="media.title"
+                  :ratio="1"
+                ></q-img>
+              </q-card-section>
+              <q-card-section class="col">
+                <div class="text-subtitle1">
+                  {{ media.title }}
+                </div>
+                <div class="text-caption q-py-sm">
+                  {{ media.description }}
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
           <q-input
             v-if="formData.type === 1"
             outlined
@@ -189,59 +214,76 @@
               ></q-icon>
             </template>
           </q-input>
-          <q-input
-            v-if="formData.type === 5"
-            outlined
-            dense
-            hint="请输入图文标题"
-            v-model="contentForm[5].title"
-            lazy-rules
-            :rules="[(val) => !!val || '必填项目']"
-          >
-            <template #before>
-              <div class="text-body2" style="width: 100px">图文标题</div>
-            </template>
-          </q-input>
-          <q-input
-            v-if="formData.type === 5"
-            outlined
-            dense
-            hint="请输入图文描述"
-            v-model="contentForm[5].description"
-            lazy-rules
-            :rules="[(val) => !!val || '必填项目']"
-          >
-            <template #before>
-              <div class="text-body2" style="width: 100px">图文描述</div>
-            </template>
-          </q-input>
-          <q-input
-            v-if="formData.type === 5"
-            outlined
-            dense
-            hint="请输入封面链接"
-            v-model="contentForm[5].image"
-            lazy-rules
-            :rules="[(val) => !!val || '必填项目']"
-          >
-            <template #before>
-              <div class="text-body2" style="width: 100px">封面链接</div>
-            </template>
-          </q-input>
-          <q-input
-            v-if="formData.type === 5"
-            outlined
-            dense
-            hint="跳转链接"
-            v-model="contentForm[5].url"
-            lazy-rules
-            :rules="[(val) => !!val || '必填项目']"
-          >
-            <template #before>
-              <div class="text-body2" style="width: 100px">跳转链接</div>
-            </template>
-          </q-input>
-          <div class="row">
+          <div v-if="formData.type === 5" style="padding-left: 100px">
+            <div v-for="(item, key) in contentForm[5]" :key="key">
+              <q-input
+                outlined
+                dense
+                hint="请输入图文标题"
+                v-model="item.title"
+                lazy-rules
+                :rules="[(val) => !!val || '必填项目']"
+              >
+                <template #before>
+                  <div class="text-body2" style="width: 100px">图文标题</div>
+                </template>
+              </q-input>
+              <q-input
+                outlined
+                dense
+                hint="请输入图文描述"
+                v-model="item.description"
+                lazy-rules
+                :rules="[(val) => !!val || '必填项目']"
+              >
+                <template #before>
+                  <div class="text-body2" style="width: 100px">图文描述</div>
+                </template>
+              </q-input>
+              <q-input
+                outlined
+                dense
+                hint="请输入封面链接"
+                v-model="item.image"
+                lazy-rules
+                :rules="[(val) => !!val || '必填项目']"
+              >
+                <template #before>
+                  <div class="text-body2" style="width: 100px">封面链接</div>
+                </template>
+              </q-input>
+              <q-input
+                outlined
+                dense
+                hint="跳转链接"
+                v-model="item.url"
+                lazy-rules
+                :rules="[(val) => !!val || '必填项目']"
+              >
+                <template #before>
+                  <div class="text-body2" style="width: 100px">跳转链接</div>
+                </template>
+              </q-input>
+              <div class="row q-gutter-md justify-end">
+                <q-btn
+                  v-if="contentForm[5].length > 1"
+                  flat
+                  label="删除本条"
+                  color="negative"
+                  @click="onRemoveItemClick(key)"
+                ></q-btn>
+                <q-btn
+                  v-if="contentForm[5].length < 5"
+                  flat
+                  label="增加一条图文"
+                  color="secondary"
+                  @click="onAddItemClick"
+                ></q-btn>
+              </div>
+              <q-separator class="q-mb-lg" />
+            </div>
+          </div>
+          <div class="row q-mt-lg">
             <q-space />
             <q-btn
               unelevated
@@ -266,13 +308,16 @@
           <div v-if="mediaList[type].length === 0" class="col-12 text-center">
             暂无内容
           </div>
-          <div v-if="type === 'article'" class="col-12 col">
+          <div v-if="type === 'article'" class="col-12 col q-gutter-sm">
             <q-card
               v-for="(media, key) in mediaList[type]"
               :key="key"
               class="row cursor-pointer bg-grey-3"
               :class="media.article_id === chosenMediaId ? 'border-chosen' : ''"
-              @click="chosenMediaId = media.article_id"
+              @click="
+                chosenMediaId = media.article_id;
+                chosenMediaContentItems = media.content.news_item;
+              "
             >
               <q-card-section>
                 <q-img
@@ -390,13 +435,15 @@ export default {
     },
     pageSize: 24,
     chosenMediaId: null,
+    chosenMediaContentItems: [],
     content: "",
     contentForm: {
-      0: { article_id: "" },
+      0: [{ title: "", description: "", image: "", url: "" }],
       1: { text: "" },
       2: { media_id: "" },
-      5: { title: "", description: "", image: "", url: "" },
+      5: [{ title: "", description: "", image: "", url: "" }],
     },
+    defaultNewsItem: { title: "", description: "", image: "", url: "" },
   }),
   mounted() {
     this.id = this.$route.params.id;
@@ -408,9 +455,7 @@ export default {
     initData() {
       getAutoReplyRule(this.opId, this.appId, this.id).then((res) => {
         this.formData = res;
-        Object.keys(this.contentForm[res.type]).forEach((key) => {
-          this.contentForm[res.type][key] = res.content[key];
-        });
+        this.contentForm[res.type] = res.content;
       });
     },
     getMediaList(type) {
@@ -433,9 +478,22 @@ export default {
         });
       }
     },
+    onRemoveItemClick(index) {
+      this.contentForm[5].splice(index, 1);
+    },
+    onAddItemClick() {
+      this.contentForm[5].push(this.defaultNewsItem);
+    },
     onConfirmClick() {
       if (this.type === "article") {
-        this.contentForm[0].article_id = this.chosenMediaId;
+        this.contentForm[0] = this.chosenMediaContentItems.map((value) => {
+          return {
+            url: value.url,
+            image: value.thumb_url,
+            title: value.title,
+            description: value.digest,
+          };
+        });
       } else {
         this.contentForm[2].media_id = this.chosenMediaId;
       }
@@ -467,5 +525,6 @@ export default {
 <style scoped lang="scss">
 .border-chosen {
   border: 1px solid $primary;
+  box-sizing: border-box;
 }
 </style>

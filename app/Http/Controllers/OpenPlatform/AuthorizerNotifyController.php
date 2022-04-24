@@ -7,8 +7,8 @@ namespace App\Http\Controllers\OpenPlatform;
 use App\Jobs\SendCustomMessage;
 use App\Models\Authorizer;
 use App\Models\AutoReplyRule;
-use App\Models\Platform;
 use EasyWeChat\Kernel\Messages\Media;
+use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Text;
 use Exception;
@@ -54,7 +54,8 @@ class AuthorizerNotifyController extends AbstractOpenPlatformController
                             $query_auth_code = $contentArr[1];
                             $openId = $message['FromUserName'];
                             $customContent = $query_auth_code.'_from_api';
-                            SendCustomMessage::dispatchAfterResponse($this->openPlatformModel, $appId, $openId, new Text($customContent));
+                            SendCustomMessage::dispatchAfterResponse($this->openPlatformModel, $appId, $openId,
+                                new Text($customContent));
                             return '';
                         }
                         $officialAccountModel = Authorizer::query()->where('app_id', $appId)->first();
@@ -96,23 +97,31 @@ class AuthorizerNotifyController extends AbstractOpenPlatformController
 
     private function getReturnMessage($content, $appId)
     {
-        $autoReplyRule = AutoReplyRule::query()->where('app_id', $appId)->where('keyword', $content)->where('match_type', 1)->first();
+        $autoReplyRule = AutoReplyRule::query()->where('app_id', $appId)->where('keyword',
+            $content)->where('match_type', 1)->first();
         if (!$autoReplyRule) {
-            $autoReplyRule = AutoReplyRule::query()->where('app_id', $appId)->where('keyword','like', '%'.$content.'%')->where('match_type', 0)->first();
+            $autoReplyRule = AutoReplyRule::query()->where('app_id', $appId)->where('keyword', 'like',
+                '%'.$content.'%')->where('match_type', 0)->first();
         }
-        if (!$autoReplyRule){
+        if (!$autoReplyRule) {
             return '';
         }
         switch ($autoReplyRule->type) {
             case 0:
+            case 5:
+                $newsItemArray = [];
+                foreach ($autoReplyRule->content as $item) {
+                    array_push($newsItemArray, new NewsItem($item));
+                }
+                return new News($newsItemArray);
             case 1:
                 return $autoReplyRule->content['text'];
             case 2:
+                return new Media($autoReplyRule->content['media_id'], 'image');
             case 3:
+                return new Media($autoReplyRule->content['media_id'], 'voice');
             case 4:
-                return new Media($autoReplyRule->content['media_id']);
-            case 5:
-                return new NewsItem($autoReplyRule->content);
+                return new Media($autoReplyRule->content['media_id'], 'mpvideo');
         }
         return '';
     }

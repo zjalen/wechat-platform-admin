@@ -331,6 +331,75 @@
                 "
               >
                 <q-input
+                  v-if="currentActiveMenu.type === 'article_id'"
+                  outlined
+                  readonly
+                  dense
+                  hint="请选择已发布的文章"
+                  v-model="currentActiveMenu.article_id"
+                >
+                  <template #before>
+                    <div class="text-body2" style="width: 80px">已发表内容</div>
+                  </template>
+                  <template #append>
+                    <q-icon
+                      name="r_search"
+                      class="cursor-pointer"
+                      @click="
+                        type = 'article';
+                        showMediaDialog = true;
+                        getMediaList(type);
+                      "
+                    ></q-icon>
+                  </template>
+                </q-input>
+                <div
+                  v-if="currentActiveMenu.type === 'media_id'"
+                  class="q-gutter-sm row"
+                  style="margin-left: 80px"
+                >
+                  <q-radio
+                    left-label
+                    val="image"
+                    label="图片"
+                    v-model="type"
+                  ></q-radio>
+                  <q-radio
+                    left-label
+                    val="voice"
+                    label="音频"
+                    v-model="type"
+                  ></q-radio>
+                  <q-radio
+                    left-label
+                    val="video"
+                    label="视频"
+                    v-model="type"
+                  ></q-radio>
+                </div>
+                <q-input
+                  v-if="currentActiveMenu.type === 'media_id'"
+                  outlined
+                  readonly
+                  dense
+                  hint="请选择已上传的公众号素材"
+                  v-model="currentActiveMenu.media_id"
+                >
+                  <template #before>
+                    <div class="text-body2" style="width: 80px">素材选择</div>
+                  </template>
+                  <template #append>
+                    <q-icon
+                      name="r_search"
+                      class="cursor-pointer"
+                      @click="
+                        showMediaDialog = true;
+                        getMediaList(type);
+                      "
+                    ></q-icon>
+                  </template>
+                </q-input>
+                <q-input
                   v-show="
                     currentActiveMenu.type === 'view' ||
                     currentActiveMenu.type === 'miniprogram'
@@ -389,22 +458,6 @@
                 >
                   <template #before>
                     <div class="text-body2" style="width: 80px">关键词key</div>
-                  </template>
-                </q-input>
-
-                <q-input
-                  v-show="
-                    currentActiveMenu.type === 'media_id' ||
-                    currentActiveMenu.type === 'view_limited'
-                  "
-                  v-model="currentActiveMenu.media_id"
-                  outlined
-                  dense
-                  label="media_id"
-                  :rules="formRules.requireRules"
-                >
-                  <template #before>
-                    <div class="text-body2" style="width: 80px">永久素材</div>
                   </template>
                 </q-input>
               </div>
@@ -485,6 +538,99 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="showMediaDialog" full-width>
+      <q-card>
+        <q-card-section class="text-h6 flex flex-center">
+          <div>选择素材/文章</div>
+          <q-space />
+          <q-btn flat icon="r_close" color="negative" v-close-popup></q-btn>
+        </q-card-section>
+        <q-card-section class="row q-col-gutter-sm" style="min-height: 600px">
+          <div v-if="mediaList[type].length === 0" class="col-12 text-center">
+            暂无内容
+          </div>
+          <div v-if="type === 'article'" class="col-12 col q-gutter-sm">
+            <q-card
+              v-for="(media, key) in mediaList[type]"
+              :key="key"
+              class="row cursor-pointer bg-grey-3"
+              :class="media.article_id === chosenMediaId ? 'border-chosen' : ''"
+              @click="
+                chosenMediaId = media.article_id;
+                chosenMediaContentItems = media.content.news_item;
+              "
+            >
+              <q-card-section>
+                <q-img
+                  width="80px"
+                  :src="media.content.news_item[0].thumb_url"
+                  :alt="media.content.news_item[0].title"
+                  :ratio="1"
+                ></q-img>
+              </q-card-section>
+              <q-card-section class="col">
+                <div class="text-subtitle1">
+                  {{ media.content.news_item[0].title }}
+                </div>
+                <div class="text-caption q-py-sm">
+                  {{ media.content.news_item[0].digest }}
+                </div>
+                <div class="text-caption text-grey">
+                  更新于：{{ formatDate(media.content.update_time) }}
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
+          <div v-else class="col-12 row q-col-gutter-md">
+            <view
+              class="col-xs-3 col-sm-4 col-md-2 col-lg-1"
+              v-for="(media, key) in mediaList[type]"
+              :key="key"
+            >
+              <view
+                class="flex flex-center q-pa-xs cursor-pointer relative-position"
+                :class="media.media_id === chosenMediaId ? 'border-chosen' : ''"
+              >
+                <q-img
+                  :src="media.url"
+                  :alt="media.name"
+                  class="cursor-pointer"
+                  @click="chosenMediaId = media.media_id"
+                ></q-img>
+                <view class="absolute-bottom text-white bg-grey text-body2">
+                  {{ media.name }}
+                </view>
+              </view>
+            </view>
+          </div>
+        </q-card-section>
+        <div class="row">
+          <q-space />
+          <q-pagination
+            v-model="page[type]"
+            :max="Math.ceil(totalCount[type] / pageSize)"
+            input
+            @update:model-value="getMediaList(type)"
+          />
+        </div>
+        <q-separator />
+        <q-card-section class="flex flex-center q-gutter-md">
+          <q-btn
+            unelevated
+            color="primary"
+            :disable="!chosenMediaId"
+            label="确定"
+            @click="onConfirmClick"
+          ></q-btn>
+          <q-btn
+            unelevated
+            label="取消"
+            @click="showMediaDialog = false"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -498,8 +644,11 @@ import {
   getMenus,
   deleteMenu,
   deletePublishedMenu,
+  getArticles,
+  getMaterials,
 } from "src/api/authorizer-official-account.js";
 import { getLengthOfStr } from "src/utils";
+import { date } from "quasar";
 export default {
   name: "CustomMenu",
   components: {
@@ -516,12 +665,20 @@ export default {
     menuItems: [],
     menuTypes: [
       {
+        text: "已发布文章",
+        value: "article_id",
+      },
+      {
         text: "链接",
         value: "view",
       },
       {
         text: "点击事件",
         value: "click",
+      },
+      {
+        text: "公众号素材",
+        value: "media_id",
       },
       // {
       //   text: "微信扫码",
@@ -589,6 +746,29 @@ export default {
         align: "center",
       },
     ],
+    showMediaDialog: false,
+    mediaList: {
+      image: [],
+      voice: [],
+      video: [],
+      article: [],
+    },
+    type: "article",
+    page: {
+      image: 1,
+      voice: 1,
+      video: 1,
+      article: 1,
+    },
+    totalCount: {
+      image: 0,
+      voice: 0,
+      video: 0,
+      article: 0,
+    },
+    pageSize: 24,
+    chosenMediaId: null,
+    chosenMediaContentItems: [],
   }),
   beforeMount() {
     this.officialAccountName = this.$store.state.basicInfo.nickname;
@@ -601,6 +781,34 @@ export default {
       getMenus(this.opId, this.appId).then((res) => {
         this.customMenuList = res;
       });
+    },
+    getMediaList(type) {
+      if (type === "article") {
+        getArticles(this.opId, this.appId, {
+          offset: (this.page[type] - 1) * this.pageSize,
+          count: this.pageSize,
+        }).then((res) => {
+          this.mediaList[type] = res.item;
+          this.totalCount[type] = res.total_count;
+        });
+      } else {
+        getMaterials(this.opId, this.appId, {
+          type: type,
+          offset: (this.page[type] - 1) * this.pageSize,
+          count: this.pageSize,
+        }).then((res) => {
+          this.mediaList[type] = res.item;
+          this.totalCount[type] = res.total_count;
+        });
+      }
+    },
+    onConfirmClick() {
+      if (this.type === "article") {
+        this.currentActiveMenu.article_id = this.chosenMediaId;
+      } else {
+        this.currentActiveMenu.media_id = this.chosenMediaId;
+      }
+      this.showMediaDialog = false;
     },
     onChoose(content) {
       this.showSnapshotList = false;
@@ -821,11 +1029,18 @@ export default {
       }
       return true;
     },
+    formatDate(timestamp) {
+      return date.formatDate(timestamp * 1000, "YYYY-MM-DD HH:mm:ss");
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.border-chosen {
+  border: 1px solid $primary;
+  box-sizing: border-box;
+}
 .item-border-left {
   border-left: 1px solid #e7e7eb;
   box-sizing: border-box;
