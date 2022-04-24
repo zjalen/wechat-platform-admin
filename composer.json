@@ -1,9 +1,15 @@
 {
-    "name": "laravel/laravel",
+    "name": "zjalen/wechat_platform_admin",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "一个第三方的微信平台管理工具",
     "keywords": [
-        "framework",
+        "wechat",
+        "weixin",
+        "platform",
+        "official account",
+        "open platform",
+        "third platform",
+        "mini platform",
         "laravel"
     ],
     "license": "MIT",
@@ -17,7 +23,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "predis/predis": "^1.1",
-        "w7corp/easywechat": "^5.10"
+        "w7corp/easywechat": "^5.18"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.10",

@@ -40,6 +40,11 @@ class AuthorizerNotifyController extends AbstractOpenPlatformController
                 Log::info($message);
                 switch ($message['MsgType']) {
                     case 'event':
+                        $event = $message['Event'];
+                        $eventKey = $message['EventKey'];
+                        if (strtoupper($event) == 'CLICK') {
+                            return $this->getReturnMessage($eventKey, $appId);
+                        }
                         return '';
                     case 'text':
                         $content = $message['Content'];
@@ -64,26 +69,9 @@ class AuthorizerNotifyController extends AbstractOpenPlatformController
                                 // !!!全网发布测试 —— 消息回复
                                 return 'TESTCOMPONENT_MSG_TYPE_TEXT_callback';
                             default:
-                                $autoReplyRule = AutoReplyRule::query()->where('app_id', $appId)->where('keyword', $content)->where('match_type', 1)->first();
-                                if (!$autoReplyRule) {
-                                    $autoReplyRule = AutoReplyRule::query()->where('app_id', $appId)->where('keyword','like', '%'.$content.'%')->where('match_type', 0)->first();
-                                }
-                                if (!$autoReplyRule){
-                                    return '';
-                                }
-                                switch ($autoReplyRule->type) {
-                                    case 0:
-                                    case 1:
-                                        return $autoReplyRule->content['text'];
-                                    case 2:
-                                    case 3:
-                                    case 4:
-                                        return new Media($autoReplyRule->content['media_id']);
-                                    case 5:
-                                        return new NewsItem($autoReplyRule->content);
-                                }
-                                return '';
+                                return $this->getReturnMessage($content, $appId);
                         }
+
                     case 'image':
                         return '收到图片消息';
                     case 'voice':
@@ -104,5 +92,28 @@ class AuthorizerNotifyController extends AbstractOpenPlatformController
             Log::error($e->getMessage());
             return '';
         }
+    }
+
+    private function getReturnMessage($content, $appId)
+    {
+        $autoReplyRule = AutoReplyRule::query()->where('app_id', $appId)->where('keyword', $content)->where('match_type', 1)->first();
+        if (!$autoReplyRule) {
+            $autoReplyRule = AutoReplyRule::query()->where('app_id', $appId)->where('keyword','like', '%'.$content.'%')->where('match_type', 0)->first();
+        }
+        if (!$autoReplyRule){
+            return '';
+        }
+        switch ($autoReplyRule->type) {
+            case 0:
+            case 1:
+                return $autoReplyRule->content['text'];
+            case 2:
+            case 3:
+            case 4:
+                return new Media($autoReplyRule->content['media_id']);
+            case 5:
+                return new NewsItem($autoReplyRule->content);
+        }
+        return '';
     }
 }

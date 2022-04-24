@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "547e0fe825780c24b1e3e87caf0926d3",
+    "content-hash": "21b268a59dec7c0e4566e0a4b5cdf0db",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2395,16 +2395,16 @@
         },
         {
             "name": "overtrue/socialite",
-            "version": "3.5.0",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/overtrue/socialite.git",
-                "reference": "1607bc8aa95235b1538b3dc4a36324ee2cdf0df5"
+                "reference": "92cfd9989c37160f50720eeb7ca4a9914ba2c135"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/overtrue/socialite/zipball/1607bc8aa95235b1538b3dc4a36324ee2cdf0df5",
-                "reference": "1607bc8aa95235b1538b3dc4a36324ee2cdf0df5",
+                "url": "https://api.github.com/repos/overtrue/socialite/zipball/92cfd9989c37160f50720eeb7ca4a9914ba2c135",
+                "reference": "92cfd9989c37160f50720eeb7ca4a9914ba2c135",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2455,7 +2455,7 @@
             ],
             "support": {
                 "issues": "https://github.com/overtrue/socialite/issues",
-                "source": "https://github.com/overtrue/socialite/tree/3.5.0"
+                "source": "https://github.com/overtrue/socialite/tree/3.5.1"
             },
             "funding": [
                 {
@@ -2463,7 +2463,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-11-24T03:52:33+00:00"
+            "time": "2022-03-04T02:33:27+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -3533,16 +3533,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v5.4.0",
+            "version": "v5.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "d97d6d7f46cb69968f094e329abd987d5ee17c79"
+                "reference": "ba06841ed293fcaf79a592f59fdaba471f7c756c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/d97d6d7f46cb69968f094e329abd987d5ee17c79",
-                "reference": "d97d6d7f46cb69968f094e329abd987d5ee17c79",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/ba06841ed293fcaf79a592f59fdaba471f7c756c",
+                "reference": "ba06841ed293fcaf79a592f59fdaba471f7c756c",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -3616,7 +3616,7 @@
                 "psr6"
             ],
             "support": {
-                "source": "https://github.com/symfony/cache/tree/v5.4.0"
+                "source": "https://github.com/symfony/cache/tree/v5.4.7"
             },
             "funding": [
                 {
@@ -3632,20 +3632,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-23T18:51:45+00:00"
+            "time": "2022-03-22T15:31:03+00:00"
         },
         {
             "name": "symfony/cache-contracts",
-            "version": "v2.5.0",
+            "version": "v2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache-contracts.git",
-                "reference": "ac2e168102a2e06a2624f0379bde94cd5854ced2"
+                "reference": "64be4a7acb83b6f2bf6de9a02cee6dad41277ebc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache-contracts/zipball/ac2e168102a2e06a2624f0379bde94cd5854ced2",
-                "reference": "ac2e168102a2e06a2624f0379bde94cd5854ced2",
+                "url": "https://api.github.com/repos/symfony/cache-contracts/zipball/64be4a7acb83b6f2bf6de9a02cee6dad41277ebc",
+                "reference": "64be4a7acb83b6f2bf6de9a02cee6dad41277ebc",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -3701,7 +3701,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/cache-contracts/tree/v2.5.0"
+                "source": "https://github.com/symfony/cache-contracts/tree/v2.5.1"
             },
             "funding": [
                 {
@@ -3717,7 +3717,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-17T14:20:01+00:00"
+            "time": "2022-01-02T09:53:40+00:00"
         },
         {
             "name": "symfony/console",
@@ -6168,16 +6168,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v5.4.0",
+            "version": "v5.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "d59446d6166b1643a8a3c30c2fa8e16e51cdbde7"
+                "reference": "7eacaa588c9b27f2738575adb4a8457a80d9c807"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/d59446d6166b1643a8a3c30c2fa8e16e51cdbde7",
-                "reference": "d59446d6166b1643a8a3c30c2fa8e16e51cdbde7",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/7eacaa588c9b27f2738575adb4a8457a80d9c807",
+                "reference": "7eacaa588c9b27f2738575adb4a8457a80d9c807",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -6227,7 +6227,7 @@
                 "serialize"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-exporter/tree/v5.4.0"
+                "source": "https://github.com/symfony/var-exporter/tree/v5.4.7"
             },
             "funding": [
                 {
@@ -6243,7 +6243,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-22T10:44:13+00:00"
+            "time": "2022-03-31T17:09:19+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -6470,16 +6470,16 @@
         },
         {
             "name": "w7corp/easywechat",
-            "version": "5.10.3",
+            "version": "5.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/w7corp/easywechat.git",
-                "reference": "4489c1d77ed3a6f0c6d3a1b7476d102cc3ae6e7f"
+                "reference": "fcabc4f0a7547713de9623f086ba486b87f4a433"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/w7corp/easywechat/zipball/4489c1d77ed3a6f0c6d3a1b7476d102cc3ae6e7f",
-                "reference": "4489c1d77ed3a6f0c6d3a1b7476d102cc3ae6e7f",
+                "url": "https://api.github.com/repos/w7corp/easywechat/zipball/fcabc4f0a7547713de9623f086ba486b87f4a433",
+                "reference": "fcabc4f0a7547713de9623f086ba486b87f4a433",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -6496,19 +6496,19 @@
                 "ext-simplexml": "*",
                 "guzzlehttp/guzzle": "^6.2 || ^7.0",
                 "monolog/monolog": "^1.22 || ^2.0",
-                "overtrue/socialite": "^3.2",
+                "overtrue/socialite": "^3.2 || ^4.0",
                 "php": ">=7.4",
                 "pimple/pimple": "^3.0",
-                "psr/simple-cache": "^1.0",
-                "symfony/cache": "^3.3 || ^4.3 || ^5.0",
-                "symfony/event-dispatcher": "^4.3 || ^5.0",
-                "symfony/http-foundation": "^2.7 || ^3.0 || ^4.0 || ^5.0",
+                "psr/simple-cache": "^1.0||^2.0||^3.0",
+                "symfony/cache": "^3.3 || ^4.3 || ^5.0 || ^6.0",
+                "symfony/event-dispatcher": "^4.3 || ^5.0 || ^6.0",
+                "symfony/http-foundation": "^2.7 || ^3.0 || ^4.0 || ^5.0 || ^6.0",
                 "symfony/psr-http-message-bridge": "^0.3 || ^1.0 || ^2.0"
             },
             "require-dev": {
                 "brainmaestro/composer-git-hooks": "^2.7",
                 "dms/phpunit-arraysubset-asserts": "^0.2.0",
-                "friendsofphp/php-cs-fixer": "^2.15",
+                "friendsofphp/php-cs-fixer": "^3.5.0",
                 "mikey179/vfsstream": "^1.6",
                 "mockery/mockery": "^1.2.3",
                 "phpstan/phpstan": "^0.12.0",
@@ -6528,13 +6528,13 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "EasyWeChat\\": "src/"
-                },
                 "files": [
                     "src/Kernel/Support/Helpers.php",
                     "src/Kernel/Helpers.php"
-                ]
+                ],
+                "psr-4": {
+                    "EasyWeChat\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6556,15 +6556,9 @@
             ],
             "support": {
                 "issues": "https://github.com/w7corp/easywechat/issues",
-                "source": "https://github.com/w7corp/easywechat/tree/5.10.3"
+                "source": "https://github.com/w7corp/easywechat/tree/5.18.0"
             },
-            "funding": [
-                {
-                    "url": "https://github.com/overtrue",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-12-14T03:03:04+00:00"
+            "time": "2022-03-02T09:54:10+00:00"
         },
         {
             "name": "webmozart/assert",

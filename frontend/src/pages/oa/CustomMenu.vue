@@ -311,6 +311,11 @@
                 :rules="formRules.requireRules"
                 dense
                 outlined
+                :hint="
+                  currentActiveMenu.type !== 'click'
+                    ? '请选择菜单类型'
+                    : '点击事件类型的关键词可触发自动回复内容'
+                "
               >
                 <template #before>
                   <div class="text-body2" style="width: 80px">菜单类型</div>
@@ -376,9 +381,14 @@
                   outlined
                   dense
                   :rules="formRules.requireRules"
+                  :hint="
+                    currentActiveMenu.type !== 'click'
+                      ? '关键词 EventKey'
+                      : '点击事件类型的关键词可触发自动回复内容'
+                  "
                 >
                   <template #before>
-                    <div class="text-body2" style="width: 80px">Key 标识</div>
+                    <div class="text-body2" style="width: 80px">关键词key</div>
                   </template>
                 </q-input>
 
@@ -513,26 +523,26 @@ export default {
         text: "点击事件",
         value: "click",
       },
-      {
-        text: "微信扫码",
-        value: "scancode_push",
-      },
-      {
-        text: "自定义扫码",
-        value: "scancode_waitmsg",
-      },
+      // {
+      //   text: "微信扫码",
+      //   value: "scancode_push",
+      // },
+      // {
+      //   text: "自定义扫码",
+      //   value: "scancode_waitmsg",
+      // },
       {
         text: "小程序",
         value: "miniprogram",
       },
-      {
-        text: "素材",
-        value: "media_id",
-      },
-      {
-        text: "图文素材",
-        value: "view_limited",
-      },
+      // {
+      //   text: "素材",
+      //   value: "media_id",
+      // },
+      // {
+      //   text: "图文素材",
+      //   value: "view_limited",
+      // },
     ],
     valid: false,
     formData: null,
