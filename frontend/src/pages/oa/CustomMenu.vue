@@ -157,7 +157,6 @@
                 </div>
               </q-item-section>
               <q-menu
-                v-if="element.sub_button && element.sub_button.length > 0"
                 fit
                 square
                 persistent
@@ -830,7 +829,7 @@ export default {
     onMenuClick(key) {
       this.activeSubMenuIndex = null;
       this.menuItems.forEach((value, index) => {
-        if (index !== key) {
+        if (index !== key && this.$refs[`primaryMenu${index}`]) {
           this.$refs[`primaryMenu${index}`][0].hide();
         }
       });
