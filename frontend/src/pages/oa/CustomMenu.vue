@@ -680,10 +680,10 @@ export default {
         text: "公众号素材",
         value: "media_id",
       },
-      // {
-      //   text: "微信扫码",
-      //   value: "scancode_push",
-      // },
+      {
+        text: "微信扫码",
+        value: "scancode_push",
+      },
       // {
       //   text: "自定义扫码",
       //   value: "scancode_waitmsg",
