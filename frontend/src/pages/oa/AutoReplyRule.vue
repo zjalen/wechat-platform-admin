@@ -238,7 +238,7 @@ export default {
         is_auto_reply_open: this.isAutoReplyOpen,
       }).then(() => {
         this.$q.notify("更新成功");
-        this.$store.dispatch("loadSubBasicInfo", {
+        this.$store.dispatch("loadOfficialAccountBasicInfo", {
           opId: this.opId,
           appId: this.$store.state.currentOaId,
         });
