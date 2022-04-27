@@ -645,7 +645,7 @@ import {
   deletePublishedMenu,
   getArticles,
   getMaterials,
-} from "src/api/official-account.js";
+} from "src/api/authorizer-official-account.js";
 import { getLengthOfStr } from "src/utils";
 import { date } from "quasar";
 export default {
@@ -777,25 +777,36 @@ export default {
   methods: {
     loadCustomMenuList() {
       this.showSnapshotList = true;
-      getMenus(this.$store.state.currentOaId).then((res) => {
+      getMenus(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      ).then((res) => {
         this.customMenuList = res;
       });
     },
     getMediaList(type) {
       if (type === "article") {
-        getArticles(this.$store.state.currentOaId, {
-          offset: (this.page[type] - 1) * this.pageSize,
-          count: this.pageSize,
-        }).then((res) => {
+        getArticles(
+          this.$store.state.currentOpId,
+          this.$store.state.currentAppId,
+          {
+            offset: (this.page[type] - 1) * this.pageSize,
+            count: this.pageSize,
+          }
+        ).then((res) => {
           this.mediaList[type] = res.item;
           this.totalCount[type] = res.total_count;
         });
       } else {
-        getMaterials(this.$store.state.currentOaId, {
-          type: type,
-          offset: (this.page[type] - 1) * this.pageSize,
-          count: this.pageSize,
-        }).then((res) => {
+        getMaterials(
+          this.$store.state.currentOpId,
+          this.$store.state.currentAppId,
+          {
+            type: type,
+            offset: (this.page[type] - 1) * this.pageSize,
+            count: this.pageSize,
+          }
+        ).then((res) => {
           this.mediaList[type] = res.item;
           this.totalCount[type] = res.total_count;
         });
@@ -814,7 +825,10 @@ export default {
       this.menuItems = content;
     },
     loadingMenu() {
-      getPublishedMenu(this.$store.state.currentOaId).then((response) => {
+      getPublishedMenu(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      ).then((response) => {
         this.loading = false;
         this.menuItems = response.menu.button;
       });
@@ -895,7 +909,11 @@ export default {
           this.formData = this.formatArray(this.menuItems);
           let params = { content: this.formData };
           params.remark = data;
-          createMenu(this.$store.state.currentOaId, params).then(() => {
+          createMenu(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            params
+          ).then(() => {
             this.$q.notify("创建成功");
           });
         });
@@ -910,7 +928,11 @@ export default {
       }
       this.formData = this.formatArray(this.menuItems);
       let params = { content: this.formData };
-      publishMenu(this.$store.state.currentOaId, params).then(() => {
+      publishMenu(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        params
+      ).then(() => {
         this.$q.notify("发布成功");
       });
     },
@@ -925,7 +947,10 @@ export default {
           },
         })
         .onOk(() => {
-          deletePublishedMenu(this.$store.state.currentOaId).then(() => {
+          deletePublishedMenu(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId
+          ).then(() => {
             this.$q.notify("删除成功");
           });
         });
@@ -942,7 +967,11 @@ export default {
           },
         })
         .onOk(() => {
-          deleteMenu(this.$store.state.currentOaId, id).then(() => {
+          deleteMenu(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            id
+          ).then(() => {
             this.$q.notify("删除成功");
             this.loadCustomMenuList();
           });
@@ -1059,7 +1088,7 @@ export default {
   background-size: contain !important;
   position: relative;
   height: 580px;
-  background: url("../../assets/bg_mobile_head.png") no-repeat 0 0;
+  background: url("../../../assets/bg_mobile_head.png") no-repeat 0 0;
   border: 1px solid #e7e7eb;
 
   .mobile_hd {

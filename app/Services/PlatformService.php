@@ -18,7 +18,7 @@ class PlatformService
      * @param  string  $opSlug
      * @return Platform|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
      */
-    public function getOpenPlatformBySign(string $opSlug)
+    public function getOpenPlatformBySlug(string $opSlug)
     {
         if (!$opSlug) {
             return null;
@@ -44,7 +44,7 @@ class PlatformService
      * @param  string  $opSlug
      * @return Platform|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
      */
-    public function getOfficialAccountBySign(string $opSlug)
+    public function getOfficialAccountBySlug(string $opSlug)
     {
         if (!$opSlug) {
             return null;

@@ -205,9 +205,9 @@
 import {
   uploadCodeAuditMedia,
   uploadTemplateFile,
-} from "src/api/authorizer-mini-program";
+} from "src/api/authorizer-mini-program.js";
 import { copyToClipboard } from "quasar";
-import { deleteLocalResource, getLocalResources } from "src/api/platform";
+import { deleteLocalResource, getLocalResources } from "src/api/platform.js";
 
 export default {
   name: "MediaManage",
@@ -244,13 +244,13 @@ export default {
       return (
         process.env.API +
         "/api/platforms/" +
-        this.appId +
+        this.$store.state.currentAppId +
         "/resources?type=" +
         this.tab
       );
     },
     initData() {
-      getLocalResources(this.appId).then((res) => {
+      getLocalResources(this.$store.state.currentAppId).then((res) => {
         this.mediaList = res;
         this.typeList = Object.keys(res);
         this.typeList.forEach((type) => {
@@ -278,18 +278,26 @@ export default {
       this.$q.notify("上传成功");
     },
     addTemplateMedia() {
-      uploadTemplateFile(this.opId, this.appId, {
-        fileName: this.currentMedia.name,
-        type: this.tab,
-      }).then((res) => {
+      uploadTemplateFile(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          fileName: this.currentMedia.name,
+          type: this.tab,
+        }
+      ).then((res) => {
         this.currentMedia.mediaId = res.media_id;
       });
     },
     addAuditTemplateMedia() {
-      uploadCodeAuditMedia(this.opId, this.appId, {
-        fileName: this.currentMedia.name,
-        type: this.tab,
-      }).then((res) => {
+      uploadCodeAuditMedia(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          fileName: this.currentMedia.name,
+          type: this.tab,
+        }
+      ).then((res) => {
         this.currentMedia.mediaId = res.media_id;
       });
     },
@@ -332,7 +340,7 @@ export default {
           },
         })
         .onOk(() => {
-          deleteLocalResource(this.appId, {
+          deleteLocalResource(this.$store.state.currentAppId, {
             fileNames: fileNames,
             type: this.tab,
           }).then(() => {

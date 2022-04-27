@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import { getQr } from "src/api/authorizer-mini-program";
+import { getQr } from "src/api/authorizer-mini-program.js";
 
 export default {
   name: "MpQR",
@@ -137,7 +137,11 @@ export default {
   beforeMount() {},
   methods: {
     submit() {
-      getQr(this.opId, this.appId, this.form).then((res) => {
+      getQr(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        this.form
+      ).then((res) => {
         const reader = new FileReader();
         reader.onload = (e) => {
           // 转换完成，创建一个a标签用于下载

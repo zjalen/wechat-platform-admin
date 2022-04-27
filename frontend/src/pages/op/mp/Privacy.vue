@@ -260,7 +260,7 @@
 import {
   getPrivacySetting,
   setPrivacySetting,
-} from "src/api/authorizer-mini-program";
+} from "src/api/authorizer-mini-program.js";
 import JsonViewer from "vue-json-viewer";
 
 export default {
@@ -302,13 +302,17 @@ export default {
     onGetPrivacyClick(version) {
       this.resultTitle = version === 1 ? "现网版本" : "开发版本";
       this.jsonData = {};
-      getPrivacySetting(this.opId, this.appId, { privacyVer: version }).then(
-        (res) => {
-          this.jsonData = res;
-          this.showPrivacySetting = true;
-          this.privacy_desc_list = res.privacy_desc.privacy_desc_list;
+      getPrivacySetting(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          privacyVer: version,
         }
-      );
+      ).then((res) => {
+        this.jsonData = res;
+        this.showPrivacySetting = true;
+        this.privacy_desc_list = res.privacy_desc.privacy_desc_list;
+      });
     },
     onSetPrivacyClick() {
       this.showEditForm = true;
@@ -316,7 +320,13 @@ export default {
     onAddPrivacySettingList() {
       if (this.privacy_desc_list.length < 1) {
         this.$q.loading.show();
-        getPrivacySetting(this.opId, this.appId, { privacyVer: 2 })
+        getPrivacySetting(
+          this.$store.state.currentOpId,
+          this.$store.state.currentAppId,
+          {
+            privacyVer: 2,
+          }
+        )
           .then((res) => {
             this.privacy_desc_list = res.privacy_desc.privacy_desc_list;
             this.$q.loading.hide();
@@ -331,7 +341,11 @@ export default {
       this.formData.setting_list.splice(index, 1);
     },
     onSubmitClick() {
-      setPrivacySetting(this.opId, this.appId, this.formData).then(() => {
+      setPrivacySetting(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        this.formData
+      ).then(() => {
         this.$q.notify("设置完成");
       });
     },
@@ -341,9 +355,9 @@ export default {
     uploadUrl() {
       return (
         "/api/open-platform/" +
-        this.opId +
+        this.$store.state.currentOpId +
         "/mp/" +
-        this.appId +
+        this.$store.state.currentAppId +
         "/upload-privacy-file"
       );
     },

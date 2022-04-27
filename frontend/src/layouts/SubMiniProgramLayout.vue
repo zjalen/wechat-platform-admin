@@ -96,6 +96,7 @@
 <script>
 import pk from "../../package.json";
 import { defineComponent, ref } from "vue";
+import { mixinOpenPlatformParams } from "src/mixins/open-platform-params.js";
 
 const menuList = [
   {
@@ -162,7 +163,7 @@ const menuList = [
 export default defineComponent({
   name: "SubMiniProgramLayout",
 
-  components: {},
+  mixins: [mixinOpenPlatformParams],
 
   setup() {
     const leftDrawerOpen = ref(false);
@@ -181,8 +182,8 @@ export default defineComponent({
   }),
   beforeMount() {
     this.$store.dispatch("loadSubBasicInfo", {
-      opId: this.opId,
-      appId: this.appId,
+      opId: this.$store.state.currentOpId,
+      appId: this.$store.state.currentAppId,
     });
   },
 });

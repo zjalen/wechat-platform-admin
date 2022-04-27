@@ -22,7 +22,7 @@ module.exports = configure(function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
-    boot: ["axios", "notify-defaults", "load-route-params", "guard"],
+    boot: ["axios", "notify-defaults", "guard"],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],
@@ -70,7 +70,7 @@ module.exports = configure(function (ctx) {
           .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);
       },
       env: {
-        API: ctx.dev ? dotEnv.API_URL_DEV : dotEnv.API_URL,
+        API: dotEnv.API_URL,
       },
     },
 
@@ -79,7 +79,7 @@ module.exports = configure(function (ctx) {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: dotEnv.API_URL_DEV,
+          target: dotEnv.API_URL_DEV_PROXY,
           changeOrigin: true,
           pathRewrite: {
             "^/api": "api",

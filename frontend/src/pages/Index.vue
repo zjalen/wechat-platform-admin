@@ -29,17 +29,24 @@
           <q-separator />
           <q-card-section class="panel-form">
             <view class="q-pb-none panel-form-item">
-              <view class="panel-form-item-label">描述信息</view>
+              <view class="panel-form-item-label text-grey">描述信息</view>
               <view class="panel-form-item-value">{{ item.description }}</view>
             </view>
             <view class="q-pb-none panel-form-item">
-              <view class="panel-form-item-label">AppID</view>
+              <view class="panel-form-item-label text-grey">AppID</view>
               <view class="panel-form-item-value">{{ item.app_id }}</view>
             </view>
             <view class="panel-form-item">
-              <view class="panel-form-item-label">平台类型</view>
-              <view class="panel-form-item-value text-primary"
-                >{{ item.type_name }}
+              <view class="panel-form-item-label text-grey">平台类型</view>
+              <view class="panel-form-item-value">
+                <q-chip
+                  dense
+                  square
+                  color="primary"
+                  class="text-white q-ml-none"
+                >
+                  {{ item.type_name }}
+                </q-chip>
               </view>
             </view>
           </q-card-section>
@@ -102,6 +109,13 @@ export default defineComponent({
     onShowClick(item) {
       if (item.type === 0) {
         this.$router.push({ path: "/open-platform/" + item.id });
+      } else if (item.type === 1) {
+        this.$router.push({ path: "/official-account/" + item.id });
+      } else if (item.type === 2) {
+        this.$q.dialog({
+          title: "提示",
+          message: "暂不支持直接管理小程序，请暂用小程序后台直接管理。",
+        });
       }
     },
   },

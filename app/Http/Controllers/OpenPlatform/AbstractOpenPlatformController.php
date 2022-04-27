@@ -49,7 +49,7 @@ abstract class AbstractOpenPlatformController extends Controller
         $this->appId = $appId;
         $openPlatformModel = request()->attributes->get('openPlatform');
         $openPlatformService = new OpenPlatformService($openPlatformModel);
-        // 生成实例，代小程序实现业务
+        // 生成实例，代公众号实现业务
         return $openPlatformService->getOfficialAccountApplication($appId);
     }
 

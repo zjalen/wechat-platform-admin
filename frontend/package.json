@@ -1,6 +1,6 @@
 {
   "name": "wechat-platform-admin-frontend",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "微信平台管理后台前端 UI ——支持微信公众平台、开放平台可视化管理",
   "productName": "微信平台管理后台前端",
   "author": "zjl <zjalen@163.com>",

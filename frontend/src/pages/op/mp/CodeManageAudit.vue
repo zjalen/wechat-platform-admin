@@ -478,8 +478,8 @@
 </template>
 
 <script>
-import MediaChooseCard from "components/MediaChooseCard";
-import { codeAudit } from "src/api/authorizer-mini-program";
+import MediaChooseCard from "components/MediaChooseCard.vue";
+import { codeAudit } from "src/api/authorizer-mini-program.js";
 
 export default {
   name: "CodeManageAudit",
@@ -521,7 +521,11 @@ export default {
         delete data.feedback_stuff;
         delete data.feedback_info;
       }
-      codeAudit(this.opId, this.appId, data).then((res) => {
+      codeAudit(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        data
+      ).then((res) => {
         this.$q.dialog({
           title: "提交成功",
           message:

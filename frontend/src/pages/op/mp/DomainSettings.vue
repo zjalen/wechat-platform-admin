@@ -366,7 +366,7 @@ import {
   setServerDomain,
   setWebDomain,
   syncWebDomain,
-} from "src/api/authorizer-mini-program";
+} from "src/api/authorizer-mini-program.js";
 
 export default {
   name: "DomainSettings",
@@ -412,7 +412,10 @@ export default {
       this.serverDomain = res;
     },
     toGetServerDomain() {
-      getServerDomain(this.opId, this.appId).then((res) => {
+      getServerDomain(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      ).then((res) => {
         this.parseServerDomain(res);
       });
     },
@@ -446,14 +449,20 @@ export default {
           },
         })
         .onOk(() => {
-          syncWebDomain(this.opId, this.appId).then((res) => {
+          syncWebDomain(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId
+          ).then((res) => {
             this.webDomain = res.webviewdomain;
             this.$q.notify("同步完成");
           });
         });
     },
     toGetWebDomain() {
-      getWebDomain(this.opId, this.appId).then((res) => {
+      getWebDomain(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      ).then((res) => {
         this.webDomain = res.webviewdomain;
       });
     },
@@ -493,17 +502,29 @@ export default {
               : [];
           });
           if (this.currentAction === "add") {
-            addServerDomain(this.opId, this.appId, data).then((res) => {
+            addServerDomain(
+              this.$store.state.currentOpId,
+              this.$store.state.currentAppId,
+              data
+            ).then((res) => {
               this.parseServerDomain(res);
               this.showDomainEditForm = false;
             });
           } else if (this.currentAction === "set") {
-            setServerDomain(this.opId, this.appId, data).then((res) => {
+            setServerDomain(
+              this.$store.state.currentOpId,
+              this.$store.state.currentAppId,
+              data
+            ).then((res) => {
               this.parseServerDomain(res);
               this.showDomainEditForm = false;
             });
           } else if (this.currentAction === "delete") {
-            deleteServerDomain(this.opId, this.appId, data).then((res) => {
+            deleteServerDomain(
+              this.$store.state.currentOpId,
+              this.$store.state.currentAppId,
+              data
+            ).then((res) => {
               this.parseServerDomain(res);
               this.showDomainEditForm = false;
             });
@@ -525,17 +546,29 @@ export default {
             webDomain: this.inputWebDomain.split(";"),
           };
           if (this.currentAction === "add") {
-            addWebDomain(this.opId, this.appId, data).then((res) => {
+            addWebDomain(
+              this.$store.state.currentOpId,
+              this.$store.state.currentAppId,
+              data
+            ).then((res) => {
               this.webDomain = res.webviewdomain;
               this.showDomainEditForm = false;
             });
           } else if (this.currentAction === "set") {
-            setWebDomain(this.opId, this.appId, data).then((res) => {
+            setWebDomain(
+              this.$store.state.currentOpId,
+              this.$store.state.currentAppId,
+              data
+            ).then((res) => {
               this.webDomain = res.webviewdomain;
               this.showDomainEditForm = false;
             });
           } else if (this.currentAction === "delete") {
-            deleteWebDomain(this.opId, this.appId, data).then((res) => {
+            deleteWebDomain(
+              this.$store.state.currentOpId,
+              this.$store.state.currentAppId,
+              data
+            ).then((res) => {
               this.webDomain = res.webviewdomain;
               this.showDomainEditForm = false;
             });

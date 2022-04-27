@@ -3,7 +3,7 @@
     <q-breadcrumbs>
       <q-breadcrumbs-el
         label="平台管理"
-        :to="`/open-platform/${this.opId}/official-account/${this.$store.state.currentOaId}/auto-reply-rules`"
+        :to="`/open-platform/${this.$store.state.currentOpId}/official-account/${this.$store.state.currentAppId}/auto-reply-rules`"
         :replace="true"
       />
       <q-breadcrumbs-el label="添加自动回复规则" />
@@ -399,7 +399,7 @@ import {
   getAutoReplyRule,
   getMaterials,
   updateAutoReplyRule,
-} from "src/api/official-account.js";
+} from "src/api/authorizer-official-account.js";
 import { date } from "quasar";
 
 export default {
@@ -453,26 +453,38 @@ export default {
   },
   methods: {
     initData() {
-      getAutoReplyRule(this.$store.state.currentOaId, this.id).then((res) => {
+      getAutoReplyRule(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        this.id
+      ).then((res) => {
         this.formData = res;
         this.contentForm[res.type] = res.content;
       });
     },
     getMediaList(type) {
       if (type === "article") {
-        getArticles(this.$store.state.currentOaId, {
-          offset: (this.page[type] - 1) * this.pageSize,
-          count: this.pageSize,
-        }).then((res) => {
+        getArticles(
+          this.$store.state.currentOpId,
+          this.$store.state.currentAppId,
+          {
+            offset: (this.page[type] - 1) * this.pageSize,
+            count: this.pageSize,
+          }
+        ).then((res) => {
           this.mediaList[type] = res.item;
           this.totalCount[type] = res.total_count;
         });
       } else {
-        getMaterials(this.$store.state.currentOaId, {
-          type: type,
-          offset: (this.page[type] - 1) * this.pageSize,
-          count: this.pageSize,
-        }).then((res) => {
+        getMaterials(
+          this.$store.state.currentOpId,
+          this.$store.state.currentAppId,
+          {
+            type: type,
+            offset: (this.page[type] - 1) * this.pageSize,
+            count: this.pageSize,
+          }
+        ).then((res) => {
           this.mediaList[type] = res.item;
           this.totalCount[type] = res.total_count;
         });
@@ -502,15 +514,18 @@ export default {
     onSubmitClick() {
       this.formData.content = this.contentForm[this.formData.type];
       if (!this.id) {
-        createAutoReplyRule(this.$store.state.currentOaId, this.formData).then(
-          () => {
-            this.$q.notify("创建成功");
-            this.$router.back();
-          }
-        );
+        createAutoReplyRule(
+          this.$store.state.currentOpId,
+          this.$store.state.currentAppId,
+          this.formData
+        ).then(() => {
+          this.$q.notify("创建成功");
+          this.$router.back();
+        });
       } else {
         updateAutoReplyRule(
-          this.$store.state.currentOaId,
+          this.$store.state.currentOpId,
+          this.$store.state.currentAppId,
           this.id,
           this.formData
         ).then(() => {

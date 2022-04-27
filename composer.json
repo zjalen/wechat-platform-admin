@@ -1,5 +1,6 @@
 {
     "name": "zjalen/wechat_platform_admin",
+    "version": "0.1.0",
     "type": "project",
     "description": "一个第三方的微信平台管理工具",
     "keywords": [

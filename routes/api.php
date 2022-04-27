@@ -12,6 +12,15 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+/** 公众平台对微信官方接口，无需认证身份 */
+Route::group([
+    'prefix' => 'official-account-server/{officialAccountSlug}',
+    'middleware' => ['platform.oa']
+], function (\Illuminate\Routing\Router $router) {
+    $router->post('notify',
+        [\App\Http\Controllers\OfficialAccount\NotifyController::class, 'store'])->name('officialAccountNotify');
+});
+
 /** 开放平台对微信官方接口，无需认证身份 */
 Route::group([
     'prefix' => 'open-platform-server/{openPlatformSlug}',
@@ -44,6 +53,24 @@ Route::group([
         $router->apiResource('platforms/{appId}/resources', \App\Http\Controllers\ResourceController::class)->only(['index','store']);
         $router->post('platforms/{appId}/resources/delete', [\App\Http\Controllers\ResourceController::class, 'destroy']);
         $router->apiResource('operation-logs', \App\Http\Controllers\OperationLogController::class)->only('index');
+    });
+
+    /** 公众平台相关 */
+    $router->group([
+        'prefix' => 'official-account/{officialAccountId}',
+        'middleware' => ['auth:api', 'platform.oa']
+    ], function (\Illuminate\Routing\Router $router) {
+        $router->get('', [\App\Http\Controllers\OfficialAccount\OfficialAccountController::class, 'show']);
+        $router->put('', [\App\Http\Controllers\OfficialAccount\OfficialAccountController::class, 'updateAutoReplyConfig']);
+        $router->apiResource('custom-menu', \App\Http\Controllers\OfficialAccount\CustomMenuController::class)->only(['index', 'show', 'store', 'destroy']);
+        $router->get('custom-menu/published/{menu_id}', [\App\Http\Controllers\OfficialAccount\CustomMenuController::class, 'showPublishedMenu']);
+        $router->post('custom-menu/published', [\App\Http\Controllers\OfficialAccount\CustomMenuController::class, 'publish']);
+        $router->delete('custom-menu/published/{menu_id}', [\App\Http\Controllers\OfficialAccount\CustomMenuController::class, 'destroyPublishedMenu']);
+        $router->apiResource('auto-reply-rules', \App\Http\Controllers\OfficialAccount\AutoReplyRuleController::class);
+        $router->get('materials-count', [\App\Http\Controllers\OfficialAccount\MaterialController::class, 'count']);
+        $router->apiResource('materials', \App\Http\Controllers\OfficialAccount\MaterialController::class)->only(['index', 'show', 'store', 'destroy']);
+        $router->apiResource('drafts', \App\Http\Controllers\OfficialAccount\DraftController::class);
+        $router->apiResource('articles', \App\Http\Controllers\OfficialAccount\ArticleController::class)->only(['index', 'store', 'show', 'destroy']);
     });
 
     /** 开放平台相关 */

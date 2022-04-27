@@ -215,8 +215,8 @@ import {
   deleteCategory,
   getCategories,
   getCategory,
-} from "src/api/authorizer-mini-program";
-import MediaChooseCard from "components/MediaChooseCard";
+} from "src/api/authorizer-mini-program.js";
+import MediaChooseCard from "components/MediaChooseCard.vue";
 
 export default {
   name: "MpCategory",
@@ -296,7 +296,10 @@ export default {
   },
   methods: {
     initData() {
-      getCategory(this.opId, this.appId).then((res) => {
+      getCategory(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      ).then((res) => {
         this.categories = res.categories;
         this.category_limit = res.category_limit;
         this.limit = res.limit;
@@ -306,9 +309,13 @@ export default {
     onAddClick() {
       if (this.categories_list.length === 0) {
         this.$q.loading.show();
-        getCategories(this.opId, this.appId, {
-          type: this.$store.state.basicInfo.principal_type,
-        })
+        getCategories(
+          this.$store.state.currentOpId,
+          this.$store.state.currentAppId,
+          {
+            type: this.$store.state.basicInfo.principal_type,
+          }
+        )
           .then((res) => {
             this.$q.loading.hide();
             this.categories_list = res.categories_list.categories;
@@ -331,10 +338,14 @@ export default {
           },
         })
         .onOk(() => {
-          deleteCategory(this.opId, this.appId, {
-            first: val.first,
-            second: val.second,
-          }).then(() => {
+          deleteCategory(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            {
+              first: val.first,
+              second: val.second,
+            }
+          ).then(() => {
             this.$q.notify("删除完成");
             this.initData();
           });
@@ -412,7 +423,13 @@ export default {
           },
         })
         .onOk(() => {
-          addCategory(this.opId, this.appId, { categories: data }).then(() => {
+          addCategory(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            {
+              categories: data,
+            }
+          ).then(() => {
             this.$q.notify("添加完成");
             this.initData();
           });

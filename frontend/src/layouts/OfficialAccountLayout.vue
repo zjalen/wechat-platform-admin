@@ -18,7 +18,7 @@
         </q-toolbar-title>
 
         <div class="flex flex-center">
-          <span>{{ $store.state.basicInfo.nickname }}</span>
+          <span>{{ $store.state.basicInfo.name }}</span>
           <q-chip
             color="primary"
             dense
@@ -96,13 +96,13 @@
 <script>
 import pk from "../../package.json";
 import { defineComponent, ref } from "vue";
-import { mixinOpenPlatformParams } from "src/mixins/open-platform-params.js";
+import { mixinOfficialAccountParams } from "src/mixins/official-account-params.js";
 
 const menuList = [
   {
     title: "首页",
     icon: "r_home",
-    to: "subOfficialAccountIndex",
+    to: "officialAccountIndex",
     children: null,
   },
   {
@@ -112,11 +112,11 @@ const menuList = [
     children: [
       {
         title: "自动回复",
-        to: "subOfficialAccountAutoReplyRules",
+        to: "officialAccountAutoReplyRules",
       },
       {
         title: "自定义菜单",
-        to: "subOfficialAccountCustomMenu",
+        to: "officialAccountCustomMenu",
       },
     ],
   },
@@ -127,28 +127,28 @@ const menuList = [
     children: [
       {
         title: "服务器素材",
-        to: "subOfficialAccountMediaManage",
+        to: "officialAccountMediaManage",
       },
       {
         title: "公众号素材库",
-        to: "subOfficialAccountOnlineMediaManage",
+        to: "officialAccountOnlineMediaManage",
       },
       {
         title: "草稿箱",
-        to: "subOfficialAccountDrafts",
+        to: "officialAccountDrafts",
       },
       {
         title: "发表记录",
-        to: "subOfficialAccountArticles",
+        to: "officialAccountArticles",
       },
     ],
   },
 ];
 
 export default defineComponent({
-  name: "SubOfficialAccountLayout",
+  name: "OfficialAccountLayout",
 
-  mixins: [mixinOpenPlatformParams],
+  mixins: [mixinOfficialAccountParams],
 
   setup() {
     const leftDrawerOpen = ref(false);
@@ -166,9 +166,9 @@ export default defineComponent({
     version: pk.version,
   }),
   beforeMount() {
-    this.$store.dispatch("loadSubBasicInfo", {
-      opId: this.$store.state.currentOpId,
-      appId: this.$store.state.currentAppId,
+    const id = this.$route.params.oaId;
+    this.$store.dispatch("loadOfficialAccountBasicInfo", {
+      id: id,
     });
   },
 });

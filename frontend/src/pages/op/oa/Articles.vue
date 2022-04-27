@@ -85,7 +85,10 @@
 
 <script>
 import { copyToClipboard, date } from "quasar";
-import { deleteArticle, getArticles } from "src/api/official-account.js";
+import {
+  deleteArticle,
+  getArticles,
+} from "src/api/authorizer-official-account.js";
 
 export default {
   name: "OfficialAccountArticles",
@@ -104,10 +107,14 @@ export default {
   },
   methods: {
     initData() {
-      getArticles(this.$store.state.currentOaId, {
-        offset: (this.page - 1) * this.pageSize,
-        count: this.pageSize,
-      }).then((res) => {
+      getArticles(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          offset: (this.page - 1) * this.pageSize,
+          count: this.pageSize,
+        }
+      ).then((res) => {
         this.articleList = res.item;
         this.totalCount = res.total_count;
       });
@@ -142,7 +149,11 @@ export default {
           },
         })
         .onOk(() => {
-          deleteArticle(this.$store.state.currentOaId, articleId).then(() => {
+          deleteArticle(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            articleId
+          ).then(() => {
             this.$q.notify("删除成功");
             this.initData();
           });

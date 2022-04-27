@@ -172,7 +172,10 @@
 
 <script>
 import { copyToClipboard, date } from "quasar";
-import { deleteMaterial, getMaterials } from "src/api/official-account.js";
+import {
+  deleteMaterial,
+  getMaterials,
+} from "src/api/authorizer-official-account.js";
 
 export default {
   name: "OnlineMediaManage",
@@ -228,11 +231,15 @@ export default {
       });
     },
     initData(type = "image") {
-      getMaterials(this.$store.state.currentOaId, {
-        type: type,
-        offset: (this.page[type] - 1) * this.pageSize,
-        count: this.pageSize,
-      }).then((res) => {
+      getMaterials(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          type: type,
+          offset: (this.page[type] - 1) * this.pageSize,
+          count: this.pageSize,
+        }
+      ).then((res) => {
         this.mediaList[type] = res.item;
         this.totalCount[type] = res.total_count;
       });
@@ -267,7 +274,11 @@ export default {
           },
         })
         .onOk(() => {
-          deleteMaterial(this.$store.state.currentOaId, mediaId).then(() => {
+          deleteMaterial(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            mediaId
+          ).then(() => {
             this.$q.notify("删除成功");
             this.initData(this.tab);
           });

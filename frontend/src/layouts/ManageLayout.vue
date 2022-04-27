@@ -42,9 +42,11 @@
 import pk from "../../package.json";
 
 import { defineComponent } from "vue";
+import { mixinOpenPlatformParams } from "src/mixins/open-platform-params.js";
 
 export default defineComponent({
   name: "MainLayout",
+  mixins: [mixinOpenPlatformParams],
 
   data: () => ({
     title: "微信平台管理",

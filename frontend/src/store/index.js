@@ -5,6 +5,7 @@ import { Loading, LocalStorage, Notify } from "quasar";
 import { getAuthorizer } from "src/api/open-platform";
 import { getBasicInfo } from "src/api/authorizer-mini-program";
 import { getPlatform } from "src/api";
+import { getOfficialAccountInfo } from "src/api/official-account.js";
 
 const saveToken = LocalStorage.getItem("token");
 
@@ -26,6 +27,9 @@ export default store((/* { ssrContext } */) => {
       token: saveToken === "null" ? null : saveToken,
       userInfo: null,
       currentOpId: null,
+      currentAppId: null,
+      currentOaId: null,
+      currentMpId: null,
       currentSubAppId: null,
       currentAuthorizerInfo: {},
       currentPlatformInfo: {},
@@ -64,6 +68,18 @@ export default store((/* { ssrContext } */) => {
       },
     },
     mutations: {
+      setCurrentOpId(state, opId) {
+        state.currentOpId = opId;
+      },
+      setCurrentMpId(state, mpId) {
+        state.currentMpId = mpId;
+      },
+      setCurrentOaId(state, oaId) {
+        state.currentOaId = oaId;
+      },
+      setCurrentAppId(state, appId) {
+        state.currentAppId = appId;
+      },
       setToken(state, token) {
         state.token = token;
       },
@@ -121,6 +137,26 @@ export default store((/* { ssrContext } */) => {
           });
         }, 5000);
         getBasicInfo(opId, appId)
+          .then((res) => {
+            clearTimeout(timer);
+            Loading.hide();
+            commit("setBasicInfo", res);
+          })
+          .catch(() => {
+            Loading.hide();
+            clearTimeout(timer);
+          });
+      },
+      loadOfficialAccountBasicInfo({ commit }, { id }) {
+        Loading.show();
+        const timer = setTimeout(() => {
+          Loading.hide();
+          Notify.create({
+            color: "negative",
+            message: "加载平台基本信息失败",
+          });
+        }, 5000);
+        getOfficialAccountInfo(id)
           .then((res) => {
             clearTimeout(timer);
             Loading.hide();

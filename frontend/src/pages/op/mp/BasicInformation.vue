@@ -175,7 +175,7 @@
 <script>
 import { useStore } from "vuex";
 import { computed } from "vue";
-import MyRequestFormCard from "components/MyRequestFormCard";
+import MyRequestFormCard from "components/MyRequestFormCard.vue";
 import {
   changeVisitStatus,
   checkNickName,
@@ -183,7 +183,7 @@ import {
   setAvatar,
   setNickName,
   setSignature,
-} from "src/api/authorizer-mini-program";
+} from "src/api/authorizer-mini-program.js";
 
 export default {
   name: "BasicInformation",
@@ -288,7 +288,11 @@ export default {
   },
   methods: {
     onSubmitName(data) {
-      setNickName(this.opId, this.appId, data)
+      setNickName(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        data
+      )
         .then((res) => {
           if (res.errorcode === 0) {
             if (res.audit_id) {
@@ -309,12 +313,20 @@ export default {
         });
     },
     onSubmitAvatar(data) {
-      setAvatar(this.opId, this.appId, data).then(() => {
+      setAvatar(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        data
+      ).then(() => {
         this.$q.notify("设置成功，请刷新");
       });
     },
     onSubmitSignature(data) {
-      setSignature(this.opId, this.appId, data).then(() => {
+      setSignature(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        data
+      ).then(() => {
         this.$q.notify("设置成功，请刷新");
       });
     },
@@ -339,7 +351,11 @@ export default {
           persistent: true,
         })
         .onOk((data) => {
-          checkNickName(this.opId, this.appId, data).then((res) => {
+          checkNickName(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            data
+          ).then((res) => {
             if (res.errcode === 0) {
               this.$q.dialog({
                 title: "名称可用",
@@ -370,7 +386,11 @@ export default {
           persistent: true,
         })
         .onOk((data) => {
-          getNicknameAuditStatus(this.opId, this.appId, data).then((res) => {
+          getNicknameAuditStatus(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            data
+          ).then((res) => {
             if (res.errcode === 0) {
               this.$q.dialog({
                 title: "名称可用",
@@ -396,19 +416,27 @@ export default {
           },
         })
         .onOk(() => {
-          changeVisitStatus(this.opId, this.appId, {
-            visitStatus: "close",
-          }).then(() => {
+          changeVisitStatus(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            {
+              visitStatus: "close",
+            }
+          ).then(() => {
             this.$q.notify("小程序已暂停服务");
           });
         });
     },
     onOpenClick() {
-      changeVisitStatus(this.opId, this.appId, { visitStatus: "open" }).then(
-        () => {
-          this.$q.notify("小程序已启用");
+      changeVisitStatus(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          visitStatus: "open",
         }
-      );
+      ).then(() => {
+        this.$q.notify("小程序已启用");
+      });
     },
   },
 };

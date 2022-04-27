@@ -49,52 +49,52 @@ const routes = [
     children: [
       {
         path: "",
-        component: () => import("pages/mp/Index.vue"),
+        component: () => import("pages/op/mp/Index.vue"),
         name: "subMiniProgramIndex",
       },
       {
         path: "qr",
-        component: () => import("pages/mp/QR.vue"),
+        component: () => import("pages/op/mp/QR.vue"),
         name: "mpQR",
       },
       {
         path: "basic-information",
-        component: () => import("pages/mp/BasicInformation.vue"),
+        component: () => import("pages/op/mp/BasicInformation.vue"),
         name: "basicInformation",
       },
       {
         path: "category",
-        component: () => import("pages/mp/Category.vue"),
+        component: () => import("pages/op/mp/Category.vue"),
         name: "category",
       },
       {
         path: "privacy",
-        component: () => import("pages/mp/Privacy.vue"),
+        component: () => import("pages/op/mp/Privacy.vue"),
         name: "privacy",
       },
       {
         path: "trust-domain",
-        component: () => import("pages/mp/DomainSettings.vue"),
+        component: () => import("pages/op/mp/DomainSettings.vue"),
         name: "trustDomain",
       },
       {
         path: "tester",
-        component: () => import("pages/mp/Tester.vue"),
+        component: () => import("pages/op/mp/Tester.vue"),
         name: "tester",
       },
       {
         path: "media-manage",
-        component: () => import("pages/mp/MediaManage.vue"),
+        component: () => import("pages/op/mp/MediaManage.vue"),
         name: "mediaManage",
       },
       {
         path: "code-manage",
-        component: () => import("pages/mp/CodeManage.vue"),
+        component: () => import("pages/op/mp/CodeManage.vue"),
         name: "codeManage",
       },
       {
         path: "code-manage-audit",
-        component: () => import("pages/mp/CodeManageAudit.vue"),
+        component: () => import("pages/op/mp/CodeManageAudit.vue"),
         name: "codeManageAudit",
       },
     ],
@@ -106,48 +106,101 @@ const routes = [
     children: [
       {
         path: "",
-        component: () => import("pages/oa/Index.vue"),
+        component: () => import("pages/op/oa/Index.vue"),
         name: "subOfficialAccountIndex",
       },
       {
         path: "custom-menu",
-        component: () => import("pages/oa/CustomMenu.vue"),
-        name: "customMenu",
+        component: () => import("pages/op/oa/CustomMenu.vue"),
+        name: "subOfficialAccountCustomMenu",
       },
       {
         path: "auto-reply-rules",
-        component: () => import("pages/oa/AutoReplyRule.vue"),
-        name: "autoReplyRules",
+        component: () => import("pages/op/oa/AutoReplyRule.vue"),
+        name: "subOfficialAccountAutoReplyRules",
       },
       {
         path: "auto-reply-rules/create",
-        component: () => import("pages/oa/AutoReplyRuleCreateAndEdit.vue"),
-        name: "autoReplyRuleCreate",
+        component: () => import("pages/op/oa/AutoReplyRuleCreateAndEdit.vue"),
+        name: "subOfficialAccountAutoReplyRuleCreate",
       },
       {
         path: "auto-reply-rules/:id/edit",
-        component: () => import("pages/oa/AutoReplyRuleCreateAndEdit.vue"),
-        name: "autoReplyRuleEdit",
+        component: () => import("pages/op/oa/AutoReplyRuleCreateAndEdit.vue"),
+        name: "subOfficialAccountAutoReplyRuleEdit",
       },
       {
         path: "media-manage",
-        component: () => import("pages/oa/MediaManage.vue"),
+        component: () => import("pages/op/oa/MediaManage.vue"),
         name: "subOfficialAccountMediaManage",
       },
       {
         path: "online-media-manage",
-        component: () => import("pages/oa/OnlineMediaManage.vue"),
+        component: () => import("pages/op/oa/OnlineMediaManage.vue"),
         name: "subOfficialAccountOnlineMediaManage",
       },
       {
         path: "drafts",
-        component: () => import("pages/oa/Drafts.vue"),
+        component: () => import("pages/op/oa/Drafts.vue"),
         name: "subOfficialAccountDrafts",
       },
       {
         path: "articles",
-        component: () => import("pages/oa/Articles.vue"),
+        component: () => import("pages/op/oa/Articles.vue"),
         name: "subOfficialAccountArticles",
+      },
+    ],
+  },
+
+  // 直接通过 appId 和 secret 管理公众号
+  {
+    path: "/official-account/:oaId",
+    component: () => import("layouts/OfficialAccountLayout.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("pages/oa/Index.vue"),
+        name: "officialAccountIndex",
+      },
+      {
+        path: "custom-menu",
+        component: () => import("pages/oa/CustomMenu.vue"),
+        name: "officialAccountCustomMenu",
+      },
+      {
+        path: "auto-reply-rules",
+        component: () => import("pages/oa/AutoReplyRule.vue"),
+        name: "officialAccountAutoReplyRules",
+      },
+      {
+        path: "auto-reply-rules/create",
+        component: () => import("pages/oa/AutoReplyRuleCreateAndEdit.vue"),
+        name: "officialAccountAutoReplyRuleCreate",
+      },
+      {
+        path: "auto-reply-rules/:id/edit",
+        component: () => import("pages/oa/AutoReplyRuleCreateAndEdit.vue"),
+        name: "officialAccountAutoReplyRuleEdit",
+      },
+      {
+        path: "media-manage",
+        component: () => import("pages/oa/MediaManage.vue"),
+        name: "officialAccountMediaManage",
+      },
+      {
+        path: "online-media-manage",
+        component: () => import("pages/oa/OnlineMediaManage.vue"),
+        name: "officialAccountOnlineMediaManage",
+      },
+      {
+        path: "drafts",
+        component: () => import("pages/oa/Drafts.vue"),
+        name: "officialAccountDrafts",
+      },
+      {
+        path: "articles",
+        component: () => import("pages/oa/Articles.vue"),
+        name: "officialAccountArticles",
       },
     ],
   },

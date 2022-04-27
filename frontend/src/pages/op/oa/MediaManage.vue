@@ -198,7 +198,7 @@
 <script>
 import { copyToClipboard } from "quasar";
 import { deleteLocalResource, getLocalResources } from "src/api/platform.js";
-import { uploadMaterial } from "src/api/official-account.js";
+import { uploadMaterial } from "src/api/authorizer-official-account.js";
 
 export default {
   name: "MediaManage",
@@ -235,13 +235,13 @@ export default {
       return (
         process.env.API +
         "/api/platforms/" +
-        this.$store.state.currentOaId +
+        this.$store.state.currentAppId +
         "/resources?type=" +
         this.tab
       );
     },
     initData() {
-      getLocalResources(this.$store.state.currentOaId).then((res) => {
+      getLocalResources(this.$store.state.currentAppId).then((res) => {
         this.mediaList = res;
         this.typeList = Object.keys(res);
         this.typeList.forEach((type) => {
@@ -269,10 +269,14 @@ export default {
       this.$q.notify("上传成功");
     },
     onUploadClick() {
-      uploadMaterial(this.$store.state.currentOaId, {
-        fileName: this.currentMedia.name,
-        type: this.tab,
-      }).then((res) => {
+      uploadMaterial(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          fileName: this.currentMedia.name,
+          type: this.tab,
+        }
+      ).then((res) => {
         this.currentMedia.mediaId = res.media_id;
         this.$q.notify("上传成功");
       });
@@ -316,7 +320,7 @@ export default {
           },
         })
         .onOk(() => {
-          deleteLocalResource(this.$store.state.currentOaId, {
+          deleteLocalResource(this.$store.state.currentAppId, {
             fileNames: fileNames,
             type: this.tab,
           }).then(() => {

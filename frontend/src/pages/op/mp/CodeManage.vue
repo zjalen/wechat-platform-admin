@@ -112,8 +112,8 @@
 </template>
 
 <script>
-import MyRequestFormCard from "components/MyRequestFormCard";
-import OpenPlatformCodeListCard from "components/OpenPlatformCodeList";
+import MyRequestFormCard from "components/MyRequestFormCard.vue";
+import OpenPlatformCodeListCard from "components/OpenPlatformCodeList.vue";
 import {
   codeCommit,
   codeRelease,
@@ -130,8 +130,8 @@ import {
   setSupportVersion,
   speedAudit,
   withdrawCodeAudit,
-} from "src/api/authorizer-mini-program";
-import JsonCard from "components/JsonCard";
+} from "src/api/authorizer-mini-program.js";
+import JsonCard from "components/JsonCard.vue";
 
 export default {
   name: "CodeManage",
@@ -265,8 +265,8 @@ export default {
     visible: "open",
   }),
   beforeMount() {
-    this.openPlatformId = this.opId;
-    this.defaultExtJson.extAppid = this.appId;
+    this.openPlatformId = this.$store.state.currentOpId;
+    this.defaultExtJson.extAppid = this.$store.state.currentAppId;
     this.commitFormData[1].value = JSON.stringify(this.defaultExtJson);
   },
   methods: {
@@ -280,20 +280,30 @@ export default {
       this.showTemplateList = false;
     },
     onCommitSubmit(data) {
-      codeCommit(this.opId, this.appId, data).then(() => {
+      codeCommit(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        data
+      ).then(() => {
         this.$q.notify("设置成功");
         this.editCard = null;
       });
     },
     onGetCodePages() {
-      getCodePages(this.opId, this.appId).then((res) => {
+      getCodePages(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      ).then((res) => {
         this.jsonCardTitle = "页面列表";
         this.jsonCardData = res.page_list;
         this.showJsonCard = true;
       });
     },
     onGetTestCodeQR() {
-      getCodeTestQr(this.opId, this.appId)
+      getCodeTestQr(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      )
         .then((res) => {
           const reader = new FileReader();
           reader.onload = (e) => {
@@ -329,7 +339,11 @@ export default {
           if (data) {
             params = { audit_id: data };
           }
-          getCodeAuditStatus(this.opId, this.appId, params).then((res) => {
+          getCodeAuditStatus(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            params
+          ).then((res) => {
             this.jsonCardTitle = "查询结果";
             this.jsonCardData = res;
             this.showJsonCard = true;
@@ -351,7 +365,10 @@ export default {
           },
         })
         .onOk(() => {
-          withdrawCodeAudit(this.opId, this.appId).then(() => {
+          withdrawCodeAudit(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId
+          ).then(() => {
             this.$q.notify("撤销成功");
           });
         });
@@ -371,7 +388,10 @@ export default {
           },
         })
         .onOk(() => {
-          codeRelease(this.opId, this.appId).then(() => {
+          codeRelease(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId
+          ).then(() => {
             this.$q.notify("发布成功");
           });
         });
@@ -396,22 +416,32 @@ export default {
           },
         })
         .onOk((data) => {
-          codeRollbackRelease(this.opId, this.appId, {
-            app_version: data,
-          }).then(() => {
+          codeRollbackRelease(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            {
+              app_version: data,
+            }
+          ).then(() => {
             this.$q.notify("回滚成功");
           });
         });
     },
     onReleaseHistoriesClick() {
-      getCodeReleaseHistories(this.opId, this.appId).then((res) => {
+      getCodeReleaseHistories(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      ).then((res) => {
         this.jsonCardTitle = "历史版本";
         this.jsonCardData = res.version_list;
         this.showJsonCard = true;
       });
     },
     onGetGrayReleaseClick() {
-      getGrayReleaseInfo(this.opId, this.appId).then((res) => {
+      getGrayReleaseInfo(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      ).then((res) => {
         this.jsonCardTitle = "分阶段发布详情";
         this.jsonCardData = res.gray_release_plan;
         this.showJsonCard = true;
@@ -435,19 +465,29 @@ export default {
           },
         })
         .onOk(() => {
-          revertGrayRelease(this.opId, this.appId).then(() => {
+          revertGrayRelease(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId
+          ).then(() => {
             this.$q.notify("撤销成功");
           });
         });
     },
     onGrayReleaseSubmit(data) {
-      grayRelease(this.opId, this.appId, data).then(() => {
+      grayRelease(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        data
+      ).then(() => {
         this.$q.notify("发布成功");
       });
     },
     onSpeedAuditClick() {
       this.$q.loading.show();
-      getSpeedAuditCount(this.opId, this.appId).then((res) => {
+      getSpeedAuditCount(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      ).then((res) => {
         this.$q.loading.hide();
         this.$q
           .dialog({
@@ -468,16 +508,23 @@ export default {
             },
           })
           .onOk((data) => {
-            speedAudit(this.opId, this.appId, {
-              auditId: data,
-            }).then(() => {
+            speedAudit(
+              this.$store.state.currentOpId,
+              this.$store.state.currentAppId,
+              {
+                auditId: data,
+              }
+            ).then(() => {
               this.$q.notify("设置成功");
             });
           });
       });
     },
     onGetSupportVersionClick() {
-      getSupportVersion(this.opId, this.appId).then((res) => {
+      getSupportVersion(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      ).then((res) => {
         this.jsonCardTitle = "当前基础库详情";
         this.jsonCardData = res;
         this.showJsonCard = true;
@@ -503,9 +550,13 @@ export default {
           },
         })
         .onOk((data) => {
-          setSupportVersion(this.opId, this.appId, {
-            version: data,
-          }).then(() => {
+          setSupportVersion(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            {
+              version: data,
+            }
+          ).then(() => {
             this.$q.notify("设置成功");
           });
         });

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Controllers\OpenPlatform;
+namespace App\Http\Controllers\OfficialAccount;
 
 
 use App\Services\ThirdApi\OfficialAccountService;
@@ -12,15 +12,14 @@ use Symfony\Component\HttpFoundation\Response;
  * User: jialinzhang
  * DateTime: 2021/12/16 13:43
  */
-class AuthorizerNotifyController extends AbstractOpenPlatformController
+class NotifyController extends AbstractOfficialAccountController
 {
     /**
-     * 接管微信公众号或小程序用户消息
+     * 处理微信服务器事件推送
      *
-     * @return string|Response
-     * @throws \App\Exceptions\BusinessExceptions\WeChatException
+     * @return Response
      */
-    public function store()
+    public function store(): Response
     {
         $officialAccount = $this->getOfficialAccount();
         $officialAccountService = new OfficialAccountService();

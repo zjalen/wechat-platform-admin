@@ -34,7 +34,7 @@
                 unelevated
                 label="添加回复"
                 color="primary"
-                :to="{ name: 'officialAccountAutoReplyRuleCreate' }"
+                :to="{ name: 'subOfficialAccountAutoReplyRuleCreate' }"
               ></q-btn>
             </div>
           </template>
@@ -96,7 +96,7 @@ import {
   deleteAutoReplyRule,
   getAutoReplyRules,
   updateAutoReplyState,
-} from "src/api/official-account.js";
+} from "src/api/authorizer-official-account.js";
 import JsonViewer from "vue-json-viewer";
 
 export default {
@@ -196,7 +196,11 @@ export default {
         orderBy: props.pagination.sortBy,
         desc: props.pagination.descending,
       };
-      getAutoReplyRules(this.$store.state.currentOaId, params)
+      getAutoReplyRules(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        params
+      )
         .then((res) => {
           this.pagination.rowsNumber = res.total_account;
           this.rows = res.list;
@@ -208,10 +212,10 @@ export default {
     },
     onEdit(id) {
       this.$router.push({
-        name: "officialAccountAutoReplyRuleEdit",
+        name: "subOfficialAccountAutoReplyRuleEdit",
         params: {
-          opId: this.opId,
-          appId: this.$store.state.currentOaId,
+          opId: this.$store.state.currentOpId,
+          appId: this.$store.state.currentAppId,
           id: id,
         },
       });
@@ -227,20 +231,28 @@ export default {
           },
         })
         .onOk(() => {
-          deleteAutoReplyRule(this.$store.state.currentOaId, id).then(() => {
+          deleteAutoReplyRule(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            id
+          ).then(() => {
             this.$q.notify("删除成功");
             this.initData();
           });
         });
     },
     onAutoReplyToggle() {
-      updateAutoReplyState(this.$store.state.currentOaId, {
-        is_auto_reply_open: this.isAutoReplyOpen,
-      }).then(() => {
+      updateAutoReplyState(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          is_auto_reply_open: this.isAutoReplyOpen,
+        }
+      ).then(() => {
         this.$q.notify("更新成功");
         this.$store.dispatch("loadSubBasicInfo", {
-          opId: this.opId,
-          appId: this.$store.state.currentOaId,
+          opId: this.$store.state.currentOpId,
+          appId: this.$store.state.currentAppId,
         });
       });
     },

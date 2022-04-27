@@ -85,7 +85,7 @@ import {
   bindTester,
   getTesters,
   unBindTester,
-} from "src/api/authorizer-mini-program";
+} from "src/api/authorizer-mini-program.js";
 
 export default {
   name: "MpTester",
@@ -98,14 +98,21 @@ export default {
   },
   methods: {
     initData() {
-      getTesters(this.opId, this.appId).then((response) => {
+      getTesters(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId
+      ).then((response) => {
         this.testers = response;
       });
     },
     bindTester() {
-      bindTester(this.opId, this.appId, {
-        wechatId: this.wechatId,
-      }).then(() => {
+      bindTester(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          wechatId: this.wechatId,
+        }
+      ).then(() => {
         this.$q.notify("绑定成功");
         this.initData();
       });
@@ -130,7 +137,12 @@ export default {
           if (useWechatId) {
             params = { useWechatId: true };
           }
-          unBindTester(this.opId, this.appId, slug, params).then(() => {
+          unBindTester(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            slug,
+            params
+          ).then(() => {
             this.$q.notify("解绑成功");
             this.initData();
           });

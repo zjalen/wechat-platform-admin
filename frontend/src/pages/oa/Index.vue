@@ -4,190 +4,102 @@
       <q-card-section>
         <view class="flex items-center q-pb-md">
           <view class="flex items-center">
-            <view class="text-h4">{{ basicInfo.nickname }}</view>
+            <view class="text-h4">{{ basicInfo.name }}</view>
             <q-chip
-              v-if="basicInfo.account_type"
+              v-if="basicInfo.type"
               color="primary"
               dense
               square
               class="text-white"
             >
-              {{ getTypeName(basicInfo.account_type) }}
+              {{ getTypeName(basicInfo.type) }}
             </q-chip>
           </view>
           <q-space />
+          <q-btn
+            flat
+            round
+            :icon="visible ? 'r_visibility' : 'r_visibility_off'"
+            :color="visible ? 'primary' : 'grey'"
+            @click="visible = !visible"
+          ></q-btn>
         </view>
         <q-separator class="q-mb-md" />
         <view>
-          <view
-            v-if="basicInfo.nickname_info"
-            class="q-pb-none panel-form-item"
-          >
-            <view class="panel-form-item-label">名称</view>
+          <view v-if="basicInfo.description" class="q-pb-none panel-form-item">
+            <view class="panel-form-item-label">简介</view>
             <view class="panel-form-item-value">
-              <div>{{ basicInfo.nickname_info.nickname || "空" }}</div>
+              <div>{{ basicInfo.description }}</div>
               <div class="panel-form-item-value-tip">
-                本年度共可修改
-                {{ basicInfo.nickname_info.modify_quota }} 次，已使用
-                {{ basicInfo.nickname_info.modify_used_count }} 次
-              </div>
-            </view>
-          </view>
-          <view
-            v-if="basicInfo.head_image_info"
-            class="q-pb-none panel-form-item"
-          >
-            <view class="panel-form-item-label">头像</view>
-            <view class="panel-form-item-value">
-              <div>
-                <q-avatar>
-                  <q-img
-                    alt="头像"
-                    :src="basicInfo.head_image_info.head_image_url"
-                  ></q-img>
-                </q-avatar>
-              </div>
-              <div class="panel-form-item-value-tip">
-                本年度共可修改
-                {{ basicInfo.head_image_info.modify_quota }} 次，已使用
-                {{ basicInfo.head_image_info.modify_used_count }} 次
+                简介信息是存储在本地的描述信息，与线上简介不同
               </div>
             </view>
           </view>
           <view class="q-pb-none panel-form-item">
             <view class="panel-form-item-label">APP ID</view>
             <view class="panel-form-item-value">
-              <div>{{ basicInfo.appid }}</div>
+              <div>{{ basicInfo.app_id }}</div>
               <div class="panel-form-item-value-tip">
                 唯一标识，微信接口使用
               </div>
             </view>
           </view>
           <view class="q-pb-none panel-form-item">
-            <view class="panel-form-item-label">主体类型</view>
+            <view class="panel-form-item-label">AppSecret</view>
             <view class="panel-form-item-value">
-              <div>{{ getPrincipleTypeName(basicInfo.principal_type) }}</div>
-            </view>
-          </view>
-          <view class="q-pb-none panel-form-item">
-            <view class="panel-form-item-label">主体名称</view>
-            <view class="panel-form-item-value">
-              <div class="text-accent">
-                {{ basicInfo.principal_name || "空" }}
+              <div>{{ visibleData(basicInfo.app_secret) }}</div>
+              <div class="panel-form-item-value-tip">
+                公众号密钥，相当于密码，谨慎保存
               </div>
             </view>
           </view>
           <view class="q-pb-none panel-form-item">
-            <view class="panel-form-item-label">主体标识</view>
+            <view class="panel-form-item-label">服务器地址</view>
             <view class="panel-form-item-value">
-              <div>{{ basicInfo.credential || "空" }}</div>
-            </view>
-          </view>
-          <view
-            v-if="basicInfo.realname_status"
-            class="q-pb-none panel-form-item"
-          >
-            <view class="panel-form-item-label">实名信息</view>
-            <view class="panel-form-item-value">
-              <div>
-                {{ basicInfo.realname_status === 1 ? "已实名" : "未实名" }}
+              <div>{{ basicInfo.serve_url || "加载中" }}</div>
+              <div class="panel-form-item-value-tip">
+                用于公众号接收平台推送的消息与事件，用户发送的消息，点击的菜单事件，关注取关消息等都会推送到此地址。
               </div>
             </view>
           </view>
-          <view
-            v-if="basicInfo.wx_verify_info"
-            class="q-pb-none panel-form-item"
-          >
-            <view class="panel-form-item-label">微信认证信息</view>
+          <view class="panel-form-item">
+            <view class="panel-form-item-label">令牌(Token)</view>
             <view class="panel-form-item-value">
-              <q-chip
-                square
-                dense
-                class="q-ml-none"
-                :color="
-                  basicInfo.wx_verify_info.qualification_verify
-                    ? 'primary'
-                    : 'grey-5'
-                "
-                text-color="white"
-                label="资质认证"
-              >
-              </q-chip>
-              <q-chip
-                square
-                dense
-                class="q-ml-none"
-                :color="
-                  basicInfo.wx_verify_info.naming_verify ? 'primary' : 'grey-5'
-                "
-                text-color="white"
-                label="名称认证"
-              >
-              </q-chip>
-              <q-chip
-                v-if="basicInfo.wx_verify_info.annual_review"
-                square
-                dense
-                class="q-ml-none"
-                :color="
-                  basicInfo.wx_verify_info.annual_review === 1
-                    ? 'primary'
-                    : 'grey-5'
-                "
-                text-color="white"
-              >
-                待年审
-              </q-chip>
-              <q-chip
-                v-if="basicInfo.wx_verify_info.annual_review"
-                square
-                dense
-                class="q-ml-none"
-                color="primary"
-                text-color="white"
-              >
-                年审时间：
-                {{ annual_review_begin_time + "--" + annual_review_end_time }}
-              </q-chip>
+              <div>{{ visibleData(basicInfo.token) }}</div>
               <div class="panel-form-item-value-tip">
-                绿色为已认证，或待处理
+                公众号或小程序用此Token来校验服务器是否合法。
               </div>
             </view>
           </view>
-          <view
-            v-if="basicInfo.signature_info"
-            class="q-pb-none panel-form-item"
-          >
-            <view class="panel-form-item-label">功能介绍</view>
+          <view class="panel-form-item">
+            <view class="panel-form-item-label"
+              >消息加解密密钥EncodingAESKey</view
+            >
             <view class="panel-form-item-value">
-              <div>{{ basicInfo.signature_info.signature || "空" }}</div>
+              <div>{{ visibleData(basicInfo.aes_key) }}</div>
               <div class="panel-form-item-value-tip">
-                本年度共可修改
-                {{ basicInfo.signature_info.modify_quota }} 次，已使用
-                {{ basicInfo.signature_info.modify_used_count }} 次
+                在公众号或小程序加密解密消息过程中使用。必须是长度为43位的字符串，只能是字母和数字。
               </div>
             </view>
           </view>
-          <view class="q-pb-none panel-form-item">
-            <view class="panel-form-item-label">注册国家码</view>
+          <view class="panel-form-item">
+            <view class="panel-form-item-label">AccessToken</view>
             <view class="panel-form-item-value">
-              <div>{{ basicInfo.registered_country }}</div>
+              <div>{{ visibleData(basicInfo.access_token) }}</div>
+              <div
+                v-if="visible && basicInfo.errMsg"
+                class="panel-form-item-value-tip text-negative"
+              >
+                {{ basicInfo.errMsg }}
+              </div>
               <div class="panel-form-item-value-tip">
-                1017 中国大陆，其它码可
-                <a
-                  target="_blank"
-                  href="https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/2.0/api/Mini_Program_Basic_Info/Mini_Program_Information_Settings.html#%E6%B3%A8%E5%86%8C%E5%9B%BD%E5%AE%B6"
-                >
-                  参见文档
-                </a>
+                微信官方票据换取的身份标识，接口调用必需参数，该参数会随使用自动更新，最长
+                2 小时内有效
               </div>
             </view>
           </view>
         </view>
       </q-card-section>
-      <q-inner-loading :showing="!showAuthorizerDetail">
-        <q-spinner-gears size="50px" color="primary" />
-      </q-inner-loading>
     </q-card>
   </q-page>
 </template>
@@ -206,6 +118,7 @@ export default {
   },
   data: () => ({
     showAuthorizerDetail: false,
+    visible: false,
   }),
   mounted() {
     this.initData();
@@ -219,13 +132,13 @@ export default {
     getTypeName(type) {
       let name = "未知";
       switch (type) {
+        case 0:
+          name = "开放平台";
+          break;
         case 1:
-          name = "订阅号";
+          name = "公众号";
           break;
         case 2:
-          name = "服务号";
-          break;
-        case 3:
           name = "小程序";
           break;
       }
@@ -256,6 +169,9 @@ export default {
       this.$router.push({
         name: "mpQR",
       });
+    },
+    visibleData(data) {
+      return this.visible ? data : "******";
     },
   },
 };

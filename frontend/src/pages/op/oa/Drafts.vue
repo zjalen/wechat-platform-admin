@@ -94,7 +94,7 @@ import {
   deleteDraft,
   getDrafts,
   publishDraft,
-} from "src/api/official-account.js";
+} from "src/api/authorizer-official-account.js";
 
 export default {
   name: "OfficialAccountDrafts",
@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     initData() {
-      getDrafts(this.$store.state.currentOaId, {
+      getDrafts(this.$store.state.currentOpId, this.$store.state.currentAppId, {
         offset: (this.page - 1) * this.pageSize,
         count: this.pageSize,
       }).then((res) => {
@@ -157,7 +157,11 @@ export default {
           },
         })
         .onOk(() => {
-          deleteDraft(this.$store.state.currentOaId, mediaId).then(() => {
+          deleteDraft(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            mediaId
+          ).then(() => {
             this.$q.notify("删除成功");
             this.initData();
           });
@@ -175,7 +179,11 @@ export default {
           },
         })
         .onOk(() => {
-          publishDraft(this.$store.state.currentOaId, mediaId).then(() => {
+          publishDraft(
+            this.$store.state.currentOpId,
+            this.$store.state.currentAppId,
+            mediaId
+          ).then(() => {
             this.$q.notify("发布成功");
             this.initData();
           });
