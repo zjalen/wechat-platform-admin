@@ -16,7 +16,8 @@ class AutoReplyRuleController extends AbstractOfficialAccountController
      */
     public function index(): array
     {
-        $appId = request()->route('appId');
+        $this->getOfficialAccount();
+        $appId = $this->officialAccountModel->app_id;
         $limit = request('limit', 20);
         $skip = request('skip', 0);
         $orderBy = request('orderBy', 'id');
@@ -38,8 +39,8 @@ class AutoReplyRuleController extends AbstractOfficialAccountController
     public function store(): bool
     {
         $autoReplyRule = new AutoReplyRule();
-        $appId = request()->route('appId');
-        $autoReplyRule->app_id = $appId;
+        $this->getOfficialAccount();
+        $autoReplyRule->app_id = $this->officialAccountModel->app_id;
         $autoReplyRule->name = request('name');
         $autoReplyRule->keyword = request('keyword');
         $autoReplyRule->match_type = request('match_type');
@@ -56,7 +57,8 @@ class AutoReplyRuleController extends AbstractOfficialAccountController
     public function show()
     {
         $id = request()->route('auto_reply_rule');
-        $appId = request()->route('appId');
+        $this->getOfficialAccount();
+        $appId = $this->officialAccountModel->app_id;
         return AutoReplyRule::query()->where('id', $id)->where('app_id', $appId)->first();
     }
 
@@ -69,7 +71,8 @@ class AutoReplyRuleController extends AbstractOfficialAccountController
     public function update(): bool
     {
         $id = request()->route('auto_reply_rule');
-        $appId = request()->route('appId');
+        $this->getOfficialAccount();
+        $appId = $this->officialAccountModel->app_id;
         $autoReplyRule = AutoReplyRule::query()->where('id', $id)->where('app_id', $appId)->first();
         if (!$autoReplyRule) {
             throw new NotFoundException();
@@ -90,7 +93,8 @@ class AutoReplyRuleController extends AbstractOfficialAccountController
     public function destroy()
     {
         $id = request()->route('auto_reply_rule');
-        $appId = request()->route('appId');
+        $this->getOfficialAccount();
+        $appId = $this->officialAccountModel->app_id;
         return AutoReplyRule::query()->where('id', $id)->where('app_id', $appId)->delete();
     }
 }

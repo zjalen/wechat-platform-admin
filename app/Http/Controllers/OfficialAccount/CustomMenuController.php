@@ -20,7 +20,8 @@ class CustomMenuController extends AbstractOfficialAccountController
      */
     public function index()
     {
-        $appId = request()->route('appId');
+        $this->getOfficialAccount();
+        $appId = $this->officialAccountModel->app_id;
         return CustomMenu::query()->where('app_id', $appId)->get();
     }
 
@@ -31,7 +32,8 @@ class CustomMenuController extends AbstractOfficialAccountController
      */
     public function show()
     {
-        $appId = request()->route('appId');
+        $this->getOfficialAccount();
+        $appId = $this->officialAccountModel->app_id;
         $id = request()->route('custom_menu');
         return CustomMenu::query()->where('id', $id)->where('app_id', $appId)->first();
     }
@@ -43,7 +45,8 @@ class CustomMenuController extends AbstractOfficialAccountController
      */
     public function store(): bool
     {
-        $appId = request()->route('appId');
+        $this->getOfficialAccount();
+        $appId = $this->officialAccountModel->app_id;
         $customMenu = new CustomMenu();
         $customMenu->app_id = $appId;
         $customMenu->remark = request('remark');
@@ -57,7 +60,8 @@ class CustomMenuController extends AbstractOfficialAccountController
      */
     public function destroy()
     {
-        $appId = request()->route('appId');
+        $this->getOfficialAccount();
+        $appId = $this->officialAccountModel->app_id;
         $id = request()->route('custom_menu');
         return CustomMenu::query()->where('id', $id)->where('app_id', $appId)->delete();
     }

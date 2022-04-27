@@ -17,6 +17,8 @@ Route::group([
     'prefix' => 'official-account-server/{officialAccountSlug}',
     'middleware' => ['platform.oa']
 ], function (\Illuminate\Routing\Router $router) {
+    $router->get('notify',
+        [\App\Http\Controllers\OfficialAccount\NotifyController::class, 'store'])->name('officialAccountNotifyValidate');
     $router->post('notify',
         [\App\Http\Controllers\OfficialAccount\NotifyController::class, 'store'])->name('officialAccountNotify');
 });
