@@ -5,7 +5,6 @@ namespace App\Services\ThirdApi;
 
 
 use App\Jobs\SendCustomMessage;
-use App\Models\Authorizer;
 use App\Models\AutoReplyRule;
 use EasyWeChat\Kernel\Messages\Media;
 use EasyWeChat\Kernel\Messages\News;
@@ -22,11 +21,11 @@ use Illuminate\Support\Str;
  */
 class OfficialAccountService
 {
-    public function notifyServe(Application $officialAccount)
+    public function notifyServe(Application $officialAccount, $officialAccountModel)
     {
         try {
             // 这里的 server 为授权方的 server，而不是开放平台的 server，请注意！！！
-            $officialAccount->server->push(function ($message) use ($officialAccount) {
+            $officialAccount->server->push(function ($message) use ($officialAccount, $officialAccountModel) {
                 $appId = $officialAccount->config->get('app_id');
                 // TODO 线上调试使用，不需要存储消息可删除 Log 语句
                 Log::info($message);
@@ -50,7 +49,6 @@ class OfficialAccountService
                                 new Text($customContent));
                             return '';
                         }
-                        $officialAccountModel = Authorizer::query()->where('app_id', $appId)->first();
                         if (!$officialAccountModel->is_auto_reply_open) {
                             return '';
                         }

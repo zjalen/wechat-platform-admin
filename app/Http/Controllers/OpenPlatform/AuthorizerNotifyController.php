@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\OpenPlatform;
 
 
+use App\Models\Authorizer;
 use App\Services\ThirdApi\OfficialAccountService;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,6 +25,7 @@ class AuthorizerNotifyController extends AbstractOpenPlatformController
     {
         $officialAccount = $this->getOfficialAccount();
         $officialAccountService = new OfficialAccountService();
-        return $officialAccountService->notifyServe($officialAccount);
+        $officialAccountModel = Authorizer::query()->where('app_id', $this->appId)->first();
+        return $officialAccountService->notifyServe($officialAccount, $officialAccountModel);
     }
 }

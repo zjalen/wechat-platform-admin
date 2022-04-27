@@ -23,6 +23,6 @@ class NotifyController extends AbstractOfficialAccountController
     {
         $officialAccount = $this->getOfficialAccount();
         $officialAccountService = new OfficialAccountService();
-        return $officialAccountService->notifyServe($officialAccount);
+        return $officialAccountService->notifyServe($officialAccount, $this->officialAccountModel);
     }
 }
