@@ -239,8 +239,7 @@ export default {
       }).then(() => {
         this.$q.notify("更新成功");
         this.$store.dispatch("loadOfficialAccountBasicInfo", {
-          opId: this.opId,
-          appId: this.$store.state.currentOaId,
+          id: this.$store.state.currentOaId,
         });
       });
     },
