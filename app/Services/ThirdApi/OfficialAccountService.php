@@ -10,6 +10,7 @@ use EasyWeChat\Kernel\Messages\Media;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Text;
+use EasyWeChat\Kernel\Messages\Transfer;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -60,19 +61,22 @@ class OfficialAccountService
                                 // !!!全网发布测试 —— 消息回复
                                 return 'TESTCOMPONENT_MSG_TYPE_TEXT_callback';
                             default:
-                                return $this->getReturnMessage($content, $appId);
+                                $message = $this->getReturnMessage($content, $appId);
+                                if (!$message) {
+                                    // 转发到客服消息
+                                    return new Transfer();
+                                }
+                                return $message;
                         }
 
                     case 'image':
-                        return '收到图片消息';
                     case 'voice':
-                        return '收到语音消息';
                     case 'video':
-                        return '收到视频消息';
+                    case 'link':
+                        // 直接转发到客服消息
+                        return new Transfer();
                     case 'location':
                         return '收到坐标消息';
-                    case 'link':
-                        return '收到链接消息';
                     // ... 其它消息
                     default:
                         return '收到其它消息';
