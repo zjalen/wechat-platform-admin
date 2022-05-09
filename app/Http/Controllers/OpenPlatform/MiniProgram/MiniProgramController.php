@@ -20,7 +20,7 @@ class MiniProgramController extends AbstractOpenPlatformController
      */
     public function show()
     {
-        $application = $this->getMiniProgramApplication();
+        $application = $this->getMiniProgram();
         $appId = request()->route('appId');
         $authorizer = Authorizer::query()->where('app_id', $appId)->first();
         $basicInfo = $application->account->getBasicInfo();
@@ -47,7 +47,7 @@ class MiniProgramController extends AbstractOpenPlatformController
         if (!in_array($type, ['image', 'video', 'voice'])) {
             throw new ParamsErrorException();
         }
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         $mediaService = new MediaService();
         $file = $mediaService->getFilePath($this->appId, $fileName, $type);
         return $miniProgram->media->upload($type, $file);

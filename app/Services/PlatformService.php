@@ -14,6 +14,20 @@ use App\Models\Platform;
 class PlatformService
 {
     /**
+     * 获取平台模型
+     * @param  string  $slug
+     * @param  int  $type
+     * @return Platform|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    public function getPlatformBySlugAndType(string $slug, int $type)
+    {
+        if (!$slug) {
+            return null;
+        }
+        return Platform::query()->where('slug', $slug)->where('type', $type)->first();
+    }
+
+    /**
      * 获取开放平台数据模型
      * @param  string  $opSlug
      * @return Platform|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null

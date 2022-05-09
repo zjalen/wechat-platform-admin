@@ -22,7 +22,7 @@ class PrivacySettingController extends AbstractOpenPlatformController
     {
         $privacyVer = request('privacyVer') ?: 2;
         $data = ['privacy_ver' => $privacyVer];
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->setting->httpPostJson('cgi-bin/component/getprivacysetting', $data);
     }
 
@@ -37,7 +37,7 @@ class PrivacySettingController extends AbstractOpenPlatformController
     public function store()
     {
         $data = request()->only(['privacy_ver', 'owner_setting', 'setting_list']);
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->setting->httpPostJson('cgi-bin/component/setprivacysetting', $data);
     }
 
@@ -52,7 +52,7 @@ class PrivacySettingController extends AbstractOpenPlatformController
     public function uploadPrivacyExtFile()
     {
         $privacyFile = request()->file('file');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         $filePath = Storage::putFileAs('privacy/'.$this->appId, $privacyFile, 'privacy.txt');
         $fullPath = Storage::path($filePath);
         $data['file'] = $fullPath;

@@ -19,7 +19,7 @@ class WebviewDomainController extends AbstractOpenPlatformController
      */
     public function index()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->domain->setWebviewDomain([], 'get');
     }
 
@@ -33,7 +33,7 @@ class WebviewDomainController extends AbstractOpenPlatformController
      */
     public function update($opId, $appId, $action)
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         $domainArray = request('webDomain', []);
         if (!in_array($action, ['add', 'set', 'delete', 'sync'])) {
             throw new ParamsErrorException();

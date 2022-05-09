@@ -16,7 +16,7 @@ class AvatarController extends AbstractOpenPlatformController
      */
     public function update()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         $head_img_media_id = request()->input('head_img_media_id');
         $x1 = request()->input('x1');
         $y1 = request()->input('y1');

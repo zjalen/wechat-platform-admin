@@ -36,15 +36,25 @@
               <view class="panel-form-item-label text-grey">AppID</view>
               <view class="panel-form-item-value">{{ item.app_id }}</view>
             </view>
+            <view class="q-pb-none panel-form-item">
+              <view class="panel-form-item-label text-grey">对外标识</view>
+              <view class="panel-form-item-value text-info">
+                {{ item.slug }}
+              </view>
+            </view>
+            <view class="q-pb-none panel-form-item">
+              <view class="panel-form-item-label text-grey">API对外开放</view>
+              <view class="panel-form-item-value">
+                <view v-if="item.is_open" class="text-bold text-positive">
+                  开放
+                </view>
+                <view v-else class="text-grey-8 text-bold"> 未开放 </view>
+              </view>
+            </view>
             <view class="panel-form-item">
               <view class="panel-form-item-label text-grey">平台类型</view>
               <view class="panel-form-item-value">
-                <q-chip
-                  dense
-                  square
-                  color="primary"
-                  class="text-white q-ml-none"
-                >
+                <q-chip dense square color="info" class="text-white q-ml-none">
                   {{ item.type_name }}
                 </q-chip>
               </view>

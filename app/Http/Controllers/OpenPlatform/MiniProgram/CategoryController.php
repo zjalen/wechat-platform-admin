@@ -17,7 +17,7 @@ class CategoryController extends AbstractOpenPlatformController
      */
     public function show()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->setting->getCategories();
     }
 
@@ -32,7 +32,7 @@ class CategoryController extends AbstractOpenPlatformController
     public function index()
     {
         $type = request('type');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         if ($type) {
             return $miniProgram->setting->httpPostJson('cgi-bin/wxopen/getcategoriesbytype',
                 ['verify_type' => (int) $type]);
@@ -52,7 +52,7 @@ class CategoryController extends AbstractOpenPlatformController
     {
         $first = request('first');
         $second = request('second');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->setting->deleteCategories($first, $second);
     }
 
@@ -67,7 +67,7 @@ class CategoryController extends AbstractOpenPlatformController
     public function store()
     {
         $categories = request('categories');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->setting->addCategories($categories);
     }
 }

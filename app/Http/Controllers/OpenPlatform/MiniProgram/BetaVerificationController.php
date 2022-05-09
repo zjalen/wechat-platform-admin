@@ -16,7 +16,7 @@ class BetaVerificationController extends AbstractOpenPlatformController
      */
     public function store()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         $verifyInfo = [
             'enterprise_name' => request('enterprise_name'),
             'code' => request('code'),

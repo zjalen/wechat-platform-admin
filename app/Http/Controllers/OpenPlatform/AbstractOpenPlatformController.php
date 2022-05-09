@@ -60,7 +60,7 @@ abstract class AbstractOpenPlatformController extends Controller
      * @return \EasyWeChat\OpenPlatform\Authorizer\MiniProgram\Application
      * @throws \App\Exceptions\BusinessExceptions\WeChatException
      */
-    protected function getMiniProgramApplication($appId = null): \EasyWeChat\OpenPlatform\Authorizer\MiniProgram\Application
+    protected function getMiniProgram($appId = null): \EasyWeChat\OpenPlatform\Authorizer\MiniProgram\Application
     {
         if (!$appId) {
             $appId = request()->route('appId');

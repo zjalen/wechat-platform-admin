@@ -7,6 +7,7 @@ use App\Http\Middleware\SaveApiOptionLog;
 use App\Http\Middleware\VerifyMediaToken;
 use App\Http\Middleware\VerifyOfficialAccount;
 use App\Http\Middleware\VerifyOpenPlatform;
+use App\Http\Middleware\VerifyPlatformOpenState;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -70,6 +71,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'platform.op' => VerifyOpenPlatform::class,
         'platform.oa' => VerifyOfficialAccount::class,
+        'platform.open-state' => VerifyPlatformOpenState::class,
         'media.token' => VerifyMediaToken::class,
         'format.json' => FormatJsonResponse::class,
         'operation-log' => SaveApiOptionLog::class

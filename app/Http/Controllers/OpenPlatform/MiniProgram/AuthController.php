@@ -16,7 +16,7 @@ class AuthController extends AbstractOpenPlatformController
     public function store()
     {
         $code = request('code');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         if ($code == '123' || config('app.env') == 'local') {
             return ['openid' => '12345', 'unionid' => '12345'];
         }

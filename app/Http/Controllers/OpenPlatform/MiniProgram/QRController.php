@@ -21,7 +21,7 @@ class QRController extends AbstractOpenPlatformController
             'line_color' => request('line_color'),
             'is_hyaline' => request('is_hyaline'),
         ];
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         $unlimited = request('unlimited', false);
         if ($unlimited) {
             $params['scene'] = request('scene');

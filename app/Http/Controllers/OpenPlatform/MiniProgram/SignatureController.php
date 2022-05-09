@@ -18,7 +18,7 @@ class SignatureController extends AbstractOpenPlatformController
      */
     public function update()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         $signature = request()->input('signature');
         return $miniProgram->account->updateSignature($signature);
     }

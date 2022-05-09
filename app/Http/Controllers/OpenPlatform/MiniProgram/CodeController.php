@@ -25,7 +25,7 @@ class CodeController extends AbstractOpenPlatformController
         $extJson = request()->input('ext_json');
         $userVersion = request()->input('user_version');
         $userDesc = request()->input('user_desc');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->commit($templateId, $extJson, $userVersion, $userDesc);
     }
 
@@ -38,7 +38,7 @@ class CodeController extends AbstractOpenPlatformController
      */
     public function getPage()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->getPage();
     }
 
@@ -53,7 +53,7 @@ class CodeController extends AbstractOpenPlatformController
     public function getQrCode(): \EasyWeChat\Kernel\Http\Response
     {
         $path = request()->input('path');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
 
         return $miniProgram->code->getQrCode($path);
     }
@@ -74,7 +74,7 @@ class CodeController extends AbstractOpenPlatformController
         if (!in_array($type, ['image', 'video', 'voice'])) {
             throw new ParamsErrorException();
         }
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         $mediaService = new MediaService();
         $file = $mediaService->getFilePath($this->appId, $fileName, $type);
         return $miniProgram->code->httpUpload('wxa/uploadmedia', [$fileName => $file]);
@@ -93,7 +93,7 @@ class CodeController extends AbstractOpenPlatformController
         $data = request()->only([
             'version_desc', 'preview_info', 'item_list', 'ugc_declare', 'feedback_info', 'feedback_stuff'
         ]);
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->submitAudit($data);
     }
 
@@ -106,7 +106,7 @@ class CodeController extends AbstractOpenPlatformController
      */
     public function withdrawAudit()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->withdrawAudit();
     }
 
@@ -121,7 +121,7 @@ class CodeController extends AbstractOpenPlatformController
     public function getAuditStatus()
     {
         $auditId = request()->input('audit_id');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         if (!$auditId) {
             return $miniProgram->code->getLatestAuditStatus();
         }
@@ -138,7 +138,7 @@ class CodeController extends AbstractOpenPlatformController
      */
     public function release()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->release();
     }
 
@@ -152,7 +152,7 @@ class CodeController extends AbstractOpenPlatformController
      */
     public function getReleaseHistoryVersions()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->httpGet('wxa/revertcoderelease', ['action' => 'get_history_version']);
     }
 
@@ -167,7 +167,7 @@ class CodeController extends AbstractOpenPlatformController
     public function revertReleaseVersion()
     {
         $app_version = request('app_version');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->httpGet('wxa/revertcoderelease', ['app_version' => $app_version]);
     }
 
@@ -184,7 +184,7 @@ class CodeController extends AbstractOpenPlatformController
         $gray_percentage = request('gray_percentage');
         $support_experiencer_first = request('support_experiencer_first', false);
         $support_debugger_first = request('support_debuger_first', false);
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->httpPostJson('wxa/grayrelease', [
             'gray_percentage' => $gray_percentage,
             'support_experiencer_first' => $support_experiencer_first,
@@ -201,7 +201,7 @@ class CodeController extends AbstractOpenPlatformController
      */
     public function getGrayRelease()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->getGrayRelease();
     }
 
@@ -214,7 +214,7 @@ class CodeController extends AbstractOpenPlatformController
      */
     public function revertGrayRelease()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->revertGrayRelease();
     }
 
@@ -227,7 +227,7 @@ class CodeController extends AbstractOpenPlatformController
      */
     public function getSpeedAuditCount()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->queryQuota();
     }
 
@@ -241,7 +241,7 @@ class CodeController extends AbstractOpenPlatformController
     public function speedAudit()
     {
         $auditId = request('auditId');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->speedupAudit($auditId);
     }
 
@@ -255,7 +255,7 @@ class CodeController extends AbstractOpenPlatformController
      */
     public function getSupportVersion()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->getSupportVersion();
     }
 
@@ -270,7 +270,7 @@ class CodeController extends AbstractOpenPlatformController
     public function setSupportVersion()
     {
         $version = request('version');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->setSupportVersion($version);
     }
 
@@ -285,7 +285,7 @@ class CodeController extends AbstractOpenPlatformController
     public function changeVisitStatus()
     {
         $visitStatus = request('visitStatus');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->changeVisitStatus($visitStatus);
     }
 }

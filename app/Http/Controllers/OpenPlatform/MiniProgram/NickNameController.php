@@ -17,7 +17,7 @@ class NickNameController extends AbstractOpenPlatformController
     public function show()
     {
         $nickName = request()->route('nick_name');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->setting->isAvailableNickname($nickName);
     }
 
@@ -55,7 +55,7 @@ class NickNameController extends AbstractOpenPlatformController
         if ($other5) {
             $otherMediaArray[] = $other5;
         }
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         if ($license) {
             $response = $miniProgram->setting->setNickname($nickName, '', $license, $otherMediaArray);
         } else {
@@ -75,7 +75,7 @@ class NickNameController extends AbstractOpenPlatformController
     public function auditStatus()
     {
         $auditId = request()->route('audit_id');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->setting->getNicknameAuditStatus($auditId);
     }
 }

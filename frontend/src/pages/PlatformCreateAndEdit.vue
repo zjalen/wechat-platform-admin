@@ -96,11 +96,22 @@
             />
           </view>
           <view class="edit-form-item">
-            <view class="edit-form-item-label">是否开放</view>
+            <view class="edit-form-item-label">是否对外开放</view>
             <q-toggle
               v-model="formData.is_open"
               class="edit-form-item-value q-pb-md"
-              label="不开放意味者对应接口不可被第三方调用"
+              label="不开放意味者对应接口不可被外部调用，不影响本平台内部使用"
+            />
+          </view>
+          <view class="edit-form-item">
+            <view class="edit-form-item-label">对外标识</view>
+            <q-input
+              outlined
+              dense
+              :square="true"
+              class="edit-form-item-value"
+              hint="标识用作对外提供服务，请勿随意更改，可能会影响微信官方消息推送"
+              v-model="formData.slug"
             />
           </view>
           <view class="edit-form-item">
@@ -145,6 +156,7 @@ export default {
       token: "",
       aes_key: "",
       description: "",
+      slug: "",
       is_open: false,
       type: 0,
     },

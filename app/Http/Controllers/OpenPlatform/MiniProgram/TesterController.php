@@ -17,7 +17,7 @@ class TesterController extends AbstractOpenPlatformController
      */
     public function index()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         $testers = Tester::query()->where('app_id', $this->appId)->get();
         $result = $miniProgram->tester->list();
         if ($result['errcode'] != 0) {
@@ -48,7 +48,7 @@ class TesterController extends AbstractOpenPlatformController
     public function store()
     {
         $wechatId = request('wechatId');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         $result = $miniProgram->tester->bind($wechatId);
         if ($result['errcode'] == 0) {
             $userStr = $result['userstr'];
@@ -77,7 +77,7 @@ class TesterController extends AbstractOpenPlatformController
     public function destroy($opId, $appId, $userSlug)
     {
         $useWechatId = request()->query->get('useWechatId');
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         if ($useWechatId) {
             $result = $miniProgram->tester->unbind($userSlug);
             if ($result['errcode'] == 0) {

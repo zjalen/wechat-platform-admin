@@ -36,6 +36,25 @@ Route::group([
         [\App\Http\Controllers\OpenPlatform\AuthorizerNotifyController::class, 'store'])->name('authorizerNotify');
 });
 
+/** 开放平台对外提供的第三方使用接口 */
+Route::group([
+    'prefix' => 'open-api/{slug}',
+    'middleware' => ['platform.open-state:op']
+], function (\Illuminate\Routing\Router $router) {
+    /** 对外开放代公众号实现接口 */
+    $router->group([
+        'prefix' => 'wx-oa/{appId}',
+    ], function (\Illuminate\Routing\Router $router) {
+        $router->get('getUserInfo', [\App\Http\Controllers\OpenPlatform\OfficialAccount\OpenApiController::class, 'getUserInfo']);
+    });
+    /** 对外开放代小程序实现接口 */
+    $router->group([
+        'prefix' => 'wx-mp/{appId}',
+    ], function (\Illuminate\Routing\Router $router) {
+        $router->get('getUserInfo', [\App\Http\Controllers\OpenPlatform\MiniProgram\OpenApiController::class, 'getUserInfo']);
+    });
+});
+
 Route::group([
     /** 统一格式化结果 */
     'middleware' => ['format.json', 'operation-log'],

@@ -19,7 +19,7 @@ class ServerDomainController extends AbstractOpenPlatformController
      */
     public function index()
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         return $miniProgram->domain->modify(['action' => 'get']);
     }
 
@@ -33,7 +33,7 @@ class ServerDomainController extends AbstractOpenPlatformController
      */
     public function update($opId, $appId, $action)
     {
-        $miniProgram = $this->getMiniProgramApplication();
+        $miniProgram = $this->getMiniProgram();
         $params['requestdomain'] = request('request', []);
         $params['wsrequestdomain'] = request('ws', []);
         $params['uploaddomain'] = request('upload', []);
