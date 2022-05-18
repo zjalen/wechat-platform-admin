@@ -3,7 +3,7 @@
     <q-breadcrumbs>
       <q-breadcrumbs-el
         label="代码管理"
-        :to="`/open-platform/${opId}/mini-program/${appId}/code-manage`"
+        :to="`/open-platform/${this.$store.state.currentOpId}/mini-program/${this.$store.state.currentAppId}/code-manage`"
         :replace="true"
       />
       <q-breadcrumbs-el label="代码审核" />

@@ -219,20 +219,26 @@ export default {
     loadMediaList(type, formKey) {
       this.currentFormKey = formKey;
       this.currentMediaType = type;
-      getLocalResources(this.appId, { type: type }).then((res) => {
-        this.mediaList = res[type];
-        this.showMediaPicker = true;
-      });
+      getLocalResources(this.$store.state.currentAppId, { type: type }).then(
+        (res) => {
+          this.mediaList = res[type];
+          this.showMediaPicker = true;
+        }
+      );
     },
     onMediaClick(media) {
       this.currentMedia = media;
     },
     addTemplateMedia() {
       this.uploading = true;
-      uploadTemplateFile(this.opId, this.appId, {
-        fileName: this.currentMedia.name,
-        type: this.currentMediaType,
-      }).then((res) => {
+      uploadTemplateFile(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          fileName: this.currentMedia.name,
+          type: this.currentMediaType,
+        }
+      ).then((res) => {
         this.uploading = false;
         this.showMediaPicker = false;
         this.formParams[this.currentFormKey].value = res.media_id;
@@ -258,9 +264,9 @@ export default {
     uploadUrl() {
       return (
         "/api/open-platform/" +
-        this.opId +
+        this.$store.state.currentOpId +
         "/mp/" +
-        this.appId +
+        this.$store.state.currentAppId +
         "/local-media?type=" +
         this.currentMediaType
       );

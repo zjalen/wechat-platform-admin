@@ -148,20 +148,26 @@ export default {
     loadMediaList(type, formKey) {
       this.currentFormKey = formKey;
       this.currentMediaType = type;
-      getLocalResources(this.appId, { type: type }).then((res) => {
-        this.mediaList = res[type];
-        this.showMediaPicker = true;
-      });
+      getLocalResources(this.$store.state.currentAppId, { type: type }).then(
+        (res) => {
+          this.mediaList = res[type];
+          this.showMediaPicker = true;
+        }
+      );
     },
     onMediaClick(media) {
       this.currentMedia = media;
     },
     addTemplateMedia() {
       this.uploading = true;
-      uploadTemplateFile(this.opId, this.appId, {
-        fileName: this.currentMedia.name,
-        type: this.currentMediaType,
-      }).then((res) => {
+      uploadTemplateFile(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          fileName: this.currentMedia.name,
+          type: this.currentMediaType,
+        }
+      ).then((res) => {
         this.uploading = false;
         this.showMediaPicker = false;
         this.$emit("media-chosen", { slug: this.slug, mediaId: res.media_id });
@@ -169,10 +175,14 @@ export default {
     },
     addAuditMedia() {
       this.uploading = true;
-      uploadCodeAuditMedia(this.opId, this.appId, {
-        fileName: this.currentMedia.name,
-        type: this.currentMediaType,
-      }).then((res) => {
+      uploadCodeAuditMedia(
+        this.$store.state.currentOpId,
+        this.$store.state.currentAppId,
+        {
+          fileName: this.currentMedia.name,
+          type: this.currentMediaType,
+        }
+      ).then((res) => {
         this.uploading = false;
         this.showMediaPicker = false;
         this.$emit("media-chosen", { slug: this.slug, mediaId: res.mediaid });
@@ -197,11 +207,10 @@ export default {
     },
     uploadUrl() {
       return (
-        "/api/open-platform/" +
-        this.opId +
-        "/mp/" +
-        this.appId +
-        "/local-media?type=" +
+        process.env.API +
+        "/api/platforms/" +
+        this.$store.state.currentAppId +
+        "/resources?type=" +
         this.currentMediaType
       );
     },
