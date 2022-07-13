@@ -45,13 +45,13 @@ Route::group([
     $router->group([
         'prefix' => 'wx-oa/{appId}',
     ], function (\Illuminate\Routing\Router $router) {
-        $router->get('getUserInfo', [\App\Http\Controllers\OpenPlatform\OfficialAccount\OpenApiController::class, 'getUserInfo']);
+        $router->post('getUserInfo', [\App\Http\Controllers\OpenPlatform\OfficialAccount\OpenApiController::class, 'getUserInfo']);
     });
     /** 对外开放代小程序实现接口 */
     $router->group([
         'prefix' => 'wx-mp/{appId}',
     ], function (\Illuminate\Routing\Router $router) {
-        $router->get('getUserInfo', [\App\Http\Controllers\OpenPlatform\MiniProgram\OpenApiController::class, 'getUserInfo']);
+        $router->post('getUserInfo', [\App\Http\Controllers\OpenPlatform\MiniProgram\OpenApiController::class, 'getUserInfo']);
     });
 });
 
