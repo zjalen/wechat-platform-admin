@@ -86,4 +86,18 @@ class OpenPlatformController extends AbstractOpenPlatformController
         $openPlatform->handleAuthorize($authCode);
         return view('authorized');
     }
+
+    /**
+     * 查询 rid 的详细信息
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function ridInfo()
+    {
+        $rid = request()->input('rid');
+        $openPlatform = $this->getOpenPlatform();
+        return $openPlatform->component->httpPostJson('cgi-bin/openapi/rid/get', ['rid' => $rid]);
+    }
 }

@@ -111,6 +111,7 @@ Route::group([
         ]);
         $router->apiResource('beta-mini-program',\App\Http\Controllers\OpenPlatform\BetaMiniProgramController::class)->only('store');
         $router->apiResource('code', \App\Http\Controllers\OpenPlatform\CodeController::class)->only(['index', 'update', 'destroy']);
+        $router->get('ridInfo', [\App\Http\Controllers\OpenPlatform\OpenPlatformController::class, 'ridInfo']);
 
 
         /** 开放平台代小程序实现功能 */
