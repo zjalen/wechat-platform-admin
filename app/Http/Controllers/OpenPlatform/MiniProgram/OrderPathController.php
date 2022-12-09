@@ -27,7 +27,6 @@ class OrderPathController extends AbstractOpenPlatformController
      * 设置小程序订单 path
      *
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     * @throws \App\Exceptions\BusinessExceptions\WeChatException
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -43,7 +42,9 @@ class OrderPathController extends AbstractOpenPlatformController
 
 
         $data = ['batch_req' => $params];
-        $miniProgram = $this->getMiniProgram();
-        return $miniProgram->setting->httpPostJson('wxa/security/applysetorderpathinfo', $data);
+//        $miniProgram = $this->getMiniProgram();
+//        return $miniProgram->setting->httpPostJson('wxa/security/applysetorderpathinfo', $data);
+        $openPlatform = $this->getOpenPlatform();
+        return $openPlatform->component->httpPostJson('wxa/security/applysetorderpathinfo', $data);
     }
 }
