@@ -52,4 +52,18 @@ class MiniProgramController extends AbstractOpenPlatformController
         $file = $mediaService->getFilePath($this->appId, $fileName, $type);
         return $miniProgram->media->upload($type, $file);
     }
+
+    /**
+     * 查询 rid 的详细信息
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException|WeChatException
+     */
+    public function ridInfo()
+    {
+        $rid = request()->input('rid');
+        $miniProgram = $this->getMiniProgram();
+        return $miniProgram->setting->httpPostJson('cgi-bin/openapi/rid/get', ['rid' => $rid]);
+    }
 }

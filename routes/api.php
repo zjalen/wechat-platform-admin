@@ -119,6 +119,7 @@ Route::group([
             'prefix' => 'mp/{appId}',
         ], function (\Illuminate\Routing\Router $router) {
             $router->get('basic-info', [\App\Http\Controllers\OpenPlatform\MiniProgram\MiniProgramController::class, 'show']);
+            $router->get('ridInfo', [\App\Http\Controllers\OpenPlatform\MiniProgram\MiniProgramController::class, 'ridInfo']);
             $router->post('upload-temporary-media',
                 [\App\Http\Controllers\OpenPlatform\MiniProgram\MiniProgramController::class, 'uploadTemporaryMedia']);
             $router->apiResource('testers', \App\Http\Controllers\OpenPlatform\MiniProgram\TesterController::class)->only(['index', 'store', 'destroy']);
