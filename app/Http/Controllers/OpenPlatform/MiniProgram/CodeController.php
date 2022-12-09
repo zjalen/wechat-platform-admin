@@ -91,7 +91,7 @@ class CodeController extends AbstractOpenPlatformController
     public function audit()
     {
         $data = request()->only([
-            'version_desc', 'preview_info', 'item_list', 'ugc_declare', 'feedback_info', 'feedback_stuff'
+            'version_desc', 'order_path', 'preview_info', 'item_list', 'ugc_declare', 'feedback_info', 'feedback_stuff'
         ]);
         $miniProgram = $this->getMiniProgram();
         return $miniProgram->code->submitAudit($data);

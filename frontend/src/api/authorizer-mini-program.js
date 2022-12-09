@@ -275,3 +275,13 @@ export function getQr(id, appId, data) {
     responseType: "blob",
   });
 }
+
+export function getOrderPath(id, appId, params) {
+  return api.get("open-platform/" + id + "/mp/" + appId + "/order-path", {
+    params,
+  });
+}
+
+export function setOrderPath(id, appId, data) {
+  return api.post("open-platform/" + id + "/mp/" + appId + "/order-path", data);
+}

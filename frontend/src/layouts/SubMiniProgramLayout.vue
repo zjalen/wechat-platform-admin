@@ -130,6 +130,10 @@ const menuList = [
         title: "生成二维码",
         to: "mpQR",
       },
+      {
+        title: "订单页 Path 信息",
+        to: "orderPath",
+      },
     ],
   },
   {

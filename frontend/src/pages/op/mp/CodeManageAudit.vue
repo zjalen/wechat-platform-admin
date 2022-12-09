@@ -29,6 +29,18 @@
               :rules="[(val) => (val && val.length > 0) || '必填内容']"
             ></q-input>
           </view>
+          <view class="edit-form-item">
+            <view class="edit-form-item-label">小程序订单 path</view>
+            <q-input
+              class="edit-form-item-value"
+              dense
+              outlined
+              label="小程序订单path"
+              hint="新规要求包含订单支付的小程序必须包含一个订单查看页"
+              model-value=""
+              v-model="formData.order_path"
+            ></q-input>
+          </view>
 
           <view class="edit-form-item">
             <view class="edit-form-item-label">小程序截图</view>
@@ -487,6 +499,7 @@ export default {
   data: () => ({
     formData: {
       version_desc: "",
+      order_path: "",
       preview_info: {
         pic_id_list: [],
         video_id_list: [],

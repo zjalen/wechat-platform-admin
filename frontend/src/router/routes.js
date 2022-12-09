@@ -58,6 +58,11 @@ const routes = [
         name: "mpQR",
       },
       {
+        path: "order-path",
+        component: () => import("pages/op/mp/OrderPath.vue"),
+        name: "orderPath",
+      },
+      {
         path: "basic-information",
         component: () => import("pages/op/mp/BasicInformation.vue"),
         name: "basicInformation",

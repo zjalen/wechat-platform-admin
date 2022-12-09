@@ -132,6 +132,7 @@ Route::group([
             $router->apiResource('categories', \App\Http\Controllers\OpenPlatform\MiniProgram\CategoryController::class)->only(['index','store','show','destroy']);
             $router->apiResource('beta-verification', \App\Http\Controllers\OpenPlatform\MiniProgram\BetaVerificationController::class)->only(['store']);
             $router->apiResource('qr', \App\Http\Controllers\OpenPlatform\MiniProgram\QRController::class)->only(['store']);
+            $router->apiResource('order-path', \App\Http\Controllers\OpenPlatform\MiniProgram\OrderPathController::class)->only(['index','store']);
 
             $router->post('code/commit', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'commit']);
             $router->get('code/test-qr', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getQrCode']);
