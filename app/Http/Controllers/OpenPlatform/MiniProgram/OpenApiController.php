@@ -38,4 +38,23 @@ class OpenApiController extends AbstractOpenPlatformController
         }
         return self::success($result);
     }
+
+    /**
+     * 公众号 code 换取用户手机号
+     *
+     * @return \Illuminate\Http\JsonResponse|string
+     * @throws \App\Exceptions\BusinessExceptions\WeChatException
+     */
+    public function getUserPhoneNumber()
+    {
+        $code = request()->input('code');
+        $miniProgram = $this->getMiniProgram();
+        try {
+            $result = $miniProgram->business->httpPostJson('wxa/business/getuserphonenumber', ['code' => $code]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+            return $exception->getMessage();
+        }
+        return self::success($result);
+    }
 }

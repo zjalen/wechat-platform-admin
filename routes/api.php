@@ -52,6 +52,7 @@ Route::group([
         'prefix' => 'wx-mp/{appId}',
     ], function (\Illuminate\Routing\Router $router) {
         $router->post('getUserInfo', [\App\Http\Controllers\OpenPlatform\MiniProgram\OpenApiController::class, 'getUserInfo']);
+        $router->post('getUserPhoneNumber', [\App\Http\Controllers\OpenPlatform\MiniProgram\OpenApiController::class, 'getUserPhoneNumber']);
     });
 });
 
