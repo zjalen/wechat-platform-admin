@@ -50,7 +50,7 @@ class OpenApiController extends AbstractOpenPlatformController
         $code = request()->input('code');
         $miniProgram = $this->getMiniProgram();
         try {
-            $result = $miniProgram->business->httpPostJson('wxa/business/getuserphonenumber', ['code' => $code]);
+            $result = $miniProgram->account->httpPostJson('wxa/business/getuserphonenumber', ['code' => $code]);
         } catch (\Throwable $exception) {
             Log::error($exception);
             return $exception->getMessage();
