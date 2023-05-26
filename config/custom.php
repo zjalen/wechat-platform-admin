@@ -9,4 +9,5 @@ return [
     'media_token_cache_prefix' => env('MEDIA_TOKEN_CACHE_PREFIX', 'media-token:'),
     'enable_option_log' => env('ENABLE_OPERATION_LOG', false),
     'option_log_method' => explode('|', env('OPERATION_LOG_METHOD', '')),
+    'open_api_token' => env('OPEN_API_TOKEN')
 ];

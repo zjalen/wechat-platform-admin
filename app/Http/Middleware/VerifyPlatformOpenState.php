@@ -33,6 +33,10 @@ class VerifyPlatformOpenState
     {
         /** @var string $sign 该平台的标识码 */
         $slug = request()->route('slug');
+        $token = request()->header('token');
+        if ($token != config('custom.open_api_token')) {
+            throw new ParamsErrorException('token 参数异常');
+        }
         if (!$slug) {
             throw new ParamsErrorException('平台参数异常');
         }
