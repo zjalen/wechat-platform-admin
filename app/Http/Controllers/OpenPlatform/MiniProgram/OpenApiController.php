@@ -57,4 +57,24 @@ class OpenApiController extends AbstractOpenPlatformController
         }
         return self::success($result);
     }
+
+    /**
+     * 生成小程序码
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws \App\Exceptions\BusinessExceptions\WeChatException
+     */
+    public function getMpQrCode()
+    {
+        $params = [
+            'path' => request('path'),
+            'width' => request('width'),
+            'auto_color' => request('auto_color'),
+            'line_color' => request('line_color'),
+            'is_hyaline' => request('is_hyaline'),
+            'scene' => request('scene')
+        ];
+        $miniProgram = $this->getMiniProgram();
+        return $miniProgram->app_code->getUnlimit($params['scene'], $params);
+    }
 }

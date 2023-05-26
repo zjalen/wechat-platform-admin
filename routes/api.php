@@ -53,6 +53,7 @@ Route::group([
     ], function (\Illuminate\Routing\Router $router) {
         $router->post('getUserInfo', [\App\Http\Controllers\OpenPlatform\MiniProgram\OpenApiController::class, 'getUserInfo']);
         $router->post('getUserPhoneNumber', [\App\Http\Controllers\OpenPlatform\MiniProgram\OpenApiController::class, 'getUserPhoneNumber']);
+        $router->post('getMpQrCode', [\App\Http\Controllers\OpenPlatform\MiniProgram\OpenApiController::class, 'getMpQrCode']);
     });
 });
 

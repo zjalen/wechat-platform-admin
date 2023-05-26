@@ -7,7 +7,6 @@ use App\Models\Platform;
 use App\Services\PlatformService;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class VerifyPlatformOpenState
 {
@@ -37,7 +36,7 @@ class VerifyPlatformOpenState
         if (!$slug) {
             throw new ParamsErrorException('平台参数异常');
         }
-        Log::info($type);
+//        Log::info($type);
         switch ($type) {
             case 'op':
                 $typeInt = Platform::TYPE_THIRD_PARTY;
