@@ -33,4 +33,9 @@ Route::group([
     // 绑定开放平台回调页面
     $router->get('bind-callback',
         [\App\Http\Controllers\OpenPlatform\OpenPlatformController::class, 'bindCallback'])->name('bindCallback');
+    // 快速复用公众号注册小程序
+    $router->get('fast-create-mp-auth', [\App\Http\Controllers\OpenPlatform\OpenPlatformController::class, 'fastCreateMpAuth'])->name('fastCreateMpAuth');
+    // 快速复用公众号认证信息注册小程序授权回调
+    $router->get('fast-create-mp-auth-callback',
+        [\App\Http\Controllers\OpenPlatform\OpenPlatformController::class, 'fastCreateMiniProgramAuthCallback'])->name('fastCreateMiniProgramAuthCallback');
 });

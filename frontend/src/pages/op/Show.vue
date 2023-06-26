@@ -192,6 +192,16 @@
               <q-btn flat color="grey" @click="onDeleteClick(item)"
                 >删除
               </q-btn>
+              <q-btn
+                v-if="
+                  item.service_type_name === '服务号' ||
+                  item.service_type_name === '订阅号'
+                "
+                flat
+                color="secondary"
+                @click="gotoFastCreateMp(item.app_id)"
+                >快速创建小程序
+              </q-btn>
               <q-btn flat color="secondary" @click="loadAuthorizer(item.app_id)"
                 >查看详情
               </q-btn>
@@ -432,6 +442,7 @@ export default {
     serve_url: null,
     notify_url: null,
     bind_url: null,
+    fast_create_mp_url: null,
     access_token: "",
     domain: "",
     token: "",
@@ -483,6 +494,7 @@ export default {
           this.serve_url = res.serve_url;
           this.notify_url = res.notify_url;
           this.bind_url = res.bind_url;
+          this.fast_create_mp_url = res.fast_create_mp_url;
           this.token = res.token;
           this.aes_key = res.aes_key;
           this.domain = res.domain.includes("//")
@@ -505,6 +517,22 @@ export default {
           this.errMsg = err.errMsg;
         });
       this.loadSubPlatforms();
+    },
+    gotoFastCreateMp(appId) {
+      const url = `${this.fast_create_mp_url}?appId=${appId}`;
+      this.$q
+        .dialog({
+          title: "注册提示",
+          message:
+            "只有已认证的公众号才可以复用已认证的公司信息，快速注册小程序。新注册的小程序自动认证，同公众号一致，无需重复认证。更多信息可参考：https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/2.0/product/Register_Mini_Programs/fast_registration_of_mini_program.html",
+          cancel: {
+            flat: true,
+            color: "grey",
+          },
+        })
+        .onOk(() => {
+          window.open(url, "_blank");
+        });
     },
     loadSubPlatforms() {
       getLocalAuthorizer(this.id, {

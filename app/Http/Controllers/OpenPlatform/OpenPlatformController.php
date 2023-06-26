@@ -6,6 +6,7 @@ namespace App\Http\Controllers\OpenPlatform;
 
 use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 /**
  * Notes:
@@ -40,6 +41,7 @@ class OpenPlatformController extends AbstractOpenPlatformController
             'serve_url' => route('openPlatformNotify', ['openPlatformSlug' => $this->openPlatformModel->slug]),
             'notify_url' => urldecode(route('authorizerNotify', ['openPlatformSlug' => $this->openPlatformModel->slug, 'appId' => '$APPID$'])),
             'bind_url' => route('bind', ['openPlatformSlug' => $this->openPlatformModel->slug]),
+            'fast_create_mp_url' => route('fastCreateMpAuth', ['openPlatformSlug' => $this->openPlatformModel->slug]),
             'access_token' => $token,
             'errMsg' => $error
         ];
@@ -85,6 +87,37 @@ class OpenPlatformController extends AbstractOpenPlatformController
         // handle 触发绑定成功事件
         $openPlatform->handleAuthorize($authCode);
         return view('authorized');
+    }
+
+    /**
+     * 复用公众号认证信息快速注册小程序授权页面
+     *
+     * @return View
+     * @throws \App\Exceptions\BusinessExceptions\WeChatException
+     */
+    public function fastCreateMpAuth(): View
+    {
+        $appId = request()->query('appId');
+        $slug = request()->route('openPlatformSlug');
+        $callbackUrl = route('fastCreateMiniProgramAuthCallback', ['openPlatformSlug' => $slug]);
+        $fastRegistrationUrl = $this->getOfficialAccount($appId)->account->getFastRegistrationUrl($callbackUrl);
+        return view('authorize', ['authUrl' => $fastRegistrationUrl]);
+    }
+
+    /**
+     * 开放平台复用公众号认证信息快速注册小程序授权回调
+     *
+     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function fastCreateMiniProgramAuthCallback()
+    {
+        $ticket = request()->input('ticket');
+        Log::info($ticket);
+        $openPlatform = $this->getOpenPlatform();
+        // handle 触发绑定成功事件
+        return $openPlatform->component->httpPostJson('cgi-bin/account/fastregister', ['ticket' => $ticket]);
     }
 
     /**
