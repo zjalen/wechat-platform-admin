@@ -15,7 +15,7 @@ class CreateAuthorizersTable extends Migration
     {
         Schema::create('authorizers', function (Blueprint $table) {
             $table->id();
-            $table->string('nick_name')->comment('授权平台名称');
+            $table->string('nick_name')->nullable()->comment('授权平台名称');
             $table->string('slug')->unique()->index()->comment('索引标识');
             $table->string('head_img')->nullable(true)->comment('头像');
             $table->string('app_id')->index()->comment('app_id');

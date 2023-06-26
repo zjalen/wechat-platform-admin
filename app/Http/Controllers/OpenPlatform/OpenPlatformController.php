@@ -99,7 +99,7 @@ class OpenPlatformController extends AbstractOpenPlatformController
     {
         $appId = request()->query('appId');
         $slug = request()->route('openPlatformSlug');
-        $callbackUrl = route('fastCreateMiniProgramAuthCallback', ['openPlatformSlug' => $slug]);
+        $callbackUrl = route('fastCreateMiniProgramAuthCallback', ['openPlatformSlug' => $slug, 'appId' => $appId]);
         $fastRegistrationUrl = $this->getOfficialAccount($appId)->account->getFastRegistrationUrl($callbackUrl);
         return view('authorize', ['authUrl' => $fastRegistrationUrl]);
     }
@@ -109,15 +109,16 @@ class OpenPlatformController extends AbstractOpenPlatformController
      *
      * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \GuzzleHttp\Exception\GuzzleException|\App\Exceptions\BusinessExceptions\WeChatException
      */
     public function fastCreateMiniProgramAuthCallback()
     {
+        $appId = request()->route('appId');
         $ticket = request()->input('ticket');
         Log::info($ticket);
-        $openPlatform = $this->getOpenPlatform();
+        $officialAccount = $this->getOfficialAccount($appId);
         // handle 触发绑定成功事件
-        return $openPlatform->component->httpPostJson('cgi-bin/account/fastregister', ['ticket' => $ticket]);
+        return $officialAccount->account->httpPostJson('cgi-bin/account/fastregister', ['ticket' => $ticket]);
     }
 
     /**
