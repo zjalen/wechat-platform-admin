@@ -263,11 +263,10 @@ export default {
     },
     uploadUrl() {
       return (
-        "/api/open-platform/" +
-        this.$store.state.currentOpId +
-        "/mp/" +
+        process.env.API +
+        "/api/platforms/" +
         this.$store.state.currentAppId +
-        "/local-media?type=" +
+        "/resources?type=" +
         this.currentMediaType
       );
     },
