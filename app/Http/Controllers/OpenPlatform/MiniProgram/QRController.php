@@ -15,7 +15,6 @@ class QRController extends AbstractOpenPlatformController
     public function store()
     {
         $params = [
-            'path' => request('path'),
             'width' => request('width'),
             'auto_color' => request('auto_color'),
             'line_color' => request('line_color'),
@@ -25,8 +24,10 @@ class QRController extends AbstractOpenPlatformController
         $unlimited = request('unlimited', false);
         if ($unlimited) {
             $params['scene'] = request('scene');
+            $params['page'] = request('path');
             return $miniProgram->app_code->getUnlimit($params['scene'], $params);
         } else {
+            $params['path'] = request('path');
             return $miniProgram->app_code->get($params['path'], $params);
         }
     }
