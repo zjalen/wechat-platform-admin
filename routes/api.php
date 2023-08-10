@@ -46,6 +46,7 @@ Route::group([
         'prefix' => 'wx-oa/{appId}',
     ], function (\Illuminate\Routing\Router $router) {
         $router->post('getUserInfo', [\App\Http\Controllers\OpenPlatform\OfficialAccount\OpenApiController::class, 'getUserInfo']);
+        $router->post('getJsSdk', [\App\Http\Controllers\OpenPlatform\OfficialAccount\OpenApiController::class, 'getJsSdk']);
     });
     /** 对外开放代小程序实现接口 */
     $router->group([

@@ -38,4 +38,27 @@ class OpenApiController extends AbstractOpenPlatformController
         }
         return self::success($result);
     }
+
+    /**
+     * 获取 jssdk config
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\BusinessExceptions\WeChatException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \EasyWeChat\Kernel\Exceptions\RuntimeException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function getJsSdk(): \Illuminate\Http\JsonResponse
+    {
+        $url = request()->input('url');
+        $apiList = request()->input('api_list', []);
+        $debug = request()->input('debug', false);
+        $beta = request()->input('beta', false);
+        $json = request()->input('json', false);
+        $openTagList = request()->input('open_tag_list', []);
+        $officialAccount = $this->getOfficialAccount();
+        return self::success($officialAccount->jssdk->buildConfig($apiList, $debug, $beta, $json, $openTagList, $url));
+    }
 }
