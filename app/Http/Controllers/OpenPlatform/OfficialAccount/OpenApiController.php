@@ -61,4 +61,36 @@ class OpenApiController extends AbstractOpenPlatformController
         $officialAccount = $this->getOfficialAccount();
         return self::success($officialAccount->jssdk->buildConfig($apiList, $debug, $beta, $json, $openTagList, $url));
     }
+
+    /**
+     * 发送模板消息
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\BusinessExceptions\WeChatException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function sendTemplateMessage(): \Illuminate\Http\JsonResponse
+    {
+
+        $templateId = request()->input('template_id');
+        $openid = request()->input('openid');
+        $data = request()->input('data');
+        $url = request()->input('url');
+        $miniProgram = request()->input('miniprogram');
+
+        $params = [
+            'touser' => $openid,
+            'template_id' => $templateId,
+            'url' => $url,
+            'data' => json_decode($data, true),
+            'miniprogram' => $miniProgram,
+
+        ];
+
+        $officialAccount = $this->getOfficialAccount();
+        return self::success($officialAccount->template_message->send($params));
+    }
 }
