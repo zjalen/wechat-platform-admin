@@ -31,12 +31,12 @@ class OpenApiController extends AbstractOpenPlatformController
         }
         $officialAccount = $this->getOfficialAccount();
         try {
-            $result = $officialAccount->oauth->userFromCode($code);
+            $res = $officialAccount->oauth->userFromCode($code);
         } catch (\Throwable $exception) {
             Log::error($exception);
             return $exception->getMessage();
         }
-        return self::success($result);
+        return self::success($res);
     }
 
     /**
@@ -59,7 +59,12 @@ class OpenApiController extends AbstractOpenPlatformController
         $json = request()->input('json', false);
         $openTagList = request()->input('open_tag_list', []);
         $officialAccount = $this->getOfficialAccount();
-        return self::success($officialAccount->jssdk->buildConfig($apiList, $debug, $beta, $json, $openTagList, $url));
+        $res = $officialAccount->jssdk->buildConfig($apiList, $debug, $beta, $json, $openTagList, $url);
+        if ($res['errcode'] != 0) {
+            Log::error($res);
+            return self::fail($res);
+        }
+        return self::success($res);
     }
 
     /**
@@ -91,6 +96,11 @@ class OpenApiController extends AbstractOpenPlatformController
         ];
 
         $officialAccount = $this->getOfficialAccount();
-        return self::success($officialAccount->template_message->send($params));
+        $res = $officialAccount->template_message->send($params);
+        if ($res['errcode'] != 0) {
+            Log::error($res);
+            return self::fail($res);
+        }
+        return self::success($res);
     }
 }
