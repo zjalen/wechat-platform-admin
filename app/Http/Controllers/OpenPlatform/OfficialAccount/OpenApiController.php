@@ -60,7 +60,7 @@ class OpenApiController extends AbstractOpenPlatformController
         $openTagList = request()->input('open_tag_list', []);
         $officialAccount = $this->getOfficialAccount();
         $res = $officialAccount->jssdk->buildConfig($apiList, $debug, $beta, $json, $openTagList, $url);
-        if ($res['errcode'] != 0) {
+        if (array_key_exists('errcode', $res) && $res['errcode'] != 0) {
             Log::error($res);
             return self::fail($res);
         }
@@ -97,7 +97,7 @@ class OpenApiController extends AbstractOpenPlatformController
 
         $officialAccount = $this->getOfficialAccount();
         $res = $officialAccount->template_message->send($params);
-        if ($res['errcode'] != 0) {
+        if (array_key_exists('errcode', $res) && $res['errcode'] != 0) {
             Log::error($res);
             return self::fail($res);
         }
