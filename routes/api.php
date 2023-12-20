@@ -177,6 +177,7 @@ Route::group([
             $router->apiResource('materials', \App\Http\Controllers\OpenPlatform\OfficialAccount\MaterialController::class)->only(['index', 'show', 'store', 'destroy']);
             $router->apiResource('drafts', \App\Http\Controllers\OpenPlatform\OfficialAccount\DraftController::class);
             $router->apiResource('articles', \App\Http\Controllers\OpenPlatform\OfficialAccount\ArticleController::class)->only(['index', 'store', 'show', 'destroy']);
+            $router->apiResource('open-apps', \App\Http\Controllers\OpenPlatform\OfficialAccount\OpenAppController::class)->only(['index', 'store', 'show', 'destroy']);
         });
     });
 });
