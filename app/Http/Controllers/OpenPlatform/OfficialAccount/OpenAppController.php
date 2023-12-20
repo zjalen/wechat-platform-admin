@@ -29,12 +29,12 @@ class OpenAppController extends AbstractOpenPlatformController
     /**
      * 将公众号绑定到第三方平台
      * ！！！注意此第三方平台必须是上面代码注册的，不能是通过微信开放平台认证注册的
-     * @param  string  $openAppId
      * @return mixed|string
      * @throws \App\Exceptions\BusinessExceptions\WeChatException
      */
-    public function update(string $openAppId)
+    public function update()
     {
+        $openAppId = request()->route('open_app');
         $officialAccount = $this->getOfficialAccount();
         try {
             $result = $officialAccount->account->bindTo($openAppId);
