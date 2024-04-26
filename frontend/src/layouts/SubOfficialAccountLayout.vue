@@ -143,6 +143,17 @@ const menuList = [
       },
     ],
   },
+  {
+    title: "关联管理",
+    icon: "r_link",
+    to: null,
+    children: [
+      {
+        title: "关联小程序",
+        to: "subOfficialAccountMiniApps",
+      },
+    ],
+  },
 ];
 
 export default defineComponent({

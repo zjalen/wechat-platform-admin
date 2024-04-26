@@ -75,7 +75,7 @@ Route::group([
     /** 首页平台列表相关操作 */
     $router->group(['middleware' => ['auth:api']], function (\Illuminate\Routing\Router $router) {
         $router->apiResource('platforms', \App\Http\Controllers\PlatformController::class);
-        $router->apiResource('platforms/{appId}/resources', \App\Http\Controllers\ResourceController::class)->only(['index','store']);
+        $router->apiResource('platforms/{appId}/resources', \App\Http\Controllers\ResourceController::class)->only(['index', 'store']);
         $router->post('platforms/{appId}/resources/delete', [\App\Http\Controllers\ResourceController::class, 'destroy']);
         $router->apiResource('operation-logs', \App\Http\Controllers\OperationLogController::class)->only('index');
     });
@@ -113,7 +113,7 @@ Route::group([
         $router->apiResource('local-authorizers', \App\Http\Controllers\OpenPlatform\LocalAuthorizerController::class)->only([
             'index', 'store', 'show', 'destroy'
         ]);
-        $router->apiResource('beta-mini-program',\App\Http\Controllers\OpenPlatform\BetaMiniProgramController::class)->only('store');
+        $router->apiResource('beta-mini-program', \App\Http\Controllers\OpenPlatform\BetaMiniProgramController::class)->only('store');
         $router->apiResource('code', \App\Http\Controllers\OpenPlatform\CodeController::class)->only(['index', 'update', 'destroy']);
         $router->get('ridInfo', [\App\Http\Controllers\OpenPlatform\OpenPlatformController::class, 'ridInfo']);
 
@@ -131,25 +131,25 @@ Route::group([
             $router->get('nick-name/audit-status/{audit_id}', [\App\Http\Controllers\OpenPlatform\MiniProgram\NickNameController::class, 'auditStatus']);
             $router->apiResource('avatar', \App\Http\Controllers\OpenPlatform\MiniProgram\AvatarController::class)->only(['update']);
             $router->apiResource('signature', \App\Http\Controllers\OpenPlatform\MiniProgram\SignatureController::class)->only(['update']);
-            $router->apiResource('server-domain', \App\Http\Controllers\OpenPlatform\MiniProgram\ServerDomainController::class)->only(['index','update']);
+            $router->apiResource('server-domain', \App\Http\Controllers\OpenPlatform\MiniProgram\ServerDomainController::class)->only(['index', 'update']);
             $router->apiResource('webview-domain', \App\Http\Controllers\OpenPlatform\MiniProgram\WebviewDomainController::class)->only(['index', 'update']);
             $router->apiResource('privacy-setting', \App\Http\Controllers\OpenPlatform\MiniProgram\PrivacySettingController::class)->only(['index', 'store']);
             $router->post('upload-privacy-ext-file', [\App\Http\Controllers\OpenPlatform\MiniProgram\PrivacySettingController::class, 'uploadPrivacyExtFile']);
-            $router->apiResource('categories', \App\Http\Controllers\OpenPlatform\MiniProgram\CategoryController::class)->only(['index','store','show','destroy']);
+            $router->apiResource('categories', \App\Http\Controllers\OpenPlatform\MiniProgram\CategoryController::class)->only(['index', 'store', 'show', 'destroy']);
             $router->apiResource('beta-verification', \App\Http\Controllers\OpenPlatform\MiniProgram\BetaVerificationController::class)->only(['store']);
             $router->apiResource('qr', \App\Http\Controllers\OpenPlatform\MiniProgram\QRController::class)->only(['store']);
-            $router->apiResource('order-path', \App\Http\Controllers\OpenPlatform\MiniProgram\OrderPathController::class)->only(['index','store']);
+            $router->apiResource('order-path', \App\Http\Controllers\OpenPlatform\MiniProgram\OrderPathController::class)->only(['index', 'store']);
 
             $router->post('code/commit', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'commit']);
             $router->get('code/test-qr', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getQrCode']);
-            $router->get('code/pages', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getPage']);
-            $router->post('code/audit', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'audit']);
-            $router->post('code/upload-audit-media', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'uploadAuditMedia']);
-            $router->get('code/audit-status', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getAuditStatus']);
-            $router->post('code/audit-withdraw', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'withdrawAudit']);
-            $router->post('code/release', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'release']);
-            $router->post('code/revert', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'revertReleaseVersion']);
-            $router->get('code/release-history-versions', [ \App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getReleaseHistoryVersions']);
+            $router->get('code/pages', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getPage']);
+            $router->post('code/audit', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'audit']);
+            $router->post('code/upload-audit-media', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'uploadAuditMedia']);
+            $router->get('code/audit-status', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getAuditStatus']);
+            $router->post('code/audit-withdraw', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'withdrawAudit']);
+            $router->post('code/release', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'release']);
+            $router->post('code/revert', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'revertReleaseVersion']);
+            $router->get('code/release-history-versions', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getReleaseHistoryVersions']);
             $router->get('code/gray-release', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'getGrayRelease']);
             $router->post('code/gray-release', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'grayRelease']);
             $router->delete('code/gray-release', [\App\Http\Controllers\OpenPlatform\MiniProgram\CodeController::class, 'revertGrayRelease']);
@@ -179,6 +179,7 @@ Route::group([
             $router->apiResource('articles', \App\Http\Controllers\OpenPlatform\OfficialAccount\ArticleController::class)->only(['index', 'store', 'show', 'destroy']);
             $router->apiResource('open-apps', \App\Http\Controllers\OpenPlatform\OfficialAccount\OpenAppController::class)->only(['index', 'store', 'show',
                 'update', 'destroy']);
+            $router->apiResource('mini-apps', \App\Http\Controllers\OpenPlatform\OfficialAccount\MiniAppController::class)->only(['index', 'store', 'destroy']);
         });
     });
 });

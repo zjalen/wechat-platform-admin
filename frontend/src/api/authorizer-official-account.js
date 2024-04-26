@@ -196,3 +196,19 @@ export function deleteArticle(opId, appId, articleId) {
     "open-platform/" + opId + "/oa/" + appId + "/articles/" + articleId
   );
 }
+
+export function getMiniApps(opId, appId) {
+  return api.get("open-platform/" + opId + "/oa/" + appId + "/mini-apps");
+}
+
+export function bindMiniApps(opId, appId, mid) {
+  return api.post("open-platform/" + opId + "/oa/" + appId + "/mini-apps/", {
+    appid: mid,
+  });
+}
+
+export function unbindMiniApps(opId, appId, mid) {
+  return api.delete(
+    "open-platform/" + opId + "/oa/" + appId + "/mini-apps/" + mid
+  );
+}

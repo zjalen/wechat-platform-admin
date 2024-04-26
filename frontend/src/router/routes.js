@@ -154,6 +154,11 @@ const routes = [
         component: () => import("pages/op/oa/Articles.vue"),
         name: "subOfficialAccountArticles",
       },
+      {
+        path: "mini-apps",
+        component: () => import("pages/op/oa/MiniApps.vue"),
+        name: "subOfficialAccountMiniApps",
+      },
     ],
   },
 
