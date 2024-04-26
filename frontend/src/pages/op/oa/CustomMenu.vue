@@ -648,6 +648,7 @@ import {
 } from "src/api/authorizer-official-account.js";
 import { getLengthOfStr } from "src/utils";
 import { date } from "quasar";
+
 export default {
   name: "CustomMenu",
   components: {
@@ -828,10 +829,14 @@ export default {
       getPublishedMenu(
         this.$store.state.currentOpId,
         this.$store.state.currentAppId
-      ).then((response) => {
-        this.loading = false;
-        this.menuItems = response.menu.button;
-      });
+      )
+        .then((response) => {
+          this.loading = false;
+          this.menuItems = response.menu.button;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     onOrderMenuClick(key) {
       this.menuItems.forEach((value, index) => {
@@ -1069,20 +1074,24 @@ export default {
   border: 1px solid $primary;
   box-sizing: border-box;
 }
+
 .item-border-left {
   border-left: 1px solid #e7e7eb;
   box-sizing: border-box;
 }
+
 .item-bordered {
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-bottom: none;
 }
+
 .item-active {
   background-color: white;
   color: $primary;
   border: 1px solid $primary !important;
   box-sizing: border-box;
 }
+
 .mobile_menu_preview {
   width: 294px;
   background-size: contain !important;
